@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+@theme {
+  --color-gold: #eeb149;
+  --font-display: var(--font-bebas), sans-serif;
+  --font-sans: var(--font-inter), sans-serif;
+  
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+}
+
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}
