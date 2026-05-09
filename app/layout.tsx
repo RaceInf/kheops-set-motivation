@@ -2,6 +2,7 @@ import type {Metadata} from 'next';
 import { Bebas_Neue, Inter } from 'next/font/google';
 import Script from 'next/script';
 import { Suspense } from 'react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import GoogleAnalytics from '@/components/analytics/GoogleAnalytics';
 import './globals.css';
 
@@ -123,6 +124,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
           <GoogleAnalytics />
         </Suspense>
         {children}
+        <SpeedInsights />
       </body>
     </html>
   );
