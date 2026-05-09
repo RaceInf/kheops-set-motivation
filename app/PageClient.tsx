@@ -13,7 +13,7 @@ const brutalEase = [0.85, 0, 0.15, 1] as const;
 
 export default function PageClient() {
   const containerRef = useRef<HTMLDivElement>(null);
-  
+
   return (
     <div ref={containerRef} className="min-h-screen bg-black text-white selection:bg-gold selection:text-black overflow-x-hidden relative flex flex-col font-sans">
       <Navbar />
@@ -47,13 +47,12 @@ function Navbar() {
   }, []);
 
   return (
-    <motion.header 
+    <motion.header
       initial={{ y: -50, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.8, ease: brutalEase, delay: 0.2 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        isScrolled ? "bg-black/90 backdrop-blur-md py-4 border-b border-white/10" : "bg-transparent py-8 md:py-12"
-      }`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled ? "bg-black/90 backdrop-blur-md py-4 border-b border-white/10" : "bg-transparent py-8 md:py-12"
+        }`}
     >
       <div className="flex justify-between items-end px-4 md:px-12 w-full max-w-[1600px] mx-auto">
         <div className="flex flex-col">
@@ -70,8 +69,8 @@ function Navbar() {
           <a href="#reseau" className="hover:text-gold transition-colors duration-200">Le Réseau</a>
         </nav>
         <div className="mb-1 hidden md:block">
-          <Link 
-            href="/arsenal" 
+          <Link
+            href="/arsenal"
             onClick={() => gtag.event({ action: 'click_navbar_cta', category: 'engagement', label: 'Accéder à l\'Arsenal' })}
             className="px-5 py-2.5 border border-gold text-gold text-[10px] font-bold tracking-widest uppercase hover:bg-gold hover:text-black transition-all cursor-pointer flex items-center gap-2 group"
           >
@@ -85,16 +84,16 @@ function Navbar() {
 
 function Hero() {
   const titleWords = ["Deviens", "Un", "Bâtisseur"];
-  
+
   return (
     <section id="accueil" className="w-full pt-32 md:pt-64 relative">
       {/* Background Image that covers the hero section */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[100vw] h-full z-0 pointer-events-none opacity-40 bg-zinc-950">
-        <Image 
-          src="/images/hero-principal.jpg" 
-          alt="Bâtisseur background" 
-          fill 
-          className="object-cover grayscale mix-blend-luminosity" 
+        <Image
+          src="/images/hero-principal.jpg"
+          alt="Bâtisseur background"
+          fill
+          className="object-cover grayscale mix-blend-luminosity"
           priority
           loading="eager"
           unoptimized
@@ -107,7 +106,7 @@ function Hero() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end relative z-10">
         <div className="lg:col-span-8 flex flex-col">
           <div className="overflow-hidden mb-6">
-            <motion.div 
+            <motion.div
               initial={{ y: "100%" }}
               animate={{ y: 0 }}
               transition={{ duration: 0.8, ease: brutalEase, delay: 0.4 }}
@@ -117,11 +116,11 @@ function Hero() {
               Ordre, Discipline, Souveraineté
             </motion.div>
           </div>
-          
+
           <h1 className="font-display text-7xl md:text-[12vw] lg:text-[10vw] leading-[0.8] tracking-tighter uppercase flex flex-col">
             {titleWords.map((word, index) => (
               <span key={index} className="overflow-hidden block relative">
-                <motion.span 
+                <motion.span
                   initial={{ y: "110%", skewY: 5 }}
                   animate={{ y: 0, skewY: 0 }}
                   transition={{ duration: 1, ease: brutalEase, delay: 0.5 + index * 0.15 }}
@@ -133,26 +132,26 @@ function Hero() {
             ))}
           </h1>
         </div>
-        
+
         <div className="lg:col-span-4 flex flex-col gap-8 pb-4">
-          <motion.p 
+          <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: brutalEase, delay: 1 }}
             className="font-sans text-white/50 text-base md:text-xl leading-relaxed font-light lg:max-w-[400px]"
           >
-            L&apos;élite n&apos;attend pas. <span className="text-white">La complaisance est un poison.</span> 
-            Forge ton esprit, accumule le capital et bâtis ton empire 
+            L&apos;élite n&apos;attend pas. <span className="text-white">La complaisance est un poison.</span>
+            Forge ton esprit, accumule le capital et bâtis ton empire
             sans demander la permission.
           </motion.p>
-          
-          <motion.div 
+
+          <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: brutalEase, delay: 1.2 }}
           >
-            <Link 
-              href="#newsletter" 
+            <Link
+              href="#newsletter"
               onClick={() => gtag.event({ action: 'click_hero_cta', category: 'engagement', label: 'Rejoindre le Q.G.' })}
               className="inline-flex py-5 px-10 bg-gold text-black font-black text-xs uppercase tracking-[0.3em] hover:bg-white transition-all duration-500 items-center gap-4 group"
             >
@@ -161,7 +160,7 @@ function Hero() {
           </motion.div>
         </div>
       </div>
-      
+
       <div className="mt-24 md:mt-48 w-full border-t border-white/10 pt-8 flex justify-between items-center overflow-hidden h-12">
         <div className="text-[8px] md:text-[10px] uppercase tracking-[0.5em] text-white/20 whitespace-nowrap animate-marquee flex gap-12">
           <span>CONSTRUIS OU SUBIS</span>
@@ -225,7 +224,7 @@ function Manifesto() {
       <div className="absolute -left-20 top-0 text-[35vw] font-display text-white/[0.02] leading-none select-none pointer-events-none hidden lg:block">
         02
       </div>
-      
+
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 items-start">
         <div className="lg:col-span-5 pt-12">
           <motion.div
@@ -238,26 +237,26 @@ function Manifesto() {
               <span className="w-8 h-[1px] bg-gold"></span> Architecture Mentale
             </div>
             <h2 className="font-display text-6xl md:text-8xl tracking-tighter leading-[0.8] uppercase mb-12">
-              Le <span className="text-white/30">Code</span> <br/>Du Bâtisseur
+              Le <span className="text-white/30">Code</span> <br />Du Bâtisseur
             </h2>
-            
+
             <div className="p-8 border-l border-white/20 bg-white/5 backdrop-blur-sm">
-                <p className="font-sans text-sm md:text-base leading-relaxed text-white/70 italic">
-                  &quot;La société moderne encourage la faiblesse, l&apos;endettement et l&apos;excuse permanente. 
-                  Chez Kheops Set Motivation, nous rejetons ce narratif. Nous construisons une génération de Bâtisseurs.&quot;
-                </p>
-                <div className="mt-6 flex items-center gap-3">
-                  <div className="w-10 h-px bg-white/30"></div>
-                  <span className="text-[10px] uppercase tracking-widest text-white/50">Kheops Set</span>
-                </div>
+              <p className="font-sans text-sm md:text-base leading-relaxed text-white/70 italic">
+                &quot;La société moderne encourage la faiblesse, l&apos;endettement et l&apos;excuse permanente.
+                Chez Kheops Set Motivation, nous rejetons ce narratif. Nous construisons une génération de Bâtisseurs.&quot;
+              </p>
+              <div className="mt-6 flex items-center gap-3">
+                <div className="w-10 h-px bg-white/30"></div>
+                <span className="text-[10px] uppercase tracking-widest text-white/50">Kheops Set</span>
+              </div>
             </div>
           </motion.div>
         </div>
-        
+
         <div className="lg:col-span-7 flex flex-col pt-4">
           <div className="flex flex-col flex-1 min-h-[450px]">
             <AnimatePresence mode="wait">
-              <motion.div 
+              <motion.div
                 key={page}
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -266,7 +265,7 @@ function Manifesto() {
                 className="flex flex-col gap-4"
               >
                 {currentLaws.map((item, i) => (
-                  <div 
+                  <div
                     key={page * 3 + i}
                     className="flex flex-col md:flex-row md:items-center gap-6 p-8 border border-white/10 bg-white/[0.02] group hover:border-gold/50 hover:bg-white/[0.05] transition-all duration-500 relative overflow-hidden"
                   >
@@ -281,15 +280,15 @@ function Manifesto() {
               </motion.div>
             </AnimatePresence>
           </div>
-          
+
           <div className="flex justify-between items-center mt-12 py-6 border-t border-white/10">
             <button onClick={prevPage} className="p-4 border border-white/10 hover:border-gold hover:text-gold text-white/30 transition-all group cursor-pointer rounded-full">
               <ChevronLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
             </button>
             <div className="flex gap-6">
               {Array.from({ length: totalPages }).map((_, i) => (
-                <button 
-                  key={i} 
+                <button
+                  key={i}
                   onClick={() => setPage(i)}
                   className={`relative h-1 transition-all duration-500 cursor-pointer ${i === page ? 'w-12 bg-gold' : 'w-4 bg-white/20 hover:bg-white/40'}`}
                   aria-label={`Aller à la page ${i + 1}`}
@@ -309,7 +308,7 @@ function Manifesto() {
 function Blog() {
   const posts = blogPosts.slice(0, 3);
   const ref = useRef<HTMLElement>(null);
-  
+
   return (
     <section id="articles" ref={ref} className="w-full relative py-12 overflow-hidden bg-zinc-950 -mx-4 md:-mx-8 px-4 md:px-8">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start py-12 md:py-24">
@@ -324,13 +323,13 @@ function Blog() {
               <span className="w-8 h-[1px] bg-gold"></span> Zone de Transmission
             </div>
             <h2 className="font-display text-7xl md:text-[8vw] lg:text-[6vw] tracking-tighter leading-[0.8] uppercase mb-8">
-              Les Archives <br/><span className="text-white/20">Publiques</span>
+              Les Archives <br /><span className="text-white/20">Publiques</span>
             </h2>
             <p className="font-sans text-sm md:text-lg text-white/40 leading-relaxed mb-12 max-w-sm">
               Archives publiques. Études de cas, analyses et démonstrations de l&apos;ingénierie financière du Bâtisseur.
             </p>
-            <Link 
-              href="/articles" 
+            <Link
+              href="/articles"
               onClick={() => gtag.event({ action: 'view_all_blog', category: 'navigation', label: 'Toutes les archives' })}
               className="inline-flex py-4 px-8 bg-white/5 hover:bg-gold hover:text-black transition-all duration-500 font-bold uppercase tracking-[0.34em] text-[10px] items-center gap-3 border border-white/10 hover:border-gold group"
             >
@@ -341,7 +340,7 @@ function Blog() {
 
         <div className="lg:col-span-8 flex flex-col gap-6">
           {posts.map((post, idx) => (
-            <motion.div 
+            <motion.div
               key={post.id}
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -353,9 +352,9 @@ function Blog() {
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
                   <div className="flex flex-col gap-4">
                     <div className="flex items-center gap-4 text-[10px] uppercase tracking-widest font-bold">
-                       <span className="text-gold">{post.category}</span>
-                       <span className="text-white/20">—</span>
-                       <span className="text-white/40">{post.date}</span>
+                      <span className="text-gold">{post.category}</span>
+                      <span className="text-white/20">—</span>
+                      <span className="text-white/40">{post.date}</span>
                     </div>
                     <h3 className="font-display text-4xl md:text-6xl uppercase leading-none tracking-tighter group-hover:translate-x-4 transition-transform duration-500">{post.title}</h3>
                   </div>
@@ -366,13 +365,13 @@ function Blog() {
               </Link>
             </motion.div>
           ))}
-          
-          <motion.div 
+
+          <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             className="flex justify-center lg:justify-start mt-8"
           >
-             <div className="font-display text-[15vw] text-white/[0.02] leading-none select-none pointer-events-none">03</div>
+            <div className="font-display text-[15vw] text-white/[0.02] leading-none select-none pointer-events-none">03</div>
           </motion.div>
         </div>
       </div>
@@ -403,7 +402,7 @@ function Boutique() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1">
         {products.map((product, idx) => (
-          <motion.div 
+          <motion.div
             key={product.id}
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -414,16 +413,16 @@ function Boutique() {
             <div className="absolute top-0 right-0 p-8 text-8xl font-display text-white/5 leading-none transition-all group-hover:text-gold/10 group-hover:-translate-y-2">
               0{idx + 1}
             </div>
-            
+
             <div className="relative z-10 flex flex-col h-full">
               <div className="mb-12">
                 <span className="text-gold text-[10px] font-mono tracking-widest px-3 py-1 border border-gold/20 rounded-full uppercase">
                   {idx === 0 ? "CODE" : idx === 1 ? "PROTOCOLE" : "CAPITAL"}
                 </span>
               </div>
-              
+
               <div className="flex-grow flex flex-col justify-center">
-                <Link 
+                <Link
                   href={`/arsenal/${product.id}`}
                   onClick={() => gtag.event({ action: 'click_boutique_item', category: 'ecommerce', label: product.title })}
                 >
@@ -431,15 +430,15 @@ function Boutique() {
                 </Link>
                 <p className="font-sans text-xs md:text-sm text-white/40 leading-relaxed max-w-xs">{product.desc}</p>
               </div>
-              
+
               <div className="mt-12 space-y-8">
                 <div className="flex justify-between items-baseline border-b border-white/10 pb-4">
                   <span className="font-display text-3xl">{product.price}</span>
                   <span className="text-[10px] uppercase text-white/30 tracking-[0.2em]">{product.category}</span>
                 </div>
-                
-                <Link 
-                  href={`/arsenal/${product.id}`} 
+
+                <Link
+                  href={`/arsenal/${product.id}`}
                   onClick={() => gtag.event({ action: 'click_boutique_cta', category: 'ecommerce', label: product.cta + ' - ' + product.title })}
                   className="block w-full py-5 border border-gold text-gold hover:bg-gold hover:text-black transition-all duration-500 font-bold text-center uppercase tracking-[0.3em] text-[10px]"
                 >
@@ -450,11 +449,11 @@ function Boutique() {
           </motion.div>
         ))}
       </div>
-      
+
       <div className="mt-16 flex justify-center">
         <Link href="/arsenal" className="group flex items-center gap-6 text-[10px] font-bold uppercase tracking-[0.5em] text-white/30 hover:text-gold transition-colors">
           <span className="h-px w-12 bg-white/10 group-hover:bg-gold transition-colors"></span>
-          Découvrir tout l&apos;arsenal
+          Voir tout l&apos;arsenal
           <span className="h-px w-12 bg-white/10 group-hover:bg-gold transition-colors"></span>
         </Link>
       </div>
@@ -477,35 +476,35 @@ function Contact() {
         <div className="lg:col-span-4 border-l border-white/10 p-12 bg-zinc-950 flex flex-col justify-center min-h-[400px] relative overflow-hidden group">
           {/* Background image */}
           <div className="absolute inset-0 z-0 pointer-events-none opacity-40 transition-opacity duration-700 bg-zinc-950">
-            <Image 
-              src="/images/section-reseau.jpg" 
-              alt="Background réseau" 
-              fill 
-              className="object-cover grayscale mix-blend-luminosity" 
+            <Image
+              src="/images/section-reseau.jpg"
+              alt="Background réseau"
+              fill
+              className="object-cover grayscale mix-blend-luminosity"
               unoptimized
               loading="eager"
             />
             {/* Gradients pour garder la lisibilité du texte */}
             <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/60 to-zinc-950/20"></div>
           </div>
-          
+
           <div className="absolute top-0 right-0 p-8 text-9xl font-display text-white/5 leading-none transition-colors group-hover:text-gold/10 z-10">04</div>
           <div className="relative z-10">
             <h2 className="font-display text-6xl md:text-8xl uppercase leading-[0.8] tracking-tighter mb-6 transition-transform duration-700 group-hover:-translate-y-2">
-              Le <br/><span className="text-white/30">Réseau</span>
+              Le <br /><span className="text-white/30">Réseau</span>
             </h2>
             <p className="text-[10px] uppercase text-white/40 tracking-[0.4em] mb-12">Transmissions Publiques</p>
             <div className="w-16 h-1 bg-gold"></div>
           </div>
         </div>
-        
+
         <div className="lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-px bg-white/10">
           {socials.map((s, idx) => (
-            <a 
-              key={idx} 
-              href={s.url} 
-              target="_blank" 
-              rel="noopener noreferrer" 
+            <a
+              key={idx}
+              href={s.url}
+              target="_blank"
+              rel="noopener noreferrer"
               aria-label={`Suivre Kheops Set Motivation sur ${s.name}`}
               onClick={() => gtag.event({ action: 'click_social', category: 'social', label: s.name })}
               className="bg-black p-12 md:p-16 hover:bg-gold hover:text-black transition-all duration-700 flex flex-col items-center justify-center text-center group relative overflow-hidden"
@@ -566,14 +565,14 @@ function Newsletter() {
   return (
     <section id="newsletter" className="w-full py-12 lg:py-24">
       <div className="relative overflow-hidden border border-white/10 bg-zinc-950 p-12 md:p-24 flex flex-col lg:flex-row items-center gap-16 group">
-        
+
         {/* Background Image */}
         <div className="absolute inset-0 z-0 pointer-events-none opacity-30 transition-opacity duration-1000 bg-zinc-950">
-          <Image 
-            src="/images/section-capture-email.jpg" 
-            alt="Protocole background" 
-            fill 
-            className="object-cover grayscale mix-blend-luminosity" 
+          <Image
+            src="/images/section-capture-email.jpg"
+            alt="Protocole background"
+            fill
+            className="object-cover grayscale mix-blend-luminosity"
             unoptimized
             loading="eager"
           />
@@ -583,13 +582,13 @@ function Newsletter() {
         </div>
 
         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-gold to-transparent opacity-50 z-10"></div>
-        
+
         <div className="flex-1 flex flex-col gap-8 relative z-10">
           <div className="flex items-center gap-4 text-gold text-[10px] font-bold tracking-[0.5em] uppercase">
-             <Zap className="w-4 h-4" /> Le Journal du Bâtisseur
+            <Zap className="w-4 h-4" /> Le Journal du Bâtisseur
           </div>
           <h2 className="font-display text-6xl md:text-8xl lg:text-9xl uppercase leading-[0.8] tracking-tighter">
-            Reçois <br/><span className="text-white/30">Le Protocole.</span>
+            Reçois <br /><span className="text-white/30">Le Protocole.</span>
           </h2>
           <p className="font-sans text-sm md:text-base text-white/40 leading-relaxed max-w-lg">
             Une fois par semaine, un email brutal d&apos;éducation financière et stratégique. <span className="text-white">Pas de bullshit.</span> Juste de l&apos;exécution pure.
@@ -599,9 +598,9 @@ function Newsletter() {
         <div className="w-full lg:w-1/3 flex flex-col gap-12 relative z-10">
           <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
             <div className="border-b border-white/20 focus-within:border-gold transition-colors">
-              <input 
-                type="email" 
-                placeholder="TON EMAIL" 
+              <input
+                type="email"
+                placeholder="TON EMAIL"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full bg-transparent py-4 text-sm focus:outline-none placeholder:text-white/20 uppercase tracking-[0.3em] font-bold"
@@ -609,18 +608,17 @@ function Newsletter() {
                 disabled={status === 'loading' || status === 'success'}
               />
             </div>
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               disabled={status === 'loading' || status === 'success'}
-              className={`w-full py-6 font-black text-xs uppercase tracking-[0.4em] transition-all duration-500 ${
-                status === 'success' 
-                  ? 'bg-gold text-black' 
+              className={`w-full py-6 font-black text-xs uppercase tracking-[0.4em] transition-all duration-500 ${status === 'success'
+                  ? 'bg-gold text-black'
                   : 'bg-white text-black hover:bg-gold'
-              } disabled:opacity-50 disabled:cursor-not-allowed`}
+                } disabled:opacity-50 disabled:cursor-not-allowed`}
             >
               {status === 'loading' ? 'ENREGISTREMENT...' : status === 'success' ? 'ACCÈS AUTORISÉ' : "S'ABONNER AU PROTOCOLE"}
             </button>
-            
+
             {status === 'error' && (
               <p className="text-red-500 text-[10px] uppercase font-bold tracking-widest text-center">{message}</p>
             )}
@@ -628,7 +626,7 @@ function Newsletter() {
               <p className="text-gold text-[10px] uppercase font-bold tracking-widest text-center">Ton entrée a été consignée.</p>
             )}
           </form>
-          
+
           <div className="flex items-center gap-6 justify-center lg:justify-start">
             <div className="flex flex-col items-center">
               <span className="text-3xl font-display text-white">100%</span>
