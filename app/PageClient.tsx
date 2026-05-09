@@ -151,11 +151,11 @@ function Hero() {
             transition={{ duration: 0.8, ease: brutalEase, delay: 1.2 }}
           >
             <Link 
-              href="/arsenal" 
-              onClick={() => gtag.event({ action: 'click_hero_cta', category: 'engagement', label: 'Accéder à l\'Arsenal' })}
+              href="#newsletter" 
+              onClick={() => gtag.event({ action: 'click_hero_cta', category: 'engagement', label: 'Rejoindre le Q.G.' })}
               className="inline-flex py-5 px-10 bg-gold text-black font-black text-xs uppercase tracking-[0.3em] hover:bg-white transition-all duration-500 items-center gap-4 group"
             >
-              Accéder à l&apos;Arsenal <ArrowDownRight className="w-5 h-5 group-hover:translate-x-1 group-hover:translate-y-1 transition-transform" />
+              REJOINDRE LE Q.G. <ArrowDownRight className="w-5 h-5 group-hover:translate-x-1 group-hover:translate-y-1 transition-transform" />
             </Link>
           </motion.div>
         </div>
@@ -561,7 +561,7 @@ function Newsletter() {
   };
 
   return (
-    <section className="w-full py-12 lg:py-24">
+    <section id="newsletter" className="w-full py-12 lg:py-24">
       <div className="relative overflow-hidden border border-white/10 bg-zinc-950 p-12 md:p-24 flex flex-col lg:flex-row items-center gap-16 group">
         
         {/* Background Image */}
