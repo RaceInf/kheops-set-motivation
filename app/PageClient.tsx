@@ -465,6 +465,7 @@ function Contact() {
     { name: "Facebook", url: "https://www.facebook.com/KheopsSetMotivation", icon: Facebook },
     { name: "WhatsApp", url: "https://wa.me/237654172703", icon: MessageCircle },
     { name: "YouTube", url: "https://www.youtube.com/@kheopset.motivation", icon: Youtube },
+    { name: "Instagram", url: "https://www.instagram.com/kheopset.motivation", icon: Instagram },
   ];
   const ref = useRef<HTMLElement>(null);
 
