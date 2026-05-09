@@ -72,10 +72,10 @@ function Navbar() {
         <div className="mb-1 hidden md:block">
           <Link 
             href="/arsenal" 
-            onClick={() => gtag.event({ action: 'click_navbar_cta', category: 'engagement', label: 'Rejoindre l\'élite' })}
+            onClick={() => gtag.event({ action: 'click_navbar_cta', category: 'engagement', label: 'Accéder à l\'Arsenal' })}
             className="px-5 py-2.5 border border-gold text-gold text-[10px] font-bold tracking-widest uppercase hover:bg-gold hover:text-black transition-all cursor-pointer flex items-center gap-2 group"
           >
-            Rejoindre l&apos;élite <ArrowUpRight className="w-3 h-3 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+            ACCÉDER À L&apos;ARSENAL <ArrowUpRight className="w-3 h-3 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
           </Link>
         </div>
       </div>
