@@ -283,7 +283,7 @@ export default async function ToolPage({ params }: PageProps) {
 
               <p className="text-[9px] text-center text-white/40 uppercase tracking-widest leading-relaxed">
                 En cliquant, vous acceptez les conditions de transmission KSM.
-                Conformément à l'article L221-28 du Code de la Consommation, le droit de rétractation ne s'applique pas aux contenus numériques fournis sur support immatériel dont l'exécution a commencé avec l'accord préalable exprès du consommateur. En finalisant votre achat, vous acceptez expressément que l'accès immédiat au contenu numérique exclut tout droit de rétractation.
+                En accédant immédiatement au contenu numérique, vous renoncez expressément à votre droit de rétractation (Art. L221-28).
               </p>
             </div>
 
