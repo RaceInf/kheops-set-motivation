@@ -5,7 +5,7 @@ import { constructMetadata } from '@/lib/seo';
 
 export const metadata: Metadata = constructMetadata({
   title: 'Deviens Un Bâtisseur | Souveraineté & Discipline',
-  description: 'Rejoins l\'élite. Forge ton esprit, accumule le capital et bâtis ton empire. Le protocole radical pour sortir de la matrice et atteindre la souveraineté financière.',
+  description: 'Tu travailles dur. Ton compte ne le reflète pas. Kheops Set Motivation est l\'architecture mentale et financière pour ceux qui construisent — sans permission et sans excuse.',
   path: '/',
   image: '/images/og/og-accueil.jpg',
 });
