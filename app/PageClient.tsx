@@ -140,9 +140,7 @@ function Hero() {
             transition={{ duration: 1, ease: brutalEase, delay: 1 }}
             className="font-sans text-white/50 text-base md:text-xl leading-relaxed font-light lg:max-w-[400px]"
           >
-            L&apos;élite n&apos;attend pas. <span className="text-white">La complaisance est un poison.</span>
-            Forge ton esprit, accumule le capital et bâtis ton empire
-            sans demander la permission.
+            L&apos;élite n&apos;attend pas. <span className="text-white">La complaisance est un poison.</span> Forge ton esprit, accumule le capital et bâtis ton empire sans demander la permission.
           </motion.p>
 
           <motion.div
@@ -612,8 +610,8 @@ function Newsletter() {
               type="submit"
               disabled={status === 'loading' || status === 'success'}
               className={`w-full py-6 font-black text-xs uppercase tracking-[0.4em] transition-all duration-500 ${status === 'success'
-                  ? 'bg-gold text-black'
-                  : 'bg-white text-black hover:bg-gold'
+                ? 'bg-gold text-black'
+                : 'bg-white text-black hover:bg-gold'
                 } disabled:opacity-50 disabled:cursor-not-allowed`}
             >
               {status === 'loading' ? 'ENREGISTREMENT...' : status === 'success' ? 'ACCÈS AUTORISÉ' : "S'ABONNER AU PROTOCOLE"}
