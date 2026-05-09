@@ -90,14 +90,13 @@ function Hero() {
       {/* Background Image that covers the hero section */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[100vw] h-full z-0 pointer-events-none opacity-40 bg-zinc-950">
         <Image 
-          src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2548&auto=format&fit=crop" 
+          src="/images/hero-principal.jpg" 
           alt="Bâtisseur background" 
           fill 
           className="object-cover grayscale mix-blend-luminosity" 
           priority
           loading="eager"
           unoptimized
-          referrerPolicy="no-referrer"
         />
         {/* Gradients pour garder la lisibilité du texte */}
         <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/40 via-zinc-950/60 to-zinc-950"></div>
@@ -476,13 +475,12 @@ function Contact() {
           {/* Background image */}
           <div className="absolute inset-0 z-0 pointer-events-none opacity-40 transition-opacity duration-700 bg-zinc-950">
             <Image 
-              src="https://images.unsplash.com/photo-1429497419816-9ca5cfb4571a?q=80&w=1000&auto=format&fit=crop" 
+              src="/images/section-reseau.jpg" 
               alt="Background réseau" 
               fill 
               className="object-cover grayscale mix-blend-luminosity" 
               unoptimized
               loading="eager"
-              referrerPolicy="no-referrer"
             />
             {/* Gradients pour garder la lisibilité du texte */}
             <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/60 to-zinc-950/20"></div>
@@ -569,13 +567,12 @@ function Newsletter() {
         {/* Background Image */}
         <div className="absolute inset-0 z-0 pointer-events-none opacity-30 transition-opacity duration-1000 bg-zinc-950">
           <Image 
-            src="https://images.unsplash.com/photo-1511818966892-d7d671e672a2?q=80&w=2000&auto=format&fit=crop" 
+            src="/images/section-capture-email.jpg" 
             alt="Protocole background" 
             fill 
             className="object-cover grayscale mix-blend-luminosity" 
             unoptimized
             loading="eager"
-            referrerPolicy="no-referrer"
           />
           {/* Gradients pour garder la lisibilité maximale du texte */}
           <div className="absolute inset-0 bg-gradient-to-r from-zinc-950 via-zinc-950/40 to-transparent"></div>
