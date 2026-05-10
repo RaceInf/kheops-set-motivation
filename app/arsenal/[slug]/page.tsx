@@ -277,7 +277,7 @@ export default async function ToolPage({ params }: PageProps) {
               </div>
 
               <ArsenalCta 
-                checkoutUrl={(tool as any).checkoutUrl} 
+                productId={tool.id} 
                 cta={tool.cta} 
                 title={tool.title} 
               />
