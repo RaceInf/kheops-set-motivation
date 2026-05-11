@@ -5,13 +5,11 @@ import { createClient } from '@supabase/supabase-js';
 // et effectuer des opérations d'administration.
 // ATTENTION : Ne jamais importer ce fichier côté client (Frontend).
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co';
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || 'placeholder';
 
-if (!supabaseUrl || !supabaseServiceKey) {
-  console.warn('Supabase URL or Service Key is missing. Database operations will fail.');
-}
-
+// On utilise des placeholders si les variables sont manquantes pour ne pas bloquer le build Vercel.
+// Les opérations réelles échoueront proprement au runtime si les variables manquent toujours.
 export const supabase = createClient(supabaseUrl, supabaseServiceKey, {
   auth: {
     autoRefreshToken: false,
