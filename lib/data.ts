@@ -197,7 +197,7 @@ export const tools = [
     id: "le-protocole-disolation",
     title: "Le Protocole d'Isolation",
     category: "Tactique",
-    price: "3 000 FCFA",
+    price: "1 000 FCFA",
     desc: "La purge en 3 étapes pour Bâtisseurs épuisés. Arrêtez de financer la paresse des autres.",
     cta: "Obtenir l'outil",
     filePath: "le-protocole-disolation.pdf",
