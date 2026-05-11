@@ -9,6 +9,8 @@ export const metadata: Metadata = {
   robots: 'noindex, nofollow',
 };
 
+export const dynamic = 'force-dynamic';
+
 interface PageProps {
   searchParams: Promise<{ order: string }>;
 }
