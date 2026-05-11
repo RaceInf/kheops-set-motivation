@@ -54,20 +54,48 @@ export async function sendEmail({ to, subject, htmlContent }: SendEmailParams) {
  */
 export async function sendProductDeliveryEmail(customerEmail: string, productName: string, downloadUrl: string) {
   const htmlContent = `
-    <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; background-color: #000; color: #fff; padding: 40px; border: 1px solid #333;">
-      <h1 style="color: #eeb149; text-transform: uppercase; letter-spacing: 2px;">Ordre Validé</h1>
-      <p>Bâtisseur,</p>
-      <p>Ton paiement pour <strong>${productName}</strong> a été confirmé avec succès.</p>
-      <p>Tu peux accéder à ton matériel immédiatement en cliquant sur le bouton ci-dessous :</p>
-      <div style="text-align: center; margin: 40px 0;">
-        <a href="${downloadUrl}" style="background-color: #eeb149; color: #000; padding: 15px 30px; text-decoration: none; font-weight: bold; text-transform: uppercase; display: inline-block;">
-          Télécharger mon livre
-        </a>
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <style>
+        body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; line-height: 1.6; color: #ffffff; background-color: #000000; margin: 0; padding: 0; }
+        .container { max-width: 600px; margin: 0 auto; padding: 40px 20px; }
+        .header { text-align: center; margin-bottom: 40px; }
+        .logo { font-size: 24px; font-weight: 900; letter-spacing: 5px; color: #eeb149; text-transform: uppercase; margin-bottom: 10px; }
+        .card { background-color: #0a0a0a; border: 1px solid #1a1a1a; padding: 40px; border-radius: 4px; }
+        h1 { font-size: 28px; font-weight: 900; text-transform: uppercase; letter-spacing: -1px; margin-bottom: 24px; color: #ffffff; line-height: 1.1; }
+        p { font-size: 16px; color: #a1a1aa; margin-bottom: 24px; }
+        .highlight { color: #ffffff; font-weight: bold; }
+        .button-container { text-align: center; margin: 40px 0; }
+        .button { background-color: #eeb149; color: #000000 !important; padding: 18px 36px; text-decoration: none; font-weight: 900; font-size: 14px; text-transform: uppercase; letter-spacing: 2px; display: inline-block; border-radius: 2px; }
+        .footer { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #1a1a1a; }
+        .footer-text { font-size: 11px; color: #52525b; text-transform: uppercase; letter-spacing: 2px; }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <div class="header">
+          <div class="logo">KHEOPS SET</div>
+        </div>
+        <div class="card">
+          <h1>ORDRE VALIDÉ.</h1>
+          <p>Bâtisseur,</p>
+          <p>Ton accès au protocole <span class="highlight">${productName}</span> a été déverrouillé avec succès.</p>
+          <p>Tu peux maintenant télécharger ton matériel en cliquant sur le bouton ci-dessous :</p>
+          
+          <div class="button-container">
+            <a href="${downloadUrl}" class="button">TÉLÉCHARGER L'OUTIL</a>
+          </div>
+          
+          <p style="font-size: 13px; text-align: center;">Ce lien est sécurisé et restera actif pendant <span class="highlight">24 heures</span>.</p>
+        </div>
+        <div class="footer">
+          <div class="footer-text">BÂTIR SON EMPIRE. SANS CONCESSION.</div>
+        </div>
       </div>
-      <p style="font-size: 12px; color: #666;">Ce lien est sécurisé et restera actif pendant 24 heures.</p>
-      <hr style="border: 0; border-top: 1px solid #333; margin: 40px 0;">
-      <p style="font-size: 10px; color: #444; text-transform: uppercase; letter-spacing: 1px;">Kheops Set Motivation - Bâtir son Empire</p>
-    </div>
+    </body>
+    </html>
   `;
 
   return sendEmail({
@@ -82,13 +110,38 @@ export async function sendProductDeliveryEmail(customerEmail: string, productNam
  */
 export async function sendAdminNotification(customerEmail: string, productName: string, amount: number) {
   const htmlContent = `
-    <div style="font-family: sans-serif; color: #333;">
-      <h2>Nouvelle Vente ! 🚀</h2>
-      <p><strong>Produit :</strong> ${productName}</p>
-      <p><strong>Montant :</strong> ${amount} FCFA</p>
-      <p><strong>Client :</strong> ${customerEmail}</p>
-      <p>Le client a reçu son lien de téléchargement automatiquement.</p>
-    </div>
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <style>
+        body { font-family: sans-serif; line-height: 1.6; color: #333; background-color: #f4f4f4; padding: 20px; }
+        .card { max-width: 500px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .stat { margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #eee; }
+        .label { font-size: 12px; color: #888; text-transform: uppercase; font-weight: bold; }
+        .value { font-size: 18px; color: #000; font-weight: bold; }
+        .success { color: #10b981; font-weight: bold; }
+      </style>
+    </head>
+    <body>
+      <div class="card">
+        <h2 style="margin-top: 0;">NOUVELLE VENTE ! 🚀</h2>
+        <div class="stat">
+          <div class="label">Produit</div>
+          <div class="value">${productName}</div>
+        </div>
+        <div class="stat">
+          <div class="label">Montant</div>
+          <div class="value">${amount} FCFA</div>
+        </div>
+        <div class="stat">
+          <div class="label">Client</div>
+          <div class="value">${customerEmail}</div>
+        </div>
+        <p class="success">✓ Lien de téléchargement envoyé automatiquement.</p>
+      </div>
+    </body>
+    </html>
   `;
 
   return sendEmail({
