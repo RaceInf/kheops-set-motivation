@@ -20,8 +20,8 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL(
     process.env.NODE_ENV === 'development' 
-      ? 'http://localhost:3004' 
-      : 'https://ais-pre-a36fbywvihynxexq42vuem-20309527964.europe-west2.run.app'
+      ? 'http://localhost:3000' 
+      : 'https://kheops-set-motivation.vercel.app'
   ),
   title: {
     default: 'Kheops Set Motivation | L\'Ordre du Bâtisseur',
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'fr_FR',
-    url: 'https://ais-pre-a36fbywvihynxexq42vuem-20309527964.europe-west2.run.app',
+    url: 'https://kheops-set-motivation.vercel.app',
     siteName: 'Kheops Set Motivation',
     title: 'Kheops Set Motivation | L\'Ordre du Bâtisseur',
     description: 'Démanteler la mentalité de consommateur, devenir un Bâtisseur. Forge ton esprit et bâtis ton empire.',
