@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import PageClient from './PageClient';
 import JsonLd from '@/components/seo/JsonLd';
-import { constructMetadata } from '@/lib/seo';
+import { constructMetadata, getSiteUrl } from '@/lib/seo';
 
 export const metadata: Metadata = constructMetadata({
   title: 'Deviens Un Bâtisseur | Souveraineté & Discipline',
@@ -11,12 +11,14 @@ export const metadata: Metadata = constructMetadata({
 });
 
 export default function Page() {
+  const siteUrl = getSiteUrl();
+
   const organizationSchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
     "name": "Kheops Set Motivation",
-    "url": "https://ais-pre-a36fbywvihynxexq42vuem-20309527964.europe-west2.run.app",
-    "logo": "https://ais-pre-a36fbywvihynxexq42vuem-20309527964.europe-west2.run.app/logo.png",
+    "url": siteUrl,
+    "logo": `${siteUrl}/logo.png`,
     "sameAs": [
       "https://www.facebook.com/KheopsSetMotivation",
       "https://www.youtube.com/@kheopset.motivation",
@@ -28,10 +30,10 @@ export default function Page() {
     "@context": "https://schema.org",
     "@type": "WebSite",
     "name": "Kheops Set Motivation",
-    "url": "https://ais-pre-a36fbywvihynxexq42vuem-20309527964.europe-west2.run.app",
+    "url": siteUrl,
     "potentialAction": {
       "@type": "SearchAction",
-      "target": "https://ais-pre-a36fbywvihynxexq42vuem-20309527964.europe-west2.run.app/search?q={search_term_string}",
+      "target": `${siteUrl}/search?q={search_term_string}`,
       "query-input": "required name=search_term_string"
     }
   };

@@ -8,7 +8,7 @@ import ArsenalCta from '@/components/ArsenalCta';
 import TrackViewContent from '@/components/analytics/TrackViewContent';
 import Footer from '@/components/Footer';
 import JsonLd from '@/components/seo/JsonLd';
-import { constructMetadata } from '@/lib/seo';
+import { constructMetadata, getSiteUrl } from '@/lib/seo';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -44,12 +44,14 @@ export default async function ToolPage({ params }: PageProps) {
     notFound();
   }
 
+  const siteUrl = getSiteUrl();
+
   const productSchema = {
     "@context": "https://schema.org",
     "@type": "Product",
     "name": tool.title,
     "description": tool.desc,
-    "image": tool.image ? `https://ais-pre-a36fbywvihynxexq42vuem-20309527964.europe-west2.run.app${tool.image}` : undefined,
+    "image": tool.image ? `${siteUrl}${tool.image}` : undefined,
     "brand": {
       "@type": "Brand",
       "name": "Kheops Set Motivation"
@@ -70,19 +72,19 @@ export default async function ToolPage({ params }: PageProps) {
         "@type": "ListItem",
         "position": 1,
         "name": "Accueil",
-        "item": "https://ais-pre-a36fbywvihynxexq42vuem-20309527964.europe-west2.run.app"
+        "item": siteUrl
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": "Arsenal",
-        "item": "https://ais-pre-a36fbywvihynxexq42vuem-20309527964.europe-west2.run.app/arsenal"
+        "item": `${siteUrl}/arsenal`
       },
       {
         "@type": "ListItem",
         "position": 3,
         "name": tool.title,
-        "item": `https://ais-pre-a36fbywvihynxexq42vuem-20309527964.europe-west2.run.app/arsenal/${tool.id}`
+        "item": `${siteUrl}/arsenal/${tool.id}`
       }
     ]
   };

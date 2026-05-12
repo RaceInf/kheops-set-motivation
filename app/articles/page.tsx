@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import ArticlesClient from './ArticlesClient';
 import JsonLd from '@/components/seo/JsonLd';
-import { constructMetadata } from '@/lib/seo';
+import { constructMetadata, getSiteUrl } from '@/lib/seo';
 
 export const metadata: Metadata = constructMetadata({
   title: 'Les Archives Publiques | Transmissions & Analyses',
@@ -12,6 +12,8 @@ export const metadata: Metadata = constructMetadata({
 });
 
 export default function Page() {
+  const siteUrl = getSiteUrl();
+
   const blogSchema = {
     "@context": "https://schema.org",
     "@type": "Blog",
@@ -31,13 +33,13 @@ export default function Page() {
         "@type": "ListItem",
         "position": 1,
         "name": "Accueil",
-        "item": "https://ais-pre-a36fbywvihynxexq42vuem-20309527964.europe-west2.run.app"
+        "item": siteUrl
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": "Archives",
-        "item": "https://ais-pre-a36fbywvihynxexq42vuem-20309527964.europe-west2.run.app/articles"
+        "item": `${siteUrl}/articles`
       }
     ]
   };
