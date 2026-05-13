@@ -35,7 +35,7 @@ export default function WhatsAppWidget() {
               <div className="flex items-center gap-4">
                 <div className="relative">
                   <div className="w-12 h-12 rounded-full border-2 border-gold flex items-center justify-center bg-black overflow-hidden">
-                    <span className="text-gold font-display text-xl font-black">KS</span>
+                     <span className="text-gold font-display text-xl font-black">KS</span>
                   </div>
                   <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-black"></div>
                 </div>
@@ -44,7 +44,7 @@ export default function WhatsAppWidget() {
                   <p className="text-green-500 text-[10px] font-bold uppercase tracking-widest mt-1">En ligne • Réponse rapide</p>
                 </div>
               </div>
-              <button
+              <button 
                 onClick={() => setIsOpen(false)}
                 className="text-white/40 hover:text-white transition-colors"
               >
@@ -62,20 +62,21 @@ export default function WhatsAppWidget() {
               </div>
 
               <div className="space-y-3">
-                <p className="text-[10px] text-white/40 uppercase tracking-[0.2em] font-bold mb-4">Assistance Boutique</p>
+                <p className="text-[10px] text-white/40 uppercase tracking-[0.2em] font-bold mb-4">Besoin d'assistance ?</p>
                 {[
-                  { label: "Accès à mon produit", msg: "Bonjour l'équipe KSM, j'ai fait un achat mais je n'ai pas encore reçu mon mail de téléchargement." },
-                  { label: "Problème avec un paiement", msg: "Salut, j'ai tenté de payer mais ça n'a pas fonctionné. Comment faire ?" },
-                  { label: "Lequel choisir pour moi ?", msg: "Bonjour, j'hésite entre plusieurs outils de l'Arsenal. Lequel me conseillez-vous pour débuter ?" }
-                ].map((item, i) => (
+                  { label: "Je n'ai pas reçu mon PDF", msg: "Salut l'équipe KSM, je viens d'acheter un produit mais je n'ai pas encore reçu mon mail de téléchargement." },
+                  { label: "Souci avec mon paiement", msg: "Bonjour, j'ai essayé de passer commande mais mon paiement semble avoir échoué. Pouvez-vous vérifier ?" },
+                  { label: "Lien de téléchargement perdu", msg: "Bonjour, j'ai perdu mon accès à mon outil de l'Arsenal, pourriez-vous me renvoyer mon lien ?" },
+                  { label: "Besoin d'un conseil de lecture", msg: "Bonjour Kheops Set, je suis un peu indécis sur le choix de mon premier outil. Quel manuel me conseillez-vous pour commencer mon ascension ?" }
+                ].map((q, i) => (
                   <a
                     key={i}
-                    href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(item.msg)}`}
+                    href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(q.msg)}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-between w-full p-3 bg-white/5 border border-white/10 text-white/70 text-xs hover:border-gold/50 hover:text-gold transition-all group"
                   >
-                    {item.label} <ChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    {q.label} <ChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </a>
                 ))}
               </div>
@@ -89,7 +90,7 @@ export default function WhatsAppWidget() {
                 rel="noopener noreferrer"
                 className="flex items-center justify-center gap-3 w-full py-4 bg-gold text-black font-black text-xs uppercase tracking-[0.2em] hover:bg-white transition-all duration-500 shadow-[0_10px_20px_rgba(238,177,73,0.2)]"
               >
-                <MessageCircle className="w-4 h-4" /> Poser une question
+                <MessageCircle className="w-4 h-4" /> Démarrer la discussion
               </a>
             </div>
           </motion.div>
@@ -108,7 +109,7 @@ export default function WhatsAppWidget() {
       >
         {/* Glow effect */}
         <div className="absolute inset-0 bg-gold/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-
+        
         {isOpen ? (
           <X className="w-8 h-8 text-gold" />
         ) : (
