@@ -62,21 +62,21 @@ export default function WhatsAppWidget() {
               </div>
 
               <div className="space-y-3">
-                <p className="text-[10px] text-white/40 uppercase tracking-[0.2em] font-bold mb-4">Questions fréquentes</p>
+                <p className="text-[10px] text-white/40 uppercase tracking-[0.2em] font-bold mb-4">Assistance Boutique</p>
                 {[
-                  "Problème avec un paiement",
-                  "Accès à mon produit",
-                  "Conseil sur l'Arsenal",
-                  "Rejoindre le réseau"
-                ].map((q, i) => (
+                  { label: "Je n'ai pas reçu mon mail", msg: "Bonjour l'équipe KSM, j'ai fait un achat mais je n'ai pas encore reçu mon mail de téléchargement." },
+                  { label: "Mon paiement a échoué", msg: "Salut, j'ai tenté de payer via Orange/MTN mais ça n'a pas fonctionné. Comment faire ?" },
+                  { label: "Lequel choisir pour moi ?", msg: "Bonjour, j'hésite entre plusieurs outils de l'Arsenal. Lequel me conseillez-vous pour débuter ?" },
+                  { label: "Parler à l'équipe", msg: "Bonjour, je souhaite échanger avec un membre de l'équipe Kheops Set." }
+                ].map((item, i) => (
                   <a
                     key={i}
-                    href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent("Bonjour, j'ai une question concernant : " + q)}`}
+                    href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(item.msg)}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-between w-full p-3 bg-white/5 border border-white/10 text-white/70 text-xs hover:border-gold/50 hover:text-gold transition-all group"
                   >
-                    {q} <ChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    {item.label} <ChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </a>
                 ))}
               </div>
