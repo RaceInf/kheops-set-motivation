@@ -4,6 +4,7 @@ import { ArrowLeft, Clock, FileText, Lock, ArrowUpRight } from 'lucide-react';
 import Link from 'next/link';
 import { blogPosts, tools } from '@/lib/data';
 import ArticleActions from '@/components/ArticleActions';
+import ArticleCTA from '@/components/ArticleCTA';
 import Footer from '@/components/Footer';
 import JsonLd from '@/components/seo/JsonLd';
 import { constructMetadata, getSiteUrl } from '@/lib/seo';
@@ -150,6 +151,11 @@ export default async function BlogPostPage({ params }: PageProps) {
                 />
               </div>
 
+              {/* ARTICLE CTA (NEW) */}
+              {(post as any).relatedProductId && (
+                <ArticleCTA productId={(post as any).relatedProductId} />
+              )}
+
               <div className="mt-24 pt-16 border-t border-white/10">
                 <div className="flex flex-col items-center text-center">
                   <div className="w-24 h-px bg-gold/50 mb-12"></div>
@@ -203,11 +209,13 @@ export default async function BlogPostPage({ params }: PageProps) {
 
             <div className="pt-12">
               <Link
-                href="/arsenal/le-capital-du-batisseur"
+                href={`/arsenal/${(post as any).relatedProductId || 'le-capital-du-batisseur'}`}
                 className="block p-6 border border-gold/30 bg-gold/5 hover:bg-gold hover:text-black transition-all duration-500 group"
               >
                 <div className="text-[10px] font-black uppercase tracking-[0.3em] mb-4">Équipement Recommandé</div>
-                <div className="text-xl font-display uppercase tracking-tighter mb-6 group-hover:translate-x-2 transition-transform">Le Capital du Bâtisseur</div>
+                <div className="text-xl font-display uppercase tracking-tighter mb-6 group-hover:translate-x-2 transition-transform">
+                  {tools.find(t => t.id === (post as any).relatedProductId)?.title || "Le Capital du Bâtisseur"}
+                </div>
                 <ArrowUpRight className="w-6 h-6" />
               </Link>
             </div>

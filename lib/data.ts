@@ -18,6 +18,7 @@ Vous travaillez pour dix. Vous êtes épuisé pour dix. Mais à la fin du mois, 
 Le piège est parfait : on utilise votre amour et votre sens de l'honneur pour vider vos poches. En cédant à cette pression, vous vous assurez d'une chose : vous mourrez pauvres, tous ensemble.
 
 Le Bâtisseur regarde ce massacre financier et prend une décision qui demande plus de courage que d'affronter une tempête : il dit NON.`
+    relatedProductId: "le-capital-du-batisseur"
   },
   {
     id: "decorreler-temps-argent",
@@ -36,6 +37,7 @@ Tant que vos revenus dépendent de votre présence physique ou intellectuelle en
 L'amateur cherche un salaire plus élevé — vendre son heure plus cher. Le Bâtisseur cherche un moyen de ne plus vendre ses heures du tout.
 
 Le Bâtisseur a compris la Loi de la Décorrélation : pour devenir libre, votre revenu doit être déconnecté du temps que vous passez à le générer.`
+    relatedProductId: "le-capital-du-batisseur"
   },
   {
     id: "brutalite-du-marche",
@@ -54,6 +56,7 @@ Le marché ne paie ni l'effort, ni même l'utilité absolue d'une tâche. Prenon
 Appliquez cette règle à votre propre vie. Si votre métier consiste à faire une tâche qu'un jeune de dix-huit ans ou qu'un algorithme informatique peut apprendre à faire en deux semaines, vous êtes de l'eau. Si, au contraire, vous possédez une compétence complexe — coder un logiciel spécifique, structurer fiscalement une entreprise, négocier des contrats internationaux —, vous êtes un diamant. Vous pouvez travailler depuis un canapé climatisé et dicter votre propre salaire.
 
 Ne cherchez pas à être utile. C'est le minimum syndical. Cherchez à devenir une anomalie statistique. Devenez irremplaçable.`
+    relatedProductId: "le-capital-du-batisseur"
   },
   {
     id: "mythe-du-petit-salaire",
@@ -74,6 +77,7 @@ La Loi de Parkinson, appliquée aux finances personnelles, dicte ceci : les dép
 C'est un phénomène physique. Comme un gaz qui occupe tout l'espace qu'on lui donne, votre style de vie va automatiquement gonfler pour absorber chaque franc supplémentaire que vous gagnez. Vous obtenez une augmentation ? Votre cerveau d'amateur se dit : « Super, je peux déménager dans un appartement un peu plus grand. » Au bout de trois mois, votre nouveau salaire confortable est devenu votre nouveau seuil de pauvreté. Vous avez simplement upgradé votre prison.
 
 Le manque d'argent n'est jamais, fondamentalement, un problème de revenus. C'est presque toujours un problème de gestion. Croire que plus d'eau va remplir un seau percé est une folie. Ça fera juste un plus gros gâchis sur le sol.`
+    relatedProductId: "le-capital-du-batisseur"
   },
   {
     id: "suicide-du-paraitre",
@@ -90,6 +94,7 @@ C'est un piège redoutable. Regardez nos rues. Observez vos fils d'actualité. L
 Combien de jeunes adultes, à peine sortis des études ou avec leur premier emploi, consacrent leur premier salaire — et souvent l'argent qu'ils n'ont pas encore gagné — à s'acheter le dernier iPhone de l'année ? Combien s'habillent de la tête aux pieds avec des marques de luxe européennes — souvent des contrefaçons, ce qui rend l'obsession encore plus pathétique — pour marcher sur des routes en terre battue et rentrer dans une chambre louée qu'ils peinent à payer ? Combien vident l'intégralité de leur compte en banque le samedi soir dans le carré VIP d'une boîte de nuit, achetant des bouteilles surfacturées qu'ils n'aiment même pas boire, uniquement pour s'attirer le regard admiratif d'inconnus qu'ils mépriseront le lendemain matin ?
 
 Ces personnes se persuadent qu'elles « profitent de la vie ». Qu'elles « s'aiment ». Qu'elles ont « le droit au plaisir ». C'est un mensonge d'une cruauté absolue. Elles ne s'aiment pas. Elles sont, au contraire, terrifiées par elles-mêmes. Elles sont tellement vides à l'intérieur qu'elles ont besoin que le regard des autres vienne remplir ce vide avec du respect fabriqué.`
+    relatedProductId: "le-capital-du-batisseur"
   },
   {
     id: "action-imparfaite",
@@ -110,6 +115,7 @@ Il ne méprise pas le plan. Mais il sait qu'aucune carte ne peut remplacer l'exp
 Cette idée, simple en apparence, a suscité beaucoup de réactions. Quand nous avons partagé cette image d'un Bâtisseur qui avait déjà construit sa cabane pendant que l'architecte était encore en train de perfectionner ses plans, certains ont logiquement rétorqué : "Mais sans un plan solide, on risque de construire n'importe quoi !"
 
 C'est là que réside toute la philosophie. Le Bâtisseur ne part pas "à l'aveugle". Il a une direction, une vision de sa destination. Mais il accepte que le chemin exact ne se révèlera qu'en marchant. Il est prêt à ce que sa première cabane soit tordue, moche, pleine de défauts. Car cette cabane imparfaite mais réelle lui apprendra mille fois plus sur la construction qu'un palais parfait qui n'existe que sur papier.`
+    relatedProductId: "le-code-du-batisseur"
   },
   {
     id: "discipline-comme-systeme",
@@ -130,6 +136,7 @@ Le Bâtisseur a une autre réponse. Il sait que pour un chantier, il y a une cho
 Cette machine, c'est la Discipline.
 
 La discipline n'est pas une émotion. C'est un système. C'est le choix délibéré de soumettre ses actions non pas à la dictature de ses humeurs, mais à l'autorité de ses engagements. C'est l'art de construire des habitudes si solides qu'elles deviennent la nouvelle norme.`
+    relatedProductId: "le-code-du-batisseur"
   },
   {
     id: "isolement-strategique",
@@ -148,6 +155,7 @@ Dans notre société, la dynamique est identique. Lorsque vous étiez au fond du
 Mais le jour où vous décidez de changer de trajectoire, le jour où votre compte en banque commence à grossir en silence, où vous refusez les distractions pour lire, vous former ou construire votre actif... Vous brisez leur illusion. Votre simple progression devient une insulte silencieuse à leur paresse. En réussissant, vous leur prouvez qu'il était possible de s'en sortir avec les mêmes cartes de départ. Vous leur enlevez leur excuse préférée. Et l'ego humain déteste qu'on lui vole ses excuses.
 
 Les attaques les plus vicieuses viendront de vos amis d'enfance, de vos collègues de bureau, et pire encore, de votre propre famille.`
+    relatedProductId: "le-protocole-disolation"
   }
 ];
 
