@@ -56,28 +56,24 @@ export default function SalesFlux() {
   };
 
   useEffect(() => {
-    // Premier affichage après 10 secondes
-    const initialTimer = setTimeout(() => {
-      generateNotification();
-    }, 10000);
+    let timeoutId: NodeJS.Timeout;
 
-    // Boucle de notification
-    const interval = setInterval(() => {
-      // On efface d'abord
-      setCurrentNotification(null);
-      
-      // On en génère une nouvelle après un délai aléatoire (entre 20 et 45 secondes)
-      const nextDelay = Math.floor(Math.random() * (45000 - 20000) + 20000);
-      
-      setTimeout(() => {
+    const scheduleNext = (delay: number) => {
+      timeoutId = setTimeout(() => {
         generateNotification();
-      }, 1000); 
+        
+        // Après avoir affiché une notif, on planifie la suivante avec un délai aléatoire
+        // Entre 15 et 45 secondes
+        const nextDelay = Math.floor(Math.random() * (45000 - 15000) + 15000);
+        scheduleNext(nextDelay);
+      }, delay);
+    };
 
-    }, 35000); // Cycle total de ~35 secondes
+    // Premier affichage après 10 secondes
+    scheduleNext(10000);
 
     return () => {
-      clearTimeout(initialTimer);
-      clearInterval(interval);
+      if (timeoutId) clearTimeout(timeoutId);
     };
   }, []);
 
