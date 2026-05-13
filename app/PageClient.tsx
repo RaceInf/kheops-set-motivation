@@ -208,7 +208,7 @@ function Manifesto() {
   useEffect(() => {
     const timer = setInterval(() => {
       setPage((prev) => (prev + 1) % totalPages);
-    }, 8000);
+    }, 15000); // Augmenté de 8s à 15s pour un meilleur confort de lecture
     return () => clearInterval(timer);
   }, [totalPages]);
 
