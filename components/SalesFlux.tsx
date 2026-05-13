@@ -20,16 +20,16 @@ const PRODUITS = [
 ];
 
 const PHRASES = [
-  "Un Bâtisseur de {ville} vient de s'équiper de {produit}.",
-  "Accès débloqué : {produit} ({ville}).",
-  "Nouvelle acquisition : {produit} ({ville}).",
-  "Équipement validé pour un Bâtisseur de {ville}.",
-  "Le dossier {produit} a été transmis à {ville}.",
-  "Transmission terminée : {produit} vers {ville}.",
-  "Système mis à jour : {produit} acquis à {ville}.",
-  "Un nouveau membre de {ville} a débloqué {produit}.",
-  "Arsenal complété : {produit} (Bâtisseur de {ville}).",
-  "Nouveau téléchargement de {produit} à {ville}."
+  "Félicitations à ce Bâtisseur de {ville} pour l'achat de {produit}.",
+  "Un Bâtisseur de {ville} vient d'acquérir son exemplaire de {produit}.",
+  "Vient de rejoindre le chantier avec : {produit} ({ville}).",
+  "Investissement validé : {produit} pour un Bâtisseur de {ville}.",
+  "Direct de {ville} : Un Bâtisseur a choisi {produit} pour bâtir son empire.",
+  "Nouveau membre actif à {ville} avec : {produit}.",
+  "Un exemplaire de {produit} vient d'être expédié à {ville}.",
+  "Succès : {produit} a été choisi par un Bâtisseur de {ville}.",
+  "La communauté grandit à {ville} avec l'arrivée de {produit}.",
+  "Dernière commande : {produit} (Bâtisseur de {ville})."
 ];
 
 export default function SalesFlux() {
@@ -105,7 +105,7 @@ export default function SalesFlux() {
               <div className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
                 <span className="text-[8px] md:text-[9px] font-black uppercase tracking-[0.2em] text-white/40">
-                  Flux Arsenal Direct
+                  Activité du Chantier
                 </span>
               </div>
               <p className="text-[11px] md:text-xs text-white/90 leading-tight font-medium">

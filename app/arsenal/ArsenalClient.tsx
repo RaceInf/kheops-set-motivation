@@ -89,7 +89,6 @@ export default function ArsenalClient() {
                     alt={product.title}
                     fill
                     priority={idx < 2}
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     className="object-cover object-center scale-100 group-hover:scale-105 transition-transform duration-700"
                   />
                 </div>
@@ -97,23 +96,16 @@ export default function ArsenalClient() {
 
               <div className="p-8 flex flex-col flex-grow">
                 <div className="relative z-10 flex justify-between items-start mb-6">
-                  <div className="flex flex-col gap-2">
-                    <h3 className="text-xs font-bold tracking-widest uppercase">
-                      Boutique Digitale
-                    </h3>
-                    {(product as any).isBestSeller && (
-                      <div className="flex items-center gap-1.5 bg-gold px-2 py-0.5 w-fit animate-pulse">
-                        <span className="text-[9px] font-black uppercase tracking-tighter text-black">RECOMMANDÉ</span>
-                      </div>
-                    )}
-                  </div>
+                  <h3 className="text-xs font-bold tracking-widest uppercase">
+                    Boutique Digitale
+                  </h3>
                   <span className="text-gold text-[10px] font-mono">
                     [DISPONIBLE]
                   </span>
                 </div>
 
                 <div className="relative z-10 mb-8 flex-grow">
-                  <Link 
+                  <Link
                     href={`/arsenal/${product.id}`}
                     onClick={() => gtag.event({ action: 'click_arsenal_item', category: 'ecommerce', label: product.title })}
                   >
@@ -160,7 +152,7 @@ export default function ArsenalClient() {
               <h4 className="text-white font-bold uppercase tracking-widest text-xs">Comment vais-je recevoir l&apos;outil ?</h4>
               <p className="text-white/60 text-sm leading-relaxed">Tous nos protocoles temporels et fichiers opérationnels sont numériques. L&apos;accès vous est transmis par e-mail immédiatement après la confirmation du paiement.</p>
             </div>
-            
+
             <div className="space-y-3">
               <h4 className="text-white font-bold uppercase tracking-widest text-xs">Ces protocoles sont-ils adaptés à tout le monde ?</h4>
               <p className="text-white/60 text-sm leading-relaxed">Absolument pas. Ils sont destinés uniquement aux Bâtisseurs. Si vous cherchez des solutions de facilité ou si vous êtes facilement offusqué par la réalité brutale, passez votre chemin.</p>

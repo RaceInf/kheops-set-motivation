@@ -70,11 +70,11 @@ export default function SuccessClient({
               </div>
             </div>
             <h1 className="font-display text-4xl md:text-5xl uppercase tracking-tighter mb-4">
-              ORDRE VALIDÉ
+              ACQUISITION RÉUSSIE
             </h1>
             <p className="text-white/60 text-sm mb-8 leading-relaxed">
-              Le protocole <span className="text-white font-bold">{productName}</span> a été débloqué. 
-              Vous pouvez maintenant télécharger votre matériel ci-dessous.
+              Le dossier <span className="text-white font-bold">{productName}</span> est maintenant disponible. 
+              Vous pouvez télécharger votre plan de construction ci-dessous.
             </p>
           </>
         ) : (
@@ -114,7 +114,7 @@ export default function SuccessClient({
             href="/"
             className="text-[10px] text-white/40 uppercase tracking-widest hover:text-white transition-colors mt-2"
           >
-            RETOUR AU Q.G.
+            RETOUR AU CHANTIER
           </Link>
         </div>
 

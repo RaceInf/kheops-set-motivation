@@ -22,8 +22,6 @@ export default function PageClient() {
         <div className="h-32 md:h-64" /> {/* Spacer */}
         <Manifesto />
         <div className="h-32 md:h-64" /> {/* Spacer */}
-        <NetworkStats />
-        <div className="h-32 md:h-64" /> {/* Spacer */}
         <Blog />
         <div className="h-32 md:h-64" /> {/* Spacer */}
         <Boutique />
@@ -34,36 +32,6 @@ export default function PageClient() {
       </main>
       <Footer />
     </div>
-  );
-}
-
-function NetworkStats() {
-  const stats = [
-    { label: "Bâtisseurs Engagés", value: "130K+", icon: Users },
-    { label: "Villes Connectées", value: "48+", icon: Target },
-    { label: "Modules de Construction", value: "03", icon: Zap },
-    { label: "Status du Chantier", value: "ACTIF", icon: Shield },
-  ];
-
-  return (
-    <section className="w-full py-12">
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-white/10 border border-white/10">
-        {stats.map((stat, idx) => (
-          <motion.div
-            key={idx}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: idx * 0.1 }}
-            className="bg-black p-8 md:p-12 flex flex-col items-center text-center group hover:bg-zinc-900 transition-colors"
-          >
-            <stat.icon className="w-6 h-6 text-gold/40 mb-6 group-hover:text-gold transition-colors" />
-            <div className="font-display text-4xl md:text-6xl uppercase tracking-tighter mb-2">{stat.value}</div>
-            <div className="text-[8px] md:text-[10px] font-bold uppercase tracking-[0.3em] text-white/30">{stat.label}</div>
-          </motion.div>
-        ))}
-      </div>
-    </section>
   );
 }
 
@@ -127,7 +95,8 @@ function Hero() {
           fill
           className="object-cover grayscale mix-blend-luminosity"
           priority
-          sizes="100vw"
+          loading="eager"
+          unoptimized
         />
         {/* Gradients pour garder la lisibilité du texte */}
         <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/40 via-zinc-950/60 to-zinc-950"></div>
@@ -184,7 +153,7 @@ function Hero() {
               onClick={() => gtag.event({ action: 'click_hero_cta', category: 'engagement', label: 'Rejoindre le Q.G.' })}
               className="inline-flex py-5 px-10 bg-gold text-black font-black text-xs uppercase tracking-[0.3em] hover:bg-white transition-all duration-500 items-center gap-4 group"
             >
-              REJOINDRE LE BUREAU <ArrowDownRight className="w-5 h-5 group-hover:translate-x-1 group-hover:translate-y-1 transition-transform" />
+              REJOINDRE LE Q.G. <ArrowDownRight className="w-5 h-5 group-hover:translate-x-1 group-hover:translate-y-1 transition-transform" />
             </Link>
           </motion.div>
         </div>
@@ -349,10 +318,10 @@ function Blog() {
             transition={{ duration: 1 }}
           >
             <div className="text-gold text-[10px] font-bold tracking-[0.4em] uppercase mb-8 flex items-center gap-3">
-              <span className="w-8 h-[1px] bg-gold"></span> Bibliothèque de Construction
+              <span className="w-8 h-[1px] bg-gold"></span> Zone de Transmission
             </div>
             <h2 className="font-display text-7xl md:text-[8vw] lg:text-[6vw] tracking-tighter leading-[0.8] uppercase mb-8">
-              La Forge des <br /><span className="text-white/20">Plans</span>
+              Les Archives <br /><span className="text-white/20">Publiques</span>
             </h2>
             <p className="font-sans text-sm md:text-lg text-white/40 leading-relaxed mb-12 max-w-sm">
               Archives publiques. Études de cas, analyses et démonstrations de l&apos;ingénierie financière du Bâtisseur.
@@ -417,7 +386,7 @@ function Boutique() {
     <section id="arsenal" ref={ref} className="w-full py-12">
       <div className="flex flex-col mb-24">
         <div className="text-gold text-[10px] font-bold tracking-[0.4em] uppercase mb-8 flex items-center gap-3">
-          <span className="w-8 h-[1px] bg-gold"></span> Outils de Construction
+          <span className="w-8 h-[1px] bg-gold"></span> Ressources de l&apos;Élite
         </div>
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-8">
           <h2 className="font-display text-7xl md:text-9xl tracking-tighter leading-[0.8] uppercase">
@@ -510,7 +479,8 @@ function Contact() {
               alt="Background réseau"
               fill
               className="object-cover grayscale mix-blend-luminosity"
-              sizes="(max-width: 1024px) 100vw, 33vw"
+              unoptimized
+              loading="eager"
             />
             {/* Gradients pour garder la lisibilité du texte */}
             <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/60 to-zinc-950/20"></div>
@@ -601,7 +571,8 @@ function Newsletter() {
             alt="Protocole background"
             fill
             className="object-cover grayscale mix-blend-luminosity"
-            sizes="100vw"
+            unoptimized
+            loading="eager"
           />
           {/* Gradients pour garder la lisibilité maximale du texte */}
           <div className="absolute inset-0 bg-gradient-to-r from-zinc-950 via-zinc-950/40 to-transparent"></div>

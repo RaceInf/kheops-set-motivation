@@ -271,7 +271,6 @@ export const tools = [
     content: "Reprendre le contrôle de son argent, de son entourage et de son avenir. Ce livre est l'arsenal lourd de cette philosophie. Il a été conçu pour être un outil chirurgical, froid et efficace, débarrassé de toute la « bienveillance toxique » qui vous maintient dans le confort de l'échec.",
     image: "/images/le-capital-du-batisseur.webp",
     mockupImage: "/images/mockup-le-capital.webp",
-    isBestSeller: true,
     recognition: [
       "Vous gagnez de l'argent mais à la fin du mois, les comptes sont toujours vides.",
       "Vous subissez la 'Black Tax' (Taxe du Sang) de votre entourage étendu.",
