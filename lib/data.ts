@@ -267,7 +267,8 @@ export const tools = [
     ],
     testimonials: [
       { name: "M. Ndiaye", role: "Investisseur", text: "J'ai passé des années à acheter des passifs pour impressionner des inconnus. Ce livre m'a forcé à regarder mes finances en face et à commencer à bâtir un vrai capital." },
-      { name: "A. Koné", role: "Artisan", text: "La notion de décorrélation temps/argent m'a sauvé. Je ne gère plus mon activité de la même façon, je construis un système, plus seulement un emploi." }
+      { name: "A. Koné", role: "Artisan", text: "La notion de décorrélation temps/argent m'a sauvé. Je ne gère plus mon activité de la même façon, je construis un système, plus seulement un emploi." },
+      { name: "ABDOUL", role: "Fonctionnaire", text: "J'ai acheté le capital du Bâtisseur. C'est réellement un manuel impitoyable, très percutant" }
     ],
     faq: [
       { q: "Est-ce un livre technique sur l'investissement boursier ?", a: "Non. C'est l'étape avant l'investissement boursier. C'est la structure mentale et systémique pour retenir et multiplier l'argent gagné." },
