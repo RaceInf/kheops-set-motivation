@@ -164,7 +164,7 @@ export default async function BlogPostPage({ params }: PageProps) {
 
                   <div className="p-12 border border-white/5 bg-white/[0.02] w-full flex flex-col md:flex-row justify-between items-center gap-8">
                     <div className="text-left">
-                      <div className="text-[10px] font-bold text-white/20 uppercase tracking-widest mb-2">Signal d&apos;Identification</div>
+                      <div className="text-[10px] font-bold text-white/20 uppercase tracking-widest mb-2">Signature du Bâtisseur</div>
                       <div className="font-mono text-xs text-gold">K_SET_ARCHIVE_VERIFIEE</div>
                     </div>
                     <div className="text-center md:text-right">

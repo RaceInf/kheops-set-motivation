@@ -31,7 +31,7 @@ export default function ArticleCTA({ productId }: ArticleCTAProps) {
             </div>
           )}
           <div className="absolute top-2 left-2 bg-gold text-black text-[8px] font-black px-2 py-1 uppercase tracking-tighter">
-            Outil d&apos;Élite
+            Outil de Maîtrise
           </div>
         </div>
 
@@ -56,7 +56,7 @@ export default function ArticleCTA({ productId }: ArticleCTAProps) {
             </Link>
             <div className="flex items-center gap-2 text-white/40">
               <ShieldCheck className="w-4 h-4" />
-              <span className="text-[10px] uppercase font-bold tracking-widest">{tool.price} • Achat Sécurisé</span>
+              <span className="text-[10px] uppercase font-bold tracking-widest">{tool.price} • Plan de Construction</span>
             </div>
           </div>
         </div>

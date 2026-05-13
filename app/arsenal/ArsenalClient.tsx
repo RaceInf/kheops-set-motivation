@@ -89,6 +89,7 @@ export default function ArsenalClient() {
                     alt={product.title}
                     fill
                     priority={idx < 2}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     className="object-cover object-center scale-100 group-hover:scale-105 transition-transform duration-700"
                   />
                 </div>

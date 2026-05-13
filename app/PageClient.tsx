@@ -39,10 +39,10 @@ export default function PageClient() {
 
 function NetworkStats() {
   const stats = [
-    { label: "Bâtisseurs Engagés", value: "500K+", icon: Users },
+    { label: "Bâtisseurs Engagés", value: "130K+", icon: Users },
     { label: "Villes Connectées", value: "48+", icon: Target },
-    { label: "Unités de Transmission", value: "03", icon: Zap },
-    { label: "Status du Réseau", value: "OPÉRATIONNEL", icon: Shield },
+    { label: "Modules de Construction", value: "03", icon: Zap },
+    { label: "Status du Chantier", value: "ACTIF", icon: Shield },
   ];
 
   return (
@@ -127,8 +127,7 @@ function Hero() {
           fill
           className="object-cover grayscale mix-blend-luminosity"
           priority
-          loading="eager"
-          unoptimized
+          sizes="100vw"
         />
         {/* Gradients pour garder la lisibilité du texte */}
         <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/40 via-zinc-950/60 to-zinc-950"></div>
@@ -185,7 +184,7 @@ function Hero() {
               onClick={() => gtag.event({ action: 'click_hero_cta', category: 'engagement', label: 'Rejoindre le Q.G.' })}
               className="inline-flex py-5 px-10 bg-gold text-black font-black text-xs uppercase tracking-[0.3em] hover:bg-white transition-all duration-500 items-center gap-4 group"
             >
-              REJOINDRE LE Q.G. <ArrowDownRight className="w-5 h-5 group-hover:translate-x-1 group-hover:translate-y-1 transition-transform" />
+              REJOINDRE LE BUREAU <ArrowDownRight className="w-5 h-5 group-hover:translate-x-1 group-hover:translate-y-1 transition-transform" />
             </Link>
           </motion.div>
         </div>
@@ -350,10 +349,10 @@ function Blog() {
             transition={{ duration: 1 }}
           >
             <div className="text-gold text-[10px] font-bold tracking-[0.4em] uppercase mb-8 flex items-center gap-3">
-              <span className="w-8 h-[1px] bg-gold"></span> Zone de Transmission
+              <span className="w-8 h-[1px] bg-gold"></span> Bibliothèque de Construction
             </div>
             <h2 className="font-display text-7xl md:text-[8vw] lg:text-[6vw] tracking-tighter leading-[0.8] uppercase mb-8">
-              Les Archives <br /><span className="text-white/20">Publiques</span>
+              La Forge des <br /><span className="text-white/20">Plans</span>
             </h2>
             <p className="font-sans text-sm md:text-lg text-white/40 leading-relaxed mb-12 max-w-sm">
               Archives publiques. Études de cas, analyses et démonstrations de l&apos;ingénierie financière du Bâtisseur.
@@ -418,7 +417,7 @@ function Boutique() {
     <section id="arsenal" ref={ref} className="w-full py-12">
       <div className="flex flex-col mb-24">
         <div className="text-gold text-[10px] font-bold tracking-[0.4em] uppercase mb-8 flex items-center gap-3">
-          <span className="w-8 h-[1px] bg-gold"></span> Ressources de l&apos;Élite
+          <span className="w-8 h-[1px] bg-gold"></span> Outils de Construction
         </div>
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-8">
           <h2 className="font-display text-7xl md:text-9xl tracking-tighter leading-[0.8] uppercase">
@@ -511,8 +510,7 @@ function Contact() {
               alt="Background réseau"
               fill
               className="object-cover grayscale mix-blend-luminosity"
-              unoptimized
-              loading="eager"
+              sizes="(max-width: 1024px) 100vw, 33vw"
             />
             {/* Gradients pour garder la lisibilité du texte */}
             <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/60 to-zinc-950/20"></div>
@@ -603,8 +601,7 @@ function Newsletter() {
             alt="Protocole background"
             fill
             className="object-cover grayscale mix-blend-luminosity"
-            unoptimized
-            loading="eager"
+            sizes="100vw"
           />
           {/* Gradients pour garder la lisibilité maximale du texte */}
           <div className="absolute inset-0 bg-gradient-to-r from-zinc-950 via-zinc-950/40 to-transparent"></div>

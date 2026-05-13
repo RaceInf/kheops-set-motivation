@@ -134,7 +134,7 @@ export default async function ToolPage({ params }: PageProps) {
                    alt={tool.title}
                    fill
                    priority
-                   loading="eager"
+                   sizes="(max-width: 768px) 100vw, 800px"
                    className="object-cover object-center"
                  />
               </div>
@@ -171,7 +171,7 @@ export default async function ToolPage({ params }: PageProps) {
           {tool.summary && (
             <section className="mb-16">
               <div className="flex items-center gap-4 mb-8 border-b-2 border-gold pb-6">
-                <div className="bg-gold text-black px-3 py-1 font-black text-xs uppercase tracking-tighter">Plan de Transmission</div>
+                <div className="bg-gold text-black px-3 py-1 font-black text-xs uppercase tracking-tighter">Plan de Construction</div>
                 <h2 className="font-display text-3xl md:text-4xl uppercase tracking-tighter">Sommaire Stratégique</h2>
               </div>
               
@@ -212,6 +212,7 @@ export default async function ToolPage({ params }: PageProps) {
                     src={tool.mockupImage} 
                     alt={`Mockup ${tool.title}`} 
                     fill 
+                    sizes="(max-width: 768px) 100vw, 800px"
                     className="object-cover transition-transform duration-1000 group-hover:scale-105"
                   />
                 )}
