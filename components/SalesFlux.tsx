@@ -5,9 +5,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ShieldCheck, Download, Zap } from "lucide-react";
 
 const VILLES = [
-  "Douala", "Yaoundé", "Abidjan", "Dakar", "Cotonou", 
-  "Libreville", "Brazzaville", "Kinshasa", "Paris", 
-  "Bruxelles", "Bamako", "Lomé", "Ouagadougou", "Casablanca"
+  "Douala", "Yaoundé", "Abidjan", "Dakar", "Cotonou", "Libreville", "Brazzaville", "Kinshasa", 
+  "Paris", "Bruxelles", "Bamako", "Lomé", "Ouagadougou", "Casablanca", "Alger", "Tunis", 
+  "Montréal", "Lyon", "Marseille", "Bordeaux", "Toulouse", "Genève", "Luxembourg", "Port-Louis", 
+  "Antananarivo", "Niamey", "N'Djamena", "Bangui", "Malabo", "Bujumbura", "Kigali", "Djibouti", 
+  "Nouakchott", "Conakry", "Port-Gentil", "Bouaké", "San-Pédro", "Korhogo", "Bobo-Dioulasso", 
+  "Pointe-Noire", "Lubumbashi", "Goma", "Garoua", "Maroua", "Bafoussam", "Nantes", "Lille", "Strasbourg"
 ];
 
 const PRODUITS = [
@@ -20,7 +23,13 @@ const PHRASES = [
   "Un Bâtisseur de {ville} vient de s'équiper de {produit}.",
   "Accès débloqué : {produit} ({ville}).",
   "Nouvelle acquisition : {produit} ({ville}).",
-  "Équipement validé pour un Bâtisseur de {ville}."
+  "Équipement validé pour un Bâtisseur de {ville}.",
+  "Le dossier {produit} a été transmis à {ville}.",
+  "Transmission terminée : {produit} vers {ville}.",
+  "Système mis à jour : {produit} acquis à {ville}.",
+  "Un nouveau membre de {ville} a débloqué {produit}.",
+  "Arsenal complété : {produit} (Bâtisseur de {ville}).",
+  "Nouveau téléchargement de {produit} à {ville}."
 ];
 
 export default function SalesFlux() {
