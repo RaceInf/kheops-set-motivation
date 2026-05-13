@@ -166,6 +166,54 @@ export default async function ToolPage({ params }: PageProps) {
             </section>
           )}
 
+          {/* SECTION: SOMMAIRE STRATÉGIQUE (NEW) */}
+          {tool.summary && (
+            <section className="mb-16">
+              <div className="flex items-center gap-4 mb-8 border-b-2 border-gold pb-6">
+                <div className="bg-gold text-black px-3 py-1 font-black text-xs uppercase tracking-tighter">Plan de Transmission</div>
+                <h2 className="font-display text-3xl md:text-4xl uppercase tracking-tighter">Sommaire Stratégique</h2>
+              </div>
+              <div className="grid grid-cols-1 gap-1 border border-white/10 bg-white/5 p-1">
+                {tool.summary.map((item, idx) => (
+                  <div key={idx} className="group flex items-center justify-between p-4 md:p-6 bg-black hover:bg-zinc-900 transition-colors border border-white/5">
+                    <div className="flex items-center gap-6">
+                      <span className="font-display text-2xl text-gold/30 group-hover:text-gold transition-colors">{(idx + 1).toString().padStart(2, '0')}</span>
+                      <span className="text-white/80 font-bold text-sm md:text-base uppercase tracking-wide">{item}</span>
+                    </div>
+                    <div className="hidden md:block h-[1px] flex-grow mx-8 bg-white/5" />
+                    <Shield className="w-4 h-4 text-white/20 group-hover:text-gold transition-colors hidden md:block" />
+                  </div>
+                ))}
+              </div>
+              <p className="mt-6 text-[10px] text-white/30 uppercase tracking-[0.2em] italic font-medium">
+                * Chaque module est conçu pour une application immédiate sur le terrain.
+              </p>
+            </section>
+          )}
+
+          {/* SECTION: MOCKUP VISUEL (NEW) */}
+          <section className="mb-16">
+             <div className="relative w-full aspect-[16/9] bg-zinc-950 border border-white/10 overflow-hidden group">
+                {/* Overlay text if no image yet */}
+                {!tool.mockupImage ? (
+                  <div className="absolute inset-0 flex flex-col items-center justify-center bg-zinc-900/50 backdrop-blur-sm border-2 border-dashed border-white/10">
+                    <Zap className="w-12 h-12 text-gold/20 mb-4" />
+                    <p className="text-white/20 text-[10px] uppercase tracking-[0.3em] font-black">Visualisation Premium en cours</p>
+                  </div>
+                ) : (
+                  <Image 
+                    src={tool.mockupImage} 
+                    alt={`Mockup ${tool.title}`} 
+                    fill 
+                    className="object-cover transition-transform duration-1000 group-hover:scale-105"
+                  />
+                )}
+                <div className="absolute bottom-4 left-4 bg-black/80 px-4 py-2 border border-gold/50 backdrop-blur-md">
+                   <p className="text-gold text-[9px] font-black uppercase tracking-[0.3em]">Format Digital Sécurisé • PDF HQ</p>
+                </div>
+             </div>
+          </section>
+
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 mb-16">
             {/* S2: CE N'EST PAS */}
             {tool.notThis && (

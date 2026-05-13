@@ -187,6 +187,15 @@ export const tools = [
       { name: "K. Touré", role: "Entrepreneur", text: "Ce guide est un électrochoc. J'ai arrêté de m'apitoyer sur mon sort dès la lecture du deuxième chapitre. Une claque salutaire." },
       { name: "S. Diallo", role: "Freelance", text: "Je cherchais des techniques, j'ai trouvé une nouvelle façon de voir le monde. Le Code du Bâtisseur a complètement recalibré mon esprit." }
     ],
+    summary: [
+      "Pilier 1 : La Responsabilité Radicale (Sortir du statut de victime)",
+      "Pilier 2 : La Loi du Silence Stratégique (Protéger ses plans)",
+      "Pilier 3 : Le Détachement Émotionnel (Garder la tête froide)",
+      "Pilier 4 : L'Obsession du Résultat (Mépriser l'effort inutile)",
+      "Pilier 5 : La Discipline du Fer (Le moteur de l'ascension)",
+      "Pilier 6 : La Souveraineté de l'Esprit (Rejeter la propagande)",
+      "Pilier 7 : L'Action Imparfaite et Violente (L'art de l'exécution)"
+    ],
     faq: [
       { q: "Est-ce un livre pour m'aider à trouver ma passion ?", a: "Non. C'est un livre pour te réveiller. Si tu cherches de l'inspiration douce, ce n'est pas le bon endroit." },
       { q: "Ce manuel remplace-t-il les autres outils ?", a: "Le Code du Bâtisseur est la base. C'est le socle sur lequel tu pourras utiliser les autres protocoles efficacement." },
@@ -227,6 +236,12 @@ export const tools = [
     testimonials: [
       { name: "Anonyme", role: "Manager", text: "Depuis que j'applique ce système, j'ai nettoyé mon environnement direct. Je ne perds plus de temps à justifier mon travail ou mes revenus." },
       { name: "D.", role: "Bâtisseur", text: "Brutal mais nécessaire. Ce protocole m'a permis de reprendre le contrôle de mes finances face à la pression sociétale et familiale immense." }
+    ],
+    summary: [
+      "Étape 1 : L'Audit des Parasites (Identifier les vampires énergétiques)",
+      "Étape 2 : Le Filtrage de Fer (Techniques de 'NON' sans culpabilité)",
+      "Étape 3 : La Désinfection Sociale (Bâtir son cercle de confiance)",
+      "Bonus : Le Guide de l'Isolement en Milieu Hostile (Famille et Travail)"
     ],
     faq: [
       { q: "C'est juste un guide pour dire non ?", a: "C'est un système profond de reprogrammation. Dire 'non' est la surface, la façon dont tu cadres les relations est la fondation." },
@@ -269,6 +284,14 @@ export const tools = [
       { name: "M. Ndiaye", role: "Investisseur", text: "J'ai passé des années à acheter des passifs pour impressionner des inconnus. Ce livre m'a forcé à regarder mes finances en face et à commencer à bâtir un vrai capital." },
       { name: "A. Koné", role: "Artisan", text: "La notion de décorrélation temps/argent m'a sauvé. Je ne gère plus mon activité de la même façon, je construis un système, plus seulement un emploi." },
       { name: "ABDOUL", role: "Fonctionnaire", text: "J'ai acheté le capital du Bâtisseur. C'est réellement un manuel impitoyable, très percutant" }
+    ],
+    summary: [
+      "Module 1 : La Fin de l'Illusion du Salaire (La vérité sur le contrat social)",
+      "Module 2 : Détruire la Loi de Parkinson (Combler les fuites financières)",
+      "Module 3 : Survivre à la Taxe du Sang (Gérer la pression familiale)",
+      "Module 4 : Stratégie de Décorrélation Temps/Argent (L'effet de levier)",
+      "Module 5 : De Consommateur à Propriétaire (L'accumulation d'actifs)",
+      "Module 6 : La Psychologie du Chiffre (Garder plus pour bâtir plus)"
     ],
     faq: [
       { q: "Est-ce un livre technique sur l'investissement boursier ?", a: "Non. C'est l'étape avant l'investissement boursier. C'est la structure mentale et systémique pour retenir et multiplier l'argent gagné." },
