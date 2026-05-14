@@ -30,7 +30,7 @@ export function middleware(request: NextRequest) {
   }
 
   const timestamp = parseInt(parts[1], 10);
-  const maxAge = 24 * 60 * 60 * 1000; // 24 hours in ms
+  const maxAge = 4 * 60 * 60 * 1000; // 4 hours in ms
 
   if (Date.now() - timestamp > maxAge) {
     // Session expired
@@ -39,7 +39,19 @@ export function middleware(request: NextRequest) {
     return response;
   }
 
-  return NextResponse.next();
+  // Activity detected: refresh the session to "slide" the 4-hour window
+  const response = NextResponse.next();
+  const freshSession = `${parts[0]}:${Date.now()}`;
+  
+  response.cookies.set('admin_session', freshSession, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    maxAge: 4 * 60 * 60, // 4 hours in seconds
+    path: '/',
+  });
+
+  return response;
 }
 
 export const config = {
