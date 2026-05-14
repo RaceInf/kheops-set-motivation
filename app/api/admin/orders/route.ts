@@ -13,7 +13,7 @@ export async function GET(req: Request) {
 
     let query = supabase
       .from('orders')
-      .select('id, created_at, total_amount, status, users(email), order_items(product_id)', { count: 'exact' })
+      .select('id, created_at, total_amount, status, customer_name, whatsapp_number, users(email), order_items(product_id)', { count: 'exact' })
       .order('created_at', { ascending: false })
       .range(offset, offset + limit - 1);
 
@@ -33,6 +33,8 @@ export async function GET(req: Request) {
         status: o.status,
         email: (o.users as any)?.email || 'N/A',
         productId: (o.order_items as any)?.[0]?.product_id || 'N/A',
+        customerName: o.customer_name,
+        whatsappNumber: o.whatsapp_number,
       })),
       total: count || 0,
       page,

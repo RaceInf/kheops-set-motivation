@@ -73,6 +73,38 @@ export async function GET(req: Request) {
         const label = range === '7d' ? d.toLocaleDateString('fr-FR', { weekday: 'short' }) : d.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' });
         return { label, views: count };
       });
+    } else if (range === '12m') {
+      rangeStart = new Date(now);
+      rangeStart.setMonth(rangeStart.getMonth() - 12);
+      const monthBuckets: Record<string, number> = {};
+      for (let i = 11; i >= 0; i--) {
+        const d = new Date(now);
+        d.setMonth(d.getMonth() - i);
+        const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+        monthBuckets[key] = 0;
+      }
+      views.filter(v => new Date(v.created_at) >= rangeStart).forEach(v => {
+        const d = new Date(v.created_at);
+        const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+        if (monthBuckets[key] !== undefined) monthBuckets[key]++;
+      });
+      chartData = Object.entries(monthBuckets).map(([key, count]) => {
+        const [y, m] = key.split('-');
+        const d = new Date(parseInt(y), parseInt(m) - 1);
+        return { label: d.toLocaleDateString('fr-FR', { month: 'short' }), views: count };
+      });
+    } else if (range === 'year') {
+      rangeStart = new Date(now.getFullYear(), 0, 1);
+      const monthBuckets: Record<number, number> = {};
+      for (let m = 0; m <= now.getMonth(); m++) monthBuckets[m] = 0;
+      views.filter(v => new Date(v.created_at) >= rangeStart).forEach(v => {
+        const month = new Date(v.created_at).getMonth();
+        if (monthBuckets[month] !== undefined) monthBuckets[month]++;
+      });
+      chartData = Object.entries(monthBuckets).map(([m, count]) => {
+        const d = new Date(now.getFullYear(), parseInt(m));
+        return { label: d.toLocaleDateString('fr-FR', { month: 'short' }), views: count };
+      });
     }
 
     // 4. Top Pages & Referrers

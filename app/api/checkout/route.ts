@@ -5,7 +5,7 @@ import { tools } from '@/lib/data';
 
 export async function POST(req: Request) {
   try {
-    const { productId, userEmail } = await req.json();
+    const { productId, userEmail, customerName, whatsappNumber } = await req.json();
 
     if (!productId || !userEmail) {
       return NextResponse.json(
@@ -24,11 +24,10 @@ export async function POST(req: Request) {
     const numericPrice = parseInt(product.price.replace(/\D/g, ''), 10) || 0;
 
     // 2. Upsert User (Using service role key, this bypasses RLS)
-    // In a real app with Auth, you'd get the user from the session.
     let userId: string;
     
     // First, try to find existing user
-    const { data: existingUser, error: findError } = await supabase
+    const { data: existingUser } = await supabase
       .from('users')
       .select('id')
       .eq('email', userEmail)
@@ -51,13 +50,15 @@ export async function POST(req: Request) {
       userId = newUser.id;
     }
 
-    // 3. Create Order in PENDING status
+    // 3. Create Order in PENDING status with NEW FIELDS
     const { data: order, error: orderError } = await supabase
       .from('orders')
       .insert([{ 
         user_id: userId, 
         total_amount: numericPrice,
-        status: 'PENDING'
+        status: 'PENDING',
+        customer_name: customerName || null,
+        whatsapp_number: whatsappNumber || null
       }])
       .select('id')
       .single();
@@ -78,7 +79,6 @@ export async function POST(req: Request) {
 
     if (itemError) {
       console.error('Error creating order item:', itemError);
-      // Non-blocking error, but good to log
     }
 
     // 5. Generate Payment Link via Provider

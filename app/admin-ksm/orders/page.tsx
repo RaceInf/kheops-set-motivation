@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { tools } from '@/lib/data';
 import { 
   RefreshCw, Send, CheckCircle2, XCircle, Clock, 
-  Loader2, Filter, ChevronLeft, ChevronRight 
+  Loader2, Filter, ChevronLeft, ChevronRight, User, Phone
 } from 'lucide-react';
 
 interface Order {
@@ -14,6 +14,8 @@ interface Order {
   status: string;
   email: string;
   productId: string;
+  customerName?: string;
+  whatsappNumber?: string;
 }
 
 const STATUS_CONFIG: Record<string, { label: string; color: string; bg: string; icon: any }> = {
@@ -132,9 +134,9 @@ export default function AdminOrdersPage() {
             <table className="w-full text-left">
               <thead>
                 <tr className="border-b border-white/10 bg-white/[0.02]">
-                  <th className="text-[9px] uppercase tracking-widest text-white/30 font-bold p-4">ID</th>
                   <th className="text-[9px] uppercase tracking-widest text-white/30 font-bold p-4">Date</th>
-                  <th className="text-[9px] uppercase tracking-widest text-white/30 font-bold p-4">Client</th>
+                  <th className="text-[9px] uppercase tracking-widest text-white/30 font-bold p-4">Identité Client</th>
+                  <th className="text-[9px] uppercase tracking-widest text-white/30 font-bold p-4">Coordonnées</th>
                   <th className="text-[9px] uppercase tracking-widest text-white/30 font-bold p-4">Produit</th>
                   <th className="text-[9px] uppercase tracking-widest text-white/30 font-bold p-4">Montant</th>
                   <th className="text-[9px] uppercase tracking-widest text-white/30 font-bold p-4">Statut</th>
@@ -147,16 +149,31 @@ export default function AdminOrdersPage() {
                   const StatusIcon = statusConf.icon;
                   return (
                     <tr key={order.id} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
-                      <td className="p-4 text-[10px] text-white/40 font-mono">
-                        {order.id.substring(0, 8)}…
-                      </td>
                       <td className="p-4 text-xs text-white/60 whitespace-nowrap">
                         {formatDate(order.date)}
+                        <div className="text-[8px] text-white/20 font-mono mt-1 uppercase">ID: {order.id.substring(0, 8)}</div>
                       </td>
-                      <td className="p-4 text-xs text-white/80">
-                        {order.email}
+                      <td className="p-4">
+                        <div className="flex flex-col">
+                          <span className="text-xs text-white font-bold">{order.customerName || '—'}</span>
+                          <span className="text-[10px] text-white/40">{order.email}</span>
+                        </div>
                       </td>
-                      <td className="p-4 text-xs text-gold font-bold truncate max-w-[180px]">
+                      <td className="p-4">
+                        {order.whatsappNumber ? (
+                          <a 
+                            href={`https://wa.me/${order.whatsappNumber.replace(/\D/g, '')}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 text-[10px] text-emerald-400 hover:underline"
+                          >
+                            <Phone className="w-3 h-3" /> {order.whatsappNumber}
+                          </a>
+                        ) : (
+                          <span className="text-[10px] text-white/20">—</span>
+                        )}
+                      </td>
+                      <td className="p-4 text-xs text-gold font-bold truncate max-w-[150px]">
                         {getProductName(order.productId)}
                       </td>
                       <td className="p-4 text-xs text-white font-bold whitespace-nowrap">
