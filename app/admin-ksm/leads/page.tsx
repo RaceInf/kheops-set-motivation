@@ -114,7 +114,7 @@ export default function AdminLeadsPage() {
               </thead>
               <tbody>
                 {contacts.map((contact, idx) => (
-                  <tr key={contact.email} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
+                  <tr key={`${contact.email}-${idx}`} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
                     <td className="p-4 text-[10px] text-white/30 font-mono">
                       {offset + idx + 1}
                     </td>

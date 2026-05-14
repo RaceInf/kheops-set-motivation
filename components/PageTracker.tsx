@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
+import { getVisitorId } from '@/lib/visitor';
 
 export default function PageTracker() {
   const pathname = usePathname();
@@ -22,6 +23,7 @@ export default function PageTracker() {
       body: JSON.stringify({
         path: pathname,
         referrer: document.referrer || null,
+        visitor_id: getVisitorId(),
       }),
     }).catch(() => {
       // Silent fail - tracking should never break the UX

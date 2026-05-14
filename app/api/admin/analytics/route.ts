@@ -28,10 +28,13 @@ export async function GET(req: Request) {
 
     // 3. Active visitors (last 5 minutes)
     const fiveMinAgo = new Date(now.getTime() - 5 * 60 * 1000);
-    const { count: activeVisitors } = await supabase
+    const { data: activeData } = await supabase
       .from('page_views')
-      .select('*', { count: 'exact', head: true })
+      .select('visitor_id')
       .gte('created_at', fiveMinAgo.toISOString());
+    
+    const activePageViews = (activeData || []).length;
+    const activePeople = new Set((activeData || []).map(d => d.visitor_id).filter(Boolean)).size;
 
     // 4. Total views all time
     const { count: totalViews } = await supabase
@@ -248,7 +251,8 @@ export async function GET(req: Request) {
       kpis: {
         viewsToday: viewsToday || 0,
         viewsYesterday: viewsYesterday || 0,
-        activeVisitors: activeVisitors || 0,
+        activePeople,
+        activePageViews,
         totalViews: totalViews || 0,
       },
       chartData,

@@ -181,21 +181,20 @@ export default function AdminDashboardPage() {
               const height = maxRevenue > 0 ? (day.revenue / maxRevenue) * 100 : 0;
               const dateLabel = new Date(day.date).toLocaleDateString('fr-FR', { weekday: 'short' });
               return (
-                <div key={idx} className="flex-1 flex flex-col items-center gap-2">
-                  <span className="text-[9px] text-white/40 font-mono">
+                <div key={idx} className="flex-1 flex flex-col items-center gap-2 h-full">
+                  <span className="text-[9px] text-white/40 font-mono shrink-0">
                     {day.revenue > 0 ? formatCFA(day.revenue).replace(' FCFA', '') : '—'}
                   </span>
-                  <div className="w-full flex justify-center h-full items-end">
+                  <div className="w-full flex-1 flex justify-center items-end relative group">
                     <div
-                      className="w-full max-w-16 bg-gradient-to-t from-gold/10 to-gold/40 hover:from-gold/20 hover:to-gold/60 border-t border-gold/50 transition-all relative group"
+                      className="w-full max-w-16 bg-gradient-to-t from-gold/10 to-gold/40 hover:from-gold/20 hover:to-gold/60 border-t border-gold/50 transition-all duration-500"
                       style={{ height: `${Math.max(height, 2)}%` }}
-                    >
-                      {day.count > 0 && (
-                        <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black border border-white/10 px-2 py-1 text-[9px] text-gold font-bold opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10 shadow-xl">
-                          {day.count} vente{day.count > 1 ? 's' : ''}
-                        </div>
-                      )}
-                    </div>
+                    />
+                    {day.count > 0 && (
+                      <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black border border-white/10 px-2 py-1 text-[9px] text-gold font-bold opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10 shadow-xl">
+                        {day.count} vente{day.count > 1 ? 's' : ''}
+                      </div>
+                    )}
                   </div>
                   <span className="text-[9px] text-white/30 uppercase font-bold">{dateLabel}</span>
                 </div>

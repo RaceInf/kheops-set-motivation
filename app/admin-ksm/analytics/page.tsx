@@ -10,7 +10,8 @@ interface AnalyticsData {
   kpis: {
     viewsToday: number;
     viewsYesterday: number;
-    activeVisitors: number;
+    activePeople: number;
+    activePageViews: number;
     totalViews: number;
   };
   chartData: { label: string; views: number }[];
@@ -190,8 +191,13 @@ CREATE INDEX idx_page_views_path ON page_views (path);`}</pre>
               <span className="text-[9px] text-emerald-400 font-bold">LIVE</span>
             </div>
           </div>
-          <div className="font-display text-4xl text-emerald-400">{data.kpis.activeVisitors}</div>
-          <span className="text-[9px] text-white/30">dernières 5 minutes</span>
+          <div className="flex items-baseline gap-3">
+            <div className="font-display text-4xl text-emerald-400">{data.kpis.activePeople}</div>
+            <span className="text-white/40 text-[10px] uppercase font-bold">Personnes</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-[9px] text-white/30">{data.kpis.activePageViews} pages vues</span>
+          </div>
         </div>
 
         {/* Views Today */}

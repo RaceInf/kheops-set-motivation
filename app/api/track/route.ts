@@ -3,7 +3,7 @@ import { supabase } from '@/lib/supabase';
 
 export async function POST(req: Request) {
   try {
-    const { path, referrer, event } = await req.json();
+    const { path, referrer, event, visitor_id } = await req.json();
 
     if (!path && !event) {
       return NextResponse.json({ error: 'Path or Event required' }, { status: 400 });
@@ -16,6 +16,7 @@ export async function POST(req: Request) {
         path: path || 'event',
         referrer: referrer || null,
         event: event || null,
+        visitor_id: visitor_id || null,
       }]);
 
     if (error) {
