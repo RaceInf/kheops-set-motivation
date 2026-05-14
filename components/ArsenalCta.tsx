@@ -208,7 +208,7 @@ export default function ArsenalCta({
         
         <button 
           type="submit"
-          disabled={isLoading || !email || !name || !whatsapp}
+          disabled={isLoading || !email || !name || whatsapp.length < 6}
           className="w-full py-4 bg-gold text-black font-black text-sm uppercase tracking-[0.2em] hover:bg-white transition-colors flex justify-center items-center gap-3 disabled:opacity-50"
         >
           {isLoading ? (
