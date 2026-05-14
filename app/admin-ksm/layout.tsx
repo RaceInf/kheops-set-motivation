@@ -5,11 +5,12 @@ import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { 
   BarChart3, ShoppingBag, Users, Activity, Package, 
-  LogOut, Menu, X, ChevronRight 
+  LogOut, Menu, X, ChevronRight, Eye 
 } from 'lucide-react';
 
 const NAV_ITEMS = [
   { href: '/admin-ksm', label: 'Dashboard', icon: BarChart3 },
+  { href: '/admin-ksm/analytics', label: 'Analytique', icon: Eye },
   { href: '/admin-ksm/orders', label: 'Commandes', icon: ShoppingBag },
   { href: '/admin-ksm/leads', label: 'Leads', icon: Users },
   { href: '/admin-ksm/webhooks', label: 'Webhooks', icon: Activity },

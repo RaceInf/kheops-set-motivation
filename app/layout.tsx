@@ -6,6 +6,7 @@ import GoogleAnalytics from '@/components/analytics/GoogleAnalytics';
 import FacebookPixel from '@/components/analytics/FacebookPixel';
 import WhatsAppWidget from '@/components/WhatsAppWidget';
 import SalesFlux from '@/components/SalesFlux';
+import PageTracker from '@/components/PageTracker';
 import './globals.css';
 
 const bebas = Bebas_Neue({ 
@@ -127,6 +128,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
           <FacebookPixel />
         </Suspense>
         {children}
+        <PageTracker />
         <WhatsAppWidget />
         <SalesFlux />
       </body>
