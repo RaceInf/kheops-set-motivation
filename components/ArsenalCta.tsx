@@ -99,6 +99,11 @@ export default function ArsenalCta({
             <PhoneInput
               country={"cm"}
               preferredCountries={["cm", "fr", "ci", "sn", "be", "ch", "ca"]}
+              enableSearch={true}
+              searchPlaceholder="Rechercher un pays..."
+              searchNotFound="Aucun pays trouvé"
+              disableCountryCode={false}
+              copyNumbersOnly={true}
               value={whatsapp}
               onChange={(phone) => setWhatsapp(phone)}
               disabled={isLoading}
@@ -106,6 +111,7 @@ export default function ArsenalCta({
               inputClass="ksm-phone-field"
               buttonClass="ksm-phone-button"
               dropdownClass="ksm-phone-dropdown"
+              searchClass="ksm-phone-search"
               placeholder="+237 ..."
               inputProps={{
                 required: true,
@@ -147,6 +153,21 @@ export default function ArsenalCta({
                 border: 1px solid rgba(255, 255, 255, 0.1) !important;
                 border-radius: 0 !important;
                 width: 300px !important;
+              }
+              .ksm-phone-search {
+                background: #18181b !important;
+                margin: 0 !important;
+                padding: 10px !important;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+              }
+              .ksm-phone-search input {
+                background: black !important;
+                color: white !important;
+                border: 1px solid rgba(255, 255, 255, 0.1) !important;
+                border-radius: 0 !important;
+                font-size: 11px !important;
+                text-transform: uppercase !important;
+                letter-spacing: 0.1em !important;
               }
               .ksm-phone-dropdown .country:hover {
                 background: rgba(238, 177, 73, 0.1) !important;
