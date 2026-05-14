@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { tools } from '@/lib/data';
 import { 
   RefreshCw, Send, CheckCircle2, XCircle, Clock, 
-  Loader2, Filter, ChevronLeft, ChevronRight, User, Phone, Download
+  Loader2, Filter, ChevronLeft, ChevronRight, User, Phone
 } from 'lucide-react';
 
 interface Order {
@@ -27,7 +27,6 @@ const STATUS_CONFIG: Record<string, { label: string; color: string; bg: string; 
 export default function AdminOrdersPage() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
-  const [exporting, setExporting] = useState(false);
   const [filter, setFilter] = useState<string>('');
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -55,56 +54,6 @@ export default function AdminOrdersPage() {
   };
 
   useEffect(() => { fetchOrders(); }, [filter, page]);
-
-  const handleExport = async () => {
-    setExporting(true);
-    try {
-      const params = new URLSearchParams();
-      if (filter) params.set('status', filter);
-      params.set('export', 'true');
-
-      const res = await fetch(`/api/admin/orders?${params}`);
-      const data = await res.json();
-      const exportData: Order[] = data.orders || [];
-
-      // Create CSV
-      const headers = ['Date', 'ID', 'Client', 'Email', 'WhatsApp', 'Produit', 'Montant', 'Statut'];
-      const csvRows = [
-        headers.join(','),
-        ...exportData.map(o => [
-          new Date(o.date).toLocaleDateString('fr-FR'),
-          o.id,
-          `"${o.customerName || ''}"`,
-          o.email,
-          `"${o.whatsappNumber || ''}"`,
-          `"${getProductName(o.productId)}"`,
-          o.amount,
-          o.status
-        ].join(','))
-      ];
-
-      const csvContent = csvRows.join('\n');
-      const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `orders_${filter || 'all'}_${new Date().toISOString().split('T')[0]}.csv`;
-      
-      // Append to document to make it work in all browsers
-      document.body.appendChild(link);
-      link.click();
-      
-      // Cleanup
-      setTimeout(() => {
-        document.body.removeChild(link);
-        window.URL.revokeObjectURL(url);
-      }, 100);
-    } catch (err) {
-      console.error('Export failed:', err);
-    } finally {
-      setExporting(false);
-    }
-  };
 
   const handleResend = async (orderId: string) => {
     setResending(orderId);
@@ -148,16 +97,6 @@ export default function AdminOrdersPage() {
           <p className="text-white/40 text-xs mt-1">{total} commande{total > 1 ? 's' : ''} au total</p>
         </div>
         <div className="flex items-center gap-3">
-          {/* Export Button */}
-          <button
-            onClick={handleExport}
-            disabled={exporting || orders.length === 0}
-            className="flex items-center gap-2 px-4 py-2 border border-gold/30 bg-gold/5 text-[10px] font-bold uppercase tracking-widest text-gold hover:bg-gold hover:text-black transition-all disabled:opacity-30"
-          >
-            {exporting ? <RefreshCw className="w-3 h-3 animate-spin" /> : <Download className="w-3 h-3" />}
-            Exporter (CSV)
-          </button>
-
           {/* Filter */}
           <div className="flex items-center gap-2 border border-white/10 px-3 py-2">
             <Filter className="w-3 h-3 text-white/30" />

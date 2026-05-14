@@ -7,19 +7,15 @@ export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
     const status = searchParams.get('status');
-    const isExport = searchParams.get('export') === 'true';
     const page = parseInt(searchParams.get('page') || '1', 10);
-    const limit = isExport ? 1000 : 50; // Higher limit for exports
+    const limit = 30;
     const offset = (page - 1) * limit;
 
     let query = supabase
       .from('orders')
       .select('id, created_at, total_amount, status, customer_name, whatsapp_number, users(email), order_items(product_id)', { count: 'exact' })
-      .order('created_at', { ascending: false });
-
-    if (!isExport) {
-      query = query.range(offset, offset + limit - 1);
-    }
+      .order('created_at', { ascending: false })
+      .range(offset, offset + limit - 1);
 
     if (status) {
       query = query.eq('status', status);
@@ -29,19 +25,17 @@ export async function GET(req: Request) {
 
     if (error) throw error;
 
-    const formattedOrders = (orders || []).map(o => ({
-      id: o.id,
-      date: o.created_at,
-      amount: o.total_amount,
-      status: o.status,
-      email: (o.users as any)?.email || 'N/A',
-      productId: (o.order_items as any)?.[0]?.product_id || 'N/A',
-      customerName: o.customer_name || '—',
-      whatsappNumber: o.whatsapp_number || '—',
-    }));
-
     return NextResponse.json({
-      orders: formattedOrders,
+      orders: (orders || []).map(o => ({
+        id: o.id,
+        date: o.created_at,
+        amount: o.total_amount,
+        status: o.status,
+        email: (o.users as any)?.email || 'N/A',
+        productId: (o.order_items as any)?.[0]?.product_id || 'N/A',
+        customerName: o.customer_name,
+        whatsappNumber: o.whatsapp_number,
+      })),
       total: count || 0,
       page,
       totalPages: Math.ceil((count || 0) / limit),

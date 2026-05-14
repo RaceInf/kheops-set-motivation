@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { RefreshCw, Download, Users, Mail } from 'lucide-react';
+import { RefreshCw, Users, Mail } from 'lucide-react';
 
 interface Contact {
   email: string;
@@ -13,7 +13,6 @@ export default function AdminLeadsPage() {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [exporting, setExporting] = useState(false);
   const [offset, setOffset] = useState(0);
   const limit = 50;
 
@@ -39,44 +38,6 @@ export default function AdminLeadsPage() {
     });
   };
 
-  const handleExport = async () => {
-    setExporting(true);
-    try {
-      // Fetch all leads (up to 1000)
-      const res = await fetch(`/api/admin/leads?export=true`);
-      const data = await res.json();
-      const allLeads: Contact[] = data.contacts || [];
-
-      if (allLeads.length === 0) return;
-
-      const headers = ['Email', 'Date d\'inscription'];
-      const csvRows = [
-        headers.join(','),
-        ...allLeads.map(c => `${c.email},${formatDate(c.createdAt)}`)
-      ];
-      
-      const csvContent = csvRows.join('\n');
-      // Added BOM for Excel UTF-8 support
-      const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `leads_ksm_${new Date().toISOString().split('T')[0]}.csv`;
-      
-      document.body.appendChild(link);
-      link.click();
-      
-      setTimeout(() => {
-        document.body.removeChild(link);
-        window.URL.revokeObjectURL(url);
-      }, 100);
-    } catch (err) {
-      console.error('Export failed:', err);
-    } finally {
-      setExporting(false);
-    }
-  };
-
   return (
     <div className="flex flex-col gap-6">
       {/* Header */}
@@ -88,14 +49,6 @@ export default function AdminLeadsPage() {
           <p className="text-white/40 text-xs mt-1">Contacts inscrits via Brevo</p>
         </div>
         <div className="flex items-center gap-3">
-          <button
-            onClick={handleExport}
-            disabled={exporting || contacts.length === 0}
-            className="flex items-center gap-2 px-4 py-2 border border-gold/30 bg-gold/5 text-[10px] font-bold uppercase tracking-widest text-gold hover:bg-gold hover:text-black transition-all disabled:opacity-30"
-          >
-            {exporting ? <RefreshCw className="w-3 h-3 animate-spin" /> : <Download className="w-3 h-3" />}
-            Exporter CSV
-          </button>
           <button
             onClick={fetchLeads}
             disabled={loading}
