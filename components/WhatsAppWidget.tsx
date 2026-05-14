@@ -1,12 +1,17 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageCircle, X, Send, ChevronRight } from "lucide-react";
 
 export default function WhatsAppWidget() {
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
+
+  // Don't show on admin pages
+  if (pathname?.startsWith("/admin-ksm")) return null;
 
   // Show notification after a short delay
   useEffect(() => {

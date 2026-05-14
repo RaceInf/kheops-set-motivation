@@ -16,7 +16,6 @@ interface AnalyticsData {
   };
   chartData: { label: string; views: number }[];
   revenueChartData: { label: string; revenue: number }[];
-  hourlyDistribution: { hour: number; count: number }[];
   topPages: { path: string; views: number }[];
   topReferrers: { source: string; views: number }[];
   funnel: {
@@ -346,38 +345,6 @@ CREATE INDEX idx_page_views_path ON page_views (path);`}</pre>
             </div>
           )}
         </div>
-      </div>
-
-      {/* Hourly Distribution (Last 30 Days) */}
-      <div className="border border-white/10 bg-zinc-950 p-6">
-        <h3 className="text-[10px] font-bold uppercase tracking-widest text-white/40 mb-6">
-          Pics d&apos;Affluence — Distribution Horaire (30 jours)
-        </h3>
-        <div className="flex items-end gap-1 h-32">
-          {data.hourlyDistribution && data.hourlyDistribution.map((point, idx) => {
-            const maxHourCount = Math.max(...data.hourlyDistribution.map(d => d.count), 1);
-            const height = (point.count / maxHourCount) * 100;
-            return (
-              <div key={idx} className="flex-1 flex flex-col items-center h-full group">
-                <div className="w-full flex-1 flex justify-center items-end relative">
-                  <div
-                    className={`w-full max-w-4 transition-all duration-300 ${height > 70 ? 'bg-gold' : 'bg-gold/20'} group-hover:bg-gold`}
-                    style={{ height: `${Math.max(height, 5)}%` }}
-                  />
-                  <div className="absolute -top-6 left-1/2 -translate-x-1/2 text-[7px] text-white/40 opacity-0 group-hover:opacity-100 transition-opacity">
-                    {point.count}
-                  </div>
-                </div>
-                <span className={`text-[7px] font-bold mt-1 ${point.hour % 4 === 0 ? 'text-white/40' : 'text-white/10'}`}>
-                  {point.hour}h
-                </span>
-              </div>
-            );
-          })}
-        </div>
-        <p className="text-[9px] text-white/20 mt-4 italic text-center">
-          Heures affichées au format 24h. Les pics indiquent vos meilleurs moments pour publier.
-        </p>
       </div>
 
       {/* Bottom Row */}

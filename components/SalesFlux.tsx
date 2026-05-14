@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { ShieldCheck, Download, Zap } from "lucide-react";
 
@@ -33,11 +34,15 @@ const PHRASES = [
 ];
 
 export default function SalesFlux() {
+  const pathname = usePathname();
   const [currentNotification, setCurrentNotification] = useState<{
     text: string;
     productName: string;
     city: string;
   } | null>(null);
+
+  // Don't show on admin pages
+  if (pathname?.startsWith("/admin-ksm")) return null;
 
   const generateNotification = () => {
     const ville = VILLES[Math.floor(Math.random() * VILLES.length)];
