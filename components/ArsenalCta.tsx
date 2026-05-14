@@ -176,7 +176,7 @@ export default function ArsenalCta({
               .ksm-phone-search {
                 background: #09090b !important;
                 margin: 0 !important;
-                padding: 12px !important;
+                padding: 8px !important;
                 border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
               }
               .ksm-phone-search input {
@@ -184,10 +184,18 @@ export default function ArsenalCta({
                 color: white !important;
                 border: 1px solid rgba(255, 255, 255, 0.1) !important;
                 border-radius: 0 !important;
-                font-size: 10px !important;
+                font-size: 11px !important;
                 text-transform: uppercase !important;
                 letter-spacing: 0.1em !important;
-                padding: 10px !important;
+                padding: 12px 12px 12px 35px !important;
+                width: 100% !important;
+                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23eeb149' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'%3E%3C/circle%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'%3E%3C/line%3E%3C/svg%3E") !important;
+                background-repeat: no-repeat !important;
+                background-position: 12px center !important;
+              }
+              /* Hide default library search icon if present */
+              .ksm-phone-search .search-box-img {
+                display: none !important;
               }
               .ksm-phone-dropdown .country:hover {
                 background: rgba(238, 177, 73, 0.1) !important;
