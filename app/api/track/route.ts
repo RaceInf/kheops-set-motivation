@@ -3,18 +3,19 @@ import { supabase } from '@/lib/supabase';
 
 export async function POST(req: Request) {
   try {
-    const { path, referrer } = await req.json();
+    const { path, referrer, event } = await req.json();
 
-    if (!path) {
-      return NextResponse.json({ error: 'Path required' }, { status: 400 });
+    if (!path && !event) {
+      return NextResponse.json({ error: 'Path or Event required' }, { status: 400 });
     }
 
-    // Insert page view - will fail gracefully if table doesn't exist
+    // Insert page view or event
     const { error } = await supabase
       .from('page_views')
       .insert([{
-        path: path,
+        path: path || 'event',
         referrer: referrer || null,
+        event: event || null,
       }]);
 
     if (error) {

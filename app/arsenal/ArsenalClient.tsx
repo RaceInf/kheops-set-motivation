@@ -7,6 +7,7 @@ import Image from "next/image";
 import Footer from "@/components/Footer";
 import { tools } from "@/lib/data";
 import * as gtag from '@/lib/gtag';
+import { trackEvent } from '@/lib/analytics';
 
 const brutalEase = [0.85, 0, 0.15, 1] as const;
 
@@ -107,7 +108,10 @@ export default function ArsenalClient() {
                 <div className="relative z-10 mb-8 flex-grow">
                   <Link
                     href={`/arsenal/${product.id}`}
-                    onClick={() => gtag.event({ action: 'click_arsenal_item', category: 'ecommerce', label: product.title })}
+                    onClick={() => {
+                      gtag.event({ action: 'click_arsenal_item', category: 'ecommerce', label: product.title });
+                      trackEvent('click_product_card', { productId: product.id });
+                    }}
                   >
                     <h3 className="font-display text-4xl uppercase leading-none mb-4 group-hover:text-gold transition-colors">
                       {product.title}
@@ -130,7 +134,10 @@ export default function ArsenalClient() {
 
                   <Link
                     href={`/arsenal/${product.id}`}
-                    onClick={() => gtag.event({ action: 'click_arsenal_cta', category: 'ecommerce', label: product.cta + ' - ' + product.title })}
+                    onClick={() => {
+                      gtag.event({ action: 'click_arsenal_cta', category: 'ecommerce', label: product.cta + ' - ' + product.title });
+                      trackEvent('click_buy_button', { productId: product.id, source: 'arsenal_list' });
+                    }}
                     className="w-full py-4 bg-gold text-black font-black text-xs text-center uppercase tracking-[0.2em] hover:bg-white transition-colors"
                   >
                     {product.cta}

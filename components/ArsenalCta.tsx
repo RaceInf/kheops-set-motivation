@@ -4,6 +4,7 @@ import { useState } from "react";
 import { ArrowLeft, Loader2, Mail } from "lucide-react";
 import * as gtag from '@/lib/gtag';
 import * as fpixel from '@/lib/fpixel';
+import { trackEvent } from '@/lib/analytics';
 
 export default function ArsenalCta({ 
   productId, 
@@ -32,6 +33,8 @@ export default function ArsenalCta({
         category: 'ecommerce', 
         label: `${cta} - ${title}` 
       });
+
+      trackEvent('submit_email_checkout', { productId, title });
 
       const response = await fetch('/api/checkout', {
         method: 'POST',
@@ -100,6 +103,7 @@ export default function ArsenalCta({
           content_ids: [productId],
           content_type: 'product',
         });
+        trackEvent('click_buy_button', { productId, title, source: 'product_page' });
       }}
       className="w-full py-6 bg-gold text-black font-black text-sm uppercase tracking-[0.2em] hover:bg-white transition-colors group flex justify-center items-center gap-3"
     >

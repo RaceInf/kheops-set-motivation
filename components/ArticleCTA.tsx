@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { tools } from "@/lib/data";
 import { Zap, ChevronRight, ShieldCheck } from "lucide-react";
+import { trackEvent } from "@/lib/analytics";
 
 interface ArticleCTAProps {
   productId: string;
@@ -50,6 +51,7 @@ export default function ArticleCTA({ productId }: ArticleCTAProps) {
           <div className="flex flex-col sm:flex-row items-center gap-6">
             <Link
               href={`/arsenal/${tool.id}`}
+              onClick={() => trackEvent('click_article_cta', { productId: tool.id, title: tool.title })}
               className="w-full sm:w-auto bg-white text-black px-8 py-4 font-black uppercase text-xs tracking-widest hover:bg-gold transition-colors flex items-center justify-center gap-3 group"
             >
               Accéder au Dossier <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />

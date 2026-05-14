@@ -16,6 +16,12 @@ interface AnalyticsData {
   chartData: { label: string; views: number }[];
   topPages: { path: string; views: number }[];
   topReferrers: { source: string; views: number }[];
+  funnel: {
+    views: number;
+    clicks: number;
+    checkouts: number;
+    sales: number;
+  };
   tableNotFound?: boolean;
 }
 
@@ -98,6 +104,7 @@ export default function AdminAnalyticsPage() {
   id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
   path text NOT NULL,
   referrer text,
+  event text, -- Nouveau: pour traquer les clics (ex: click_buy_button)
   created_at timestamptz DEFAULT now()
 );
 
@@ -219,6 +226,46 @@ CREATE INDEX idx_page_views_path ON page_views (path);`}</pre>
           </div>
           <div className="font-display text-4xl text-gold">{data.kpis.totalViews.toLocaleString('fr-FR')}</div>
           <span className="text-[9px] text-white/30">toutes périodes</span>
+        </div>
+      </div>
+      
+      {/* Conversion Funnel */}
+      <div className="border border-white/10 bg-zinc-950 p-6">
+        <h3 className="text-[10px] font-bold uppercase tracking-widest text-white/40 mb-8">
+          Entonnoir de Conversion — {RANGES.find(r => r.key === range)?.label}
+        </h3>
+        
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 relative">
+          {[
+            { label: 'Visites', value: data.funnel.views, color: 'bg-white/10' },
+            { label: 'Clics Achat', value: data.funnel.clicks, color: 'bg-gold/20', parent: data.funnel.views },
+            { label: 'Checkouts', value: data.funnel.checkouts, color: 'bg-gold/40', parent: data.funnel.clicks },
+            { label: 'Ventes', value: data.funnel.sales, color: 'bg-emerald-500/40', parent: data.funnel.checkouts },
+          ].map((step, idx) => {
+            const ratio = step.parent && step.parent > 0 ? Math.round((step.value / step.parent) * 100) : 0;
+            const globalRatio = data.funnel.views > 0 ? ((step.value / data.funnel.views) * 100).toFixed(1) : 0;
+            
+            return (
+              <div key={idx} className="flex flex-col gap-3 relative">
+                <div className={`h-24 ${step.color} flex flex-col items-center justify-center border border-white/5 relative overflow-hidden`}>
+                  <div className="font-display text-3xl z-10">{step.value}</div>
+                  <div className="text-[9px] font-bold uppercase tracking-widest text-white/40 z-10">{step.label}</div>
+                  {idx > 0 && (
+                    <div className="absolute top-2 right-2 text-[10px] font-mono text-white/20">
+                      {globalRatio}%
+                    </div>
+                  )}
+                </div>
+                {idx > 0 && (
+                  <div className="text-center">
+                    <span className={`text-[10px] font-bold uppercase tracking-widest ${ratio > 10 ? 'text-emerald-400' : 'text-white/30'}`}>
+                      {ratio}% de conversion
+                    </span>
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
 

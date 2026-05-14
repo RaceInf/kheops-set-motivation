@@ -178,6 +178,37 @@ export async function GET(req: Request) {
       .slice(0, 5)
       .map(([source, count]) => ({ source, views: count }));
 
+    // 8. Funnel data based on range start
+    const funnelRangeStart = rangeStart || thirtyDaysAgo;
+    
+    // Total views in range
+    const { count: funnelViews } = await supabase
+      .from('page_views')
+      .select('*', { count: 'exact', head: true })
+      .gte('created_at', funnelRangeStart.toISOString())
+      .is('event', null);
+
+    // Total buy clicks in range
+    const { count: funnelClicks } = await supabase
+      .from('page_views')
+      .select('*', { count: 'exact', head: true })
+      .gte('created_at', funnelRangeStart.toISOString())
+      .eq('event', 'click_buy_button');
+
+    // Total checkout submits in range
+    const { count: funnelCheckouts } = await supabase
+      .from('page_views')
+      .select('*', { count: 'exact', head: true })
+      .gte('created_at', funnelRangeStart.toISOString())
+      .eq('event', 'submit_email_checkout');
+
+    // Total sales in range
+    const { count: funnelSales } = await supabase
+      .from('orders')
+      .select('*', { count: 'exact', head: true })
+      .gte('created_at', funnelRangeStart.toISOString())
+      .eq('status', 'PAID');
+
     return NextResponse.json({
       kpis: {
         viewsToday: viewsToday || 0,
@@ -188,6 +219,12 @@ export async function GET(req: Request) {
       chartData,
       topPages,
       topReferrers,
+      funnel: {
+        views: funnelViews || 0,
+        clicks: funnelClicks || 0,
+        checkouts: funnelCheckouts || 0,
+        sales: funnelSales || 0,
+      }
     });
 
   } catch (error: any) {
