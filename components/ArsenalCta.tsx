@@ -132,20 +132,37 @@ export default function ArsenalCta({
                 border-radius: 0 !important;
                 font-size: 14px !important;
                 padding-left: 58px !important;
-                transition: border-color 0.2s !important;
+                transition: all 0.2s !important;
+                font-family: inherit !important;
               }
               .ksm-phone-field:focus {
                 border-color: #eeb149 !important;
-                box-shadow: none !important;
+                background: rgba(238, 177, 73, 0.02) !important;
               }
               .ksm-phone-button {
-                background: rgba(255, 255, 255, 0.05) !important;
-                border: 1px solid rgba(255, 255, 255, 0.1) !important;
+                background: transparent !important;
+                border: none !important;
+                border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
                 border-radius: 0 !important;
                 width: 48px !important;
+                height: 34px !important;
+                top: 10px !important;
+                left: 1px !important;
               }
               .ksm-phone-button:hover, .ksm-phone-button.open {
-                background: rgba(255, 255, 255, 0.1) !important;
+                background: transparent !important;
+              }
+              .ksm-phone-button .selected-flag {
+                background: transparent !important;
+                padding: 0 0 0 12px !important;
+                width: 100% !important;
+              }
+              .ksm-phone-button .selected-flag .arrow {
+                border-top-color: rgba(255, 255, 255, 0.3) !important;
+                left: 25px !important;
+              }
+              .ksm-phone-button .selected-flag .arrow.up {
+                border-bottom-color: #eeb149 !important;
               }
               .ksm-phone-dropdown {
                 background: #09090b !important;
@@ -153,21 +170,24 @@ export default function ArsenalCta({
                 border: 1px solid rgba(255, 255, 255, 0.1) !important;
                 border-radius: 0 !important;
                 width: 300px !important;
+                box-shadow: 0 20px 50px rgba(0,0,0,0.8) !important;
+                margin-top: 10px !important;
               }
               .ksm-phone-search {
-                background: #18181b !important;
+                background: #09090b !important;
                 margin: 0 !important;
-                padding: 10px !important;
+                padding: 12px !important;
                 border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
               }
               .ksm-phone-search input {
-                background: black !important;
+                background: #121214 !important;
                 color: white !important;
                 border: 1px solid rgba(255, 255, 255, 0.1) !important;
                 border-radius: 0 !important;
-                font-size: 11px !important;
+                font-size: 10px !important;
                 text-transform: uppercase !important;
                 letter-spacing: 0.1em !important;
+                padding: 10px !important;
               }
               .ksm-phone-dropdown .country:hover {
                 background: rgba(238, 177, 73, 0.1) !important;
@@ -177,12 +197,22 @@ export default function ArsenalCta({
               }
               .ksm-phone-dropdown .country-name {
                 color: white !important;
-                font-size: 12px !important;
+                font-size: 11px !important;
                 text-transform: uppercase !important;
                 letter-spacing: 0.05em !important;
               }
               .ksm-phone-dropdown .dial-code {
                 color: #eeb149 !important;
+                font-size: 11px !important;
+              }
+              .ksm-phone-dropdown::-webkit-scrollbar {
+                width: 4px;
+              }
+              .ksm-phone-dropdown::-webkit-scrollbar-track {
+                background: black;
+              }
+              .ksm-phone-dropdown::-webkit-scrollbar-thumb {
+                background: rgba(255, 255, 255, 0.1);
               }
             `}</style>
           </div>
