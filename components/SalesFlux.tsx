@@ -93,27 +93,27 @@ export default function SalesFlux() {
   }, [currentNotification]);
 
   return (
-    <div className="fixed bottom-6 left-6 z-[9998] pointer-events-none sm:pointer-events-auto">
+    <div className="fixed bottom-6 left-4 md:left-6 z-[9998] pointer-events-none sm:pointer-events-auto">
       <AnimatePresence>
         {currentNotification && (
           <motion.div
             initial={{ opacity: 0, x: -50, y: 0 }}
             animate={{ opacity: 1, x: 0, y: 0 }}
             exit={{ opacity: 0, x: -20, scale: 0.95 }}
-            className="flex items-center gap-4 bg-black border border-gold/40 p-4 shadow-[0_15px_40px_rgba(0,0,0,0.6)] max-w-[300px] md:max-w-[380px] backdrop-blur-md"
+            className="flex items-center gap-3 bg-black border border-gold/40 p-2 md:p-4 shadow-[0_15px_40px_rgba(0,0,0,0.6)] max-w-[220px] md:max-w-[380px] backdrop-blur-md"
           >
-            <div className="flex-shrink-0 w-10 h-10 bg-gold/10 flex items-center justify-center border border-gold/20">
-              <ShieldCheck className="w-5 h-5 text-gold" />
+            <div className="flex-shrink-0 w-8 h-8 md:w-10 md:h-10 bg-gold/10 flex items-center justify-center border border-gold/20">
+              <ShieldCheck className="w-4 h-4 md:w-5 md:h-5 text-gold" />
             </div>
             
             <div className="flex flex-col gap-1">
               <div className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
-                <span className="text-[8px] md:text-[9px] font-black uppercase tracking-[0.2em] text-white/40">
-                  Activité du Chantier
+                <span className="w-1 h-1 bg-green-500 rounded-full animate-pulse"></span>
+                <span className="text-[7px] md:text-[9px] font-black uppercase tracking-[0.2em] text-white/40">
+                  Activité
                 </span>
               </div>
-              <p className="text-[11px] md:text-xs text-white/90 leading-tight font-medium">
+              <p className="text-[10px] md:text-xs text-white/90 leading-tight font-medium">
                 {currentNotification.text.split(currentNotification.productName)[0]}
                 <span className="text-gold font-bold">{currentNotification.productName}</span>
                 {currentNotification.text.split(currentNotification.productName)[1]}
