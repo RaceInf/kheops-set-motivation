@@ -58,7 +58,7 @@ export default function StickyCTA({ targetId = "boutique" }: { targetId?: string
 
             <div className="flex items-center gap-2 relative z-10">
               <div className="w-2 h-2 bg-gold rounded-full animate-pulse shadow-[0_0_10px_#eeb149]" />
-              <span className="font-display text-sm md:text-base uppercase tracking-[0.2em] font-black">DÉVERROUILLER MON ACCÈS</span>
+              <span className="font-display text-sm md:text-base uppercase tracking-[0.2em] font-black">OBTIENS TON OUTIL - CLIQUE ICI</span>
             </div>
 
             <div className="flex items-center gap-3 relative z-10">
