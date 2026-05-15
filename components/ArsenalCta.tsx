@@ -172,12 +172,26 @@ export default function ArsenalCta({
                 width: 300px !important;
                 box-shadow: 0 20px 50px rgba(0,0,0,0.8) !important;
                 margin-top: 10px !important;
+                /* Create a fresh stacking context */
+                isolation: isolate !important;
+                overflow: hidden !important;
+              }
+              /* REMOVE TOP PADDING to prevent items from appearing above search bar */
+              .ksm-phone-dropdown .country-list {
+                padding-top: 0 !important;
+                margin-top: 0 !important;
               }
               .ksm-phone-search {
                 background: #09090b !important;
                 margin: 0 !important;
-                padding: 8px !important;
+                padding: 10px !important;
                 border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+                position: sticky !important;
+                top: 0 !important;
+                z-index: 10 !important;
+                /* Force hardware acceleration for clean layering on mobile */
+                transform: translateZ(0);
+                -webkit-transform: translateZ(0);
               }
               .ksm-phone-search input {
                 background: #121214 !important;
