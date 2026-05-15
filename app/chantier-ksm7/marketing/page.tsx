@@ -19,6 +19,9 @@ interface MarketingEvent {
     orderId: string;
     email: string;
     sentAt: string;
+    customerName?: string;
+    whatsappNumber?: string;
+    productName?: string;
     error?: string;
     reminderType?: string;
     manual?: boolean;
