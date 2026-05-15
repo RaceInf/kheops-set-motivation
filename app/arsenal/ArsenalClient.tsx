@@ -8,7 +8,6 @@ import Footer from "@/components/Footer";
 import { tools } from "@/lib/data";
 import * as gtag from '@/lib/gtag';
 import { trackEvent } from '@/lib/analytics';
-import StickyCTA from "@/components/StickyCTA";
 
 const brutalEase = [0.85, 0, 0.15, 1] as const;
 
@@ -185,7 +184,6 @@ export default function ArsenalClient() {
       </main>
 
       <Footer />
-      <StickyCTA targetId="liste-arsenal" />
     </div>
   );
 }

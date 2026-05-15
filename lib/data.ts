@@ -308,7 +308,7 @@ export const tools = [
       "CH. 4 — L'Actif et le Passif : la distinction qui sépare les Rois des esclaves.",
       "CH. 5 — Le Mythe du Petit Salaire : la loi de Parkinson et l'algorithme d'épargne.",
       "CH. 6 — Décorréler le Temps et l'Argent : l'évasion du salariat par l'effet de levier.",
-      "Protéger son édifice et assumer sa valeur",
+      "L'armure du Bâtisseur financier",
       "CH. 7 — La Brutalité du Marché : pourquoi l'eau est gratuite et le diamant hors de prix.",
       "CH. 8 — L'Isolement Stratégique : survivre au panier de crabes.",
       "Conclusion — Le Premier Jour de l'Empire : Plan d'action pour les 48h."

@@ -45,9 +45,11 @@ export default function ArticleActions({ title = "KHEOPS SET MOTIVATION" }: { ti
     if (typeof window === 'undefined') return '#';
     const url = encodeURIComponent(window.location.href);
     const text = encodeURIComponent(title);
-    
     switch (network) {
-      case 'facebook': return `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+      case 'facebook': 
+        // Note: Previews (image/title) will only work on a live production URL.
+        // We add &quote= to force Facebook to pre-fill the text area if the preview fails.
+        return `https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${text}`;
       case 'twitter': return `https://twitter.com/intent/tweet?url=${url}&text=${text}`;
       case 'linkedin': return `https://www.linkedin.com/shareArticle?mini=true&url=${url}&title=${text}`;
       case 'whatsapp': return `https://api.whatsapp.com/send?text=${text}%20${url}`;
