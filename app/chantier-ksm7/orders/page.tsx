@@ -264,7 +264,7 @@ export default function AdminOrdersPage() {
                             <div className="flex flex-col items-end gap-1.5">
                               <a
                                 href={`https://wa.me/${order.whatsappNumber.replace(/\D/g, '')}?text=${encodeURIComponent(
-                                  `Bonjour ${order.customerName || 'Bâtisseur'},\n\nC'est l'équipe Kheops Set Motivation. 🏛️\n\nNous avons remarqué que vous avez initié l'acquisition du protocole *${getProductName(order.productId)}* mais que la procédure n'a pas été finalisée.\n\nAvez-vous rencontré un problème technique ou avez-vous une question sur le contenu ?\n\nNous sommes là pour vous aider à bâtir votre empire.\n\nLien pour finaliser : https://kheopsetmotivation.com/arsenal/${order.productId}`
+                                  `Bonjour ${order.customerName || 'Bâtisseur'},\n\nC'est l'équipe Kheops Set Motivation. 🏛️\n\nNous avons remarqué que vous avez initié l'acquisition du protocole *${getProductName(order.productId)}* mais que la procédure n'a pas été finalisée.\n\nAvez-vous rencontré un problème technique ou avez-vous une question sur le contenu ?\n\nNous sommes là pour vous aider à bâtir votre empire.\n\nLien pour finaliser : https://kheops-set-motivation.vercel.app/arsenal/${order.productId}`
                                 )}`}
                                 target="_blank"
                                 rel="noopener noreferrer"

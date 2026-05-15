@@ -28,7 +28,7 @@ export default function MentionsLegales() {
         <section>
           <h2 className="text-gold text-xl uppercase font-bold mb-4 tracking-widest">1. Éditeur du Site</h2>
           <p>Le site Kheops Set Motivation est édité par Kheops Set.</p>
-          <p>Contact : contact@kheopsetmotivation.com</p>
+          <p>Contact : contact@kheops-set-motivation.vercel.app</p>
         </section>
 
         <section>

@@ -23,12 +23,12 @@ export class TaraProvider implements PaymentProvider {
     }
 
     try {
-      const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://kheopsetmotivation.com';
+      const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://kheops-set-motivation.vercel.app';
       
       // Tara exige impérativement du HTTPS. 
       // Si on est en local, on utilise le domaine de prod comme fallback pour générer le lien.
       const taraBaseUrl = baseUrl.includes('localhost') 
-        ? 'https://kheopsetmotivation.com' 
+        ? 'https://kheops-set-motivation.vercel.app' 
         : baseUrl.replace('http://', 'https://');
 
       // Fonction pour nettoyer les accents car l'API Tara semble avoir des soucis d'encodage (UTF-8 vs Latin-1)
@@ -46,7 +46,7 @@ export class TaraProvider implements PaymentProvider {
         productDescription: cleanString(order.productDescription),
         // Fallback si pas d'image ou si image en localhost
         productPictureUrl: order.productPictureUrl?.includes('localhost')
-          ? order.productPictureUrl.replace(/http:\/\/localhost:\d+/, 'https://kheopsetmotivation.com')
+          ? order.productPictureUrl.replace(/http:\/\/localhost:\d+/, 'https://kheops-set-motivation.vercel.app')
           : (order.productPictureUrl?.startsWith('http') 
               ? order.productPictureUrl.replace('http://', 'https://')
               : `${taraBaseUrl}/logo.png`), 
