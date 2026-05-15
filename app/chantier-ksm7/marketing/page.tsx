@@ -199,7 +199,7 @@ export default function AdminMarketingPage() {
                         exit={{ height: 0, opacity: 0 }}
                         className="overflow-hidden bg-white/[0.01]"
                       >
-                        <div className="p-6 pt-0 ml-13 flex flex-col gap-4 border-l-2 border-gold/20 ml-9 mb-4 ml-14">
+                        <div className="p-6 pt-0 flex flex-col gap-4 border-l-2 border-gold/20 mb-4 ml-14">
                           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-2">
                             <DetailItem icon={User} label="Nom Client" value={event.payload.customerName || 'N/A'} />
                             <DetailItem icon={Mail} label="Email" value={event.payload.email} />
