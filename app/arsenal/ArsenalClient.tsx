@@ -8,6 +8,7 @@ import Footer from "@/components/Footer";
 import { tools } from "@/lib/data";
 import * as gtag from '@/lib/gtag';
 import { trackEvent } from '@/lib/analytics';
+import StickyCTA from "@/components/StickyCTA";
 
 const brutalEase = [0.85, 0, 0.15, 1] as const;
 
@@ -62,7 +63,7 @@ export default function ArsenalClient() {
             </div>
           </div>
 
-          <div className="md:col-span-12 mb-8">
+          <div id="liste-arsenal" className="md:col-span-12 mb-8">
             <div className="flex items-center gap-4 mb-4">
               <div className="h-px bg-white/20 flex-grow" />
               <h3 className="font-display text-2xl uppercase tracking-widest text-gold px-4">Inventaire Disponible</h3>
@@ -179,6 +180,7 @@ export default function ArsenalClient() {
       </main>
 
       <Footer />
+      <StickyCTA targetId="liste-arsenal" />
     </div>
   );
 }

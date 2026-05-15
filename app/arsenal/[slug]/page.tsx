@@ -9,6 +9,7 @@ import SummaryCarousel from '@/components/SummaryCarousel';
 import TrackViewContent from '@/components/analytics/TrackViewContent';
 import Footer from '@/components/Footer';
 import JsonLd from '@/components/seo/JsonLd';
+import StickyCTA from '@/components/StickyCTA';
 import { constructMetadata, getSiteUrl } from '@/lib/seo';
 
 interface PageProps {
@@ -320,7 +321,7 @@ export default async function ToolPage({ params }: PageProps) {
         </div>
 
         <div className="lg:col-span-5">
-          <div className="sticky top-8 flex flex-col gap-6">
+          <div id="commande" className="sticky top-8 flex flex-col gap-6">
             
             {/* BLOC PRIX & CTA */}
             <div className="border border-white/10 bg-white/5 p-8 flex flex-col gap-8 backdrop-blur-sm">
@@ -398,6 +399,7 @@ export default async function ToolPage({ params }: PageProps) {
       </main>
 
       <Footer maxWidth="1200px" />
+      <StickyCTA targetId="commande" />
     </div>
     </>
   );
