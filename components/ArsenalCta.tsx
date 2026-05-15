@@ -130,7 +130,7 @@ export default function ArsenalCta({
                 color: white !important;
                 border: 1px solid rgba(255, 255, 255, 0.1) !important;
                 border-radius: 0 !important;
-                font-size: 14px !important;
+                font-size: 16px !important;
                 padding-left: 58px !important;
                 transition: all 0.2s !important;
                 font-family: inherit !important;
@@ -184,7 +184,7 @@ export default function ArsenalCta({
                 color: white !important;
                 border: 1px solid rgba(255, 255, 255, 0.1) !important;
                 border-radius: 0 !important;
-                font-size: 11px !important;
+                font-size: 16px !important;
                 text-transform: uppercase !important;
                 letter-spacing: 0.1em !important;
                 padding: 12px 12px 12px 35px !important;
