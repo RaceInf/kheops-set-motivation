@@ -130,9 +130,7 @@ export async function POST(req: Request) {
         results.push({ event: eventType, email, error: error.message });
       } else {
         results.push({ event: eventType, email, status: 'ok' });
-
       }
-    }
     }
 
     return NextResponse.json({ success: true, processed: results.length, results });
