@@ -47,6 +47,9 @@ export default function AdminMarketingPage() {
   const [refreshing, setRefreshing] = useState(false);
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [statusFilter, setStatusFilter] = useState('ALL');
+  const [typeFilter, setTypeFilter] = useState('ALL');
 
   const fetchData = async () => {
     setRefreshing(true);
@@ -66,12 +69,29 @@ export default function AdminMarketingPage() {
     }
   };
 
-  useEffect(() => { fetchData(); }, []);
-
   useEffect(() => {
+    fetchData();
     const interval = setInterval(fetchData, 15000);
     return () => clearInterval(interval);
   }, []);
+
+  // Filter and Search Logic
+  const filteredEvents = events.filter(event => {
+    const matchesSearch = 
+      (event.payload.email?.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (event.payload.orderId?.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (event.payload.customerName?.toLowerCase().includes(searchQuery.toLowerCase()));
+    
+    const matchesStatus = statusFilter === 'ALL' || event.status === statusFilter;
+    
+    const matchesType = typeFilter === 'ALL' || 
+      (typeFilter === 'REMINDERS' && event.eventType.includes('reminder')) ||
+      (typeFilter === 'TRACKING' && (event.eventType.includes('opened') || event.eventType.includes('click'))) ||
+      (typeFilter === 'DELIVERY' && event.eventType.includes('delivered')) ||
+      (typeFilter === 'WHATSAPP' && event.eventType.includes('whatsapp'));
+
+    return matchesSearch && matchesStatus && matchesType;
+  });
 
   const formatDate = (dateStr: string) => {
     return new Date(dateStr).toLocaleDateString('fr-FR', {
@@ -109,8 +129,8 @@ export default function AdminMarketingPage() {
   };
 
   // Pagination logic
-  const totalPages = Math.ceil(events.length / ITEMS_PER_PAGE);
-  const currentEvents = events.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
+  const totalPages = Math.ceil(filteredEvents.length / ITEMS_PER_PAGE);
+  const currentEvents = filteredEvents.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
 
   return (
     <div className="flex flex-col gap-8">
@@ -149,6 +169,50 @@ export default function AdminMarketingPage() {
             <StatCard label="En cours de séquence" value={stats.pendingSequence} icon={BarChart3} color="text-blue-400" />
           </>
         )}
+      </div>
+
+      {/* Filter Bar */}
+      <div className="flex flex-col lg:flex-row gap-4 bg-zinc-900/30 border border-white/5 p-4">
+        <div className="flex-1 relative">
+          <input
+            type="text"
+            placeholder="RECHERCHER UN CLIENT OU UNE COMMANDE..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full bg-black border border-white/10 px-10 py-3 text-[11px] font-bold uppercase tracking-widest text-white placeholder:text-white/20 focus:outline-none focus:border-gold transition-colors"
+          />
+          <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20" />
+        </div>
+
+        <div className="flex flex-wrap gap-4">
+          <div className="flex items-center gap-2">
+            <span className="text-[10px] font-black uppercase text-white/30 tracking-tighter">TYPE:</span>
+            <select
+              value={typeFilter}
+              onChange={(e) => setTypeFilter(e.target.value)}
+              className="bg-black border border-white/10 px-4 py-3 text-[11px] font-bold uppercase text-white focus:outline-none focus:border-gold appearance-none cursor-pointer min-w-[140px]"
+            >
+              <option value="ALL">TOUT VOIR</option>
+              <option value="REMINDERS">RELANCES EMAILS</option>
+              <option value="TRACKING">OUVERTURES & CLICS</option>
+              <option value="DELIVERY">LIVRAISONS</option>
+              <option value="WHATSAPP">WHATSAPP</option>
+            </select>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <span className="text-[10px] font-black uppercase text-white/30 tracking-tighter">STATUT:</span>
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="bg-black border border-white/10 px-4 py-3 text-[11px] font-bold uppercase text-white focus:outline-none focus:border-gold appearance-none cursor-pointer min-w-[140px]"
+            >
+              <option value="ALL">TOUS STATUTS</option>
+              <option value="PROCESSED">RÉUSSI</option>
+              <option value="FAILED">ÉCHEC</option>
+            </select>
+          </div>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
