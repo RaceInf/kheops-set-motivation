@@ -14,7 +14,8 @@ interface MarketingEvent {
   id: string;
   date: string;
   eventType: string;
-  status: string;
+  status: 'PROCESSED' | 'FAILED';
+  error_message?: string;
   payload: {
     orderId?: string;
     email?: string;
@@ -273,16 +274,16 @@ export default function AdminMarketingPage() {
                             <DetailItem icon={Hash} label="Commande ID" value={event.payload.orderId} />
                             <DetailItem icon={Calendar} label="Date Précise" value={formatDate(event.date)} />
                           </div>
-                          {event.payload.error && (
+                          {(event.payload.error || event.error_message) && (
                             <div className="p-4 bg-red-500/10 border border-red-500/20">
                               <p className="text-[9px] text-red-400 font-black uppercase tracking-widest mb-2 flex items-center gap-2">
                                 <AlertCircle className="w-3 h-3" /> Diagnostic de l'erreur
                               </p>
                               <p className="text-[11px] text-white/80 font-medium leading-relaxed">
-                                {translateError(event.payload.error)}
+                                {event.payload.error ? translateError(event.payload.error) : event.error_message}
                               </p>
                               <p className="text-[8px] text-white/20 font-mono mt-3 uppercase tracking-tighter">
-                                Code technique : {event.payload.error}
+                                Code technique : {event.payload.error || 'N/A'}
                               </p>
                             </div>
                           )}

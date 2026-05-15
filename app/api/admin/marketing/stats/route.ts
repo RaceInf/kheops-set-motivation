@@ -50,6 +50,7 @@ export async function GET() {
         date: e.created_at,
         eventType: e.event_type.replace('marketing_', ''),
         status: e.status,
+        error_message: e.error_message,
         payload: e.payload
       })),
       stats
