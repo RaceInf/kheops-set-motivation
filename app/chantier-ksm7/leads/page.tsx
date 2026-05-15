@@ -1,7 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { RefreshCw, Users, Mail } from 'lucide-react';
+import { RefreshCw, Users, Mail, ChevronLeft, ChevronRight } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
+import { TableSkeleton, Skeleton } from '@/components/admin/AdminSkeletons';
+import AnimatedNumber from '@/components/admin/AnimatedNumber';
 
 interface Contact {
   email: string;
@@ -39,72 +42,110 @@ export default function AdminLeadsPage() {
   };
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-8">
       {/* Header */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div>
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+        >
           <h1 className="font-display text-4xl md:text-5xl uppercase tracking-tighter">
             Leads Newsletter
           </h1>
-          <p className="text-white/40 text-xs mt-1">Contacts inscrits via Brevo</p>
-        </div>
-        <div className="flex items-center gap-3">
+          <p className="text-white/40 text-[10px] font-bold uppercase tracking-[0.2em] mt-1">Contacts synchronisés via Brevo</p>
+        </motion.div>
+        
+        <motion.div
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+        >
           <button
             onClick={fetchLeads}
             disabled={loading}
-            className="flex items-center gap-2 px-4 py-2 border border-white/10 text-[10px] font-bold uppercase tracking-widest text-white/50 hover:text-gold hover:border-gold transition-all disabled:opacity-50"
+            className="flex items-center gap-2 px-5 py-2.5 border border-white/10 text-[10px] font-black uppercase tracking-[0.2em] text-white/50 hover:text-gold hover:border-gold transition-all disabled:opacity-50 group"
           >
-            <RefreshCw className={`w-3 h-3 ${loading ? 'animate-spin' : ''}`} />
+            <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin text-gold' : 'group-hover:rotate-180 transition-transform duration-500'}`} />
+            Actualiser
           </button>
-        </div>
+        </motion.div>
       </div>
 
       {/* Stats Card */}
-      <div className="border border-white/10 bg-zinc-950 p-6 flex items-center gap-6">
-        <div className="w-12 h-12 bg-gold/10 flex items-center justify-center">
-          <Users className="w-6 h-6 text-gold" />
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
+        className="border border-white/10 bg-zinc-950 p-8 flex items-center gap-8 group hover:border-white/20 transition-all relative overflow-hidden"
+      >
+        <div className="absolute top-0 left-0 w-1 h-full bg-gold/50" />
+        <div className="w-16 h-16 bg-gold/10 flex items-center justify-center rounded-sm group-hover:scale-110 transition-transform duration-500">
+          <Users className="w-8 h-8 text-gold" />
         </div>
-        <div>
-          <div className="font-display text-3xl tracking-tight">{total}</div>
-          <div className="text-[10px] font-bold uppercase tracking-widest text-white/40">
+        <div className="flex flex-col gap-1">
+          <div className="font-display text-5xl tracking-tight text-white group-hover:text-gold transition-colors">
+            {!loading || total > 0 ? <AnimatedNumber value={total} /> : <Skeleton className="h-10 w-20" />}
+          </div>
+          <div className="text-[10px] font-black uppercase tracking-[0.3em] text-white/30">
             Contacts enregistrés
           </div>
         </div>
-      </div>
+      </motion.div>
 
-      {/* Table */}
-      <div className="border border-white/10 bg-zinc-950 overflow-hidden">
+      {/* Table Section */}
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+        className="border border-white/10 bg-zinc-950 overflow-hidden shadow-2xl"
+      >
         {loading && contacts.length === 0 ? (
-          <div className="flex items-center justify-center h-48">
-            <RefreshCw className="w-6 h-6 text-gold animate-spin" />
-          </div>
+          <TableSkeleton rows={10} columns={3} />
         ) : contacts.length === 0 ? (
-          <p className="text-white/30 text-sm text-center py-12">Aucun contact trouvé.</p>
+          <div className="flex flex-col items-center justify-center py-24 gap-4">
+            <div className="w-16 h-16 bg-white/5 flex items-center justify-center rounded-full">
+              <Mail className="w-8 h-8 text-white/10" />
+            </div>
+            <p className="text-white/20 text-[11px] font-black uppercase tracking-widest text-center">Aucun contact trouvé dans votre base.</p>
+          </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left">
+            <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="border-b border-white/10 bg-white/[0.02]">
-                  <th className="text-[9px] uppercase tracking-widest text-white/30 font-bold p-4">#</th>
-                  <th className="text-[9px] uppercase tracking-widest text-white/30 font-bold p-4">Email</th>
-                  <th className="text-[9px] uppercase tracking-widest text-white/30 font-bold p-4">Date d'inscription</th>
+                <tr className="border-b border-white/10 bg-white/[0.03]">
+                  <th className="text-[9px] uppercase tracking-[0.2em] text-white/40 font-black p-5 w-20">#</th>
+                  <th className="text-[9px] uppercase tracking-[0.2em] text-white/40 font-black p-5">Email Adresse</th>
+                  <th className="text-[9px] uppercase tracking-[0.2em] text-white/40 font-black p-5">Date d'inscription</th>
                 </tr>
               </thead>
-              <tbody>
-                {contacts.map((contact, idx) => (
-                  <tr key={`${contact.email}-${idx}`} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
-                    <td className="p-4 text-[10px] text-white/30 font-mono">
-                      {offset + idx + 1}
-                    </td>
-                    <td className="p-4 text-sm text-white/80 flex items-center gap-2">
-                      <Mail className="w-3 h-3 text-white/20" />
-                      {contact.email}
-                    </td>
-                    <td className="p-4 text-xs text-white/50">
-                      {formatDate(contact.createdAt)}
-                    </td>
-                  </tr>
-                ))}
+              <tbody className="divide-y divide-white/5">
+                <AnimatePresence mode="popLayout">
+                  {contacts.map((contact, idx) => (
+                    <motion.tr 
+                      key={`${contact.email}-${idx}`} 
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: idx * 0.02 }}
+                      className="hover:bg-white/[0.03] transition-colors group"
+                    >
+                      <td className="p-5 text-[11px] text-white/20 font-mono font-bold">
+                        {(offset + idx + 1).toString().padStart(3, '0')}
+                      </td>
+                      <td className="p-5">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 bg-white/5 flex items-center justify-center rounded-full group-hover:bg-gold/10 transition-colors">
+                            <Mail className="w-3.5 h-3.5 text-white/20 group-hover:text-gold/60 transition-colors" />
+                          </div>
+                          <span className="text-[13px] text-white/80 font-medium group-hover:text-white transition-colors">{contact.email}</span>
+                        </div>
+                      </td>
+                      <td className="p-5">
+                        <span className="text-[11px] text-white/40 font-mono font-bold">
+                          {formatDate(contact.createdAt)}
+                        </span>
+                      </td>
+                    </motion.tr>
+                  ))}
+                </AnimatePresence>
               </tbody>
             </table>
           </div>
@@ -112,27 +153,29 @@ export default function AdminLeadsPage() {
 
         {/* Pagination */}
         {total > limit && (
-          <div className="flex justify-between items-center p-4 border-t border-white/10">
+          <div className="flex justify-between items-center px-8 py-6 border-t border-white/10 bg-white/[0.01]">
             <button
               onClick={() => setOffset(o => Math.max(0, o - limit))}
               disabled={offset === 0}
-              className="text-[10px] font-bold uppercase tracking-widest text-white/40 hover:text-white disabled:opacity-30"
+              className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-white/30 hover:text-white disabled:opacity-20 disabled:cursor-not-allowed transition-all"
             >
-              ← Précédent
+              <ChevronLeft className="w-4 h-4" /> Précédent
             </button>
-            <span className="text-[10px] text-white/30 font-mono">
-              {offset + 1}–{Math.min(offset + limit, total)} sur {total}
-            </span>
+            
+            <div className="text-[10px] text-white/20 font-mono font-bold uppercase tracking-widest">
+              Affichage <span className="text-gold">{offset + 1}</span> – <span className="text-gold">{Math.min(offset + limit, total)}</span> <span className="mx-2 opacity-30">/</span> {total} contacts
+            </div>
+
             <button
               onClick={() => setOffset(o => o + limit)}
               disabled={offset + limit >= total}
-              className="text-[10px] font-bold uppercase tracking-widest text-white/40 hover:text-white disabled:opacity-30"
+              className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-white/30 hover:text-white disabled:opacity-20 disabled:cursor-not-allowed transition-all"
             >
-              Suivant →
+              Suivant <ChevronRight className="w-4 h-4" />
             </button>
           </div>
         )}
-      </div>
+      </motion.div>
     </div>
   );
 }

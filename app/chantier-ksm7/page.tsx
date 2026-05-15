@@ -6,6 +6,10 @@ import {
   TrendingUp, ShoppingBag, DollarSign, Clock, 
   RefreshCw, ArrowUpRight
 } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
+import AreaChart from '@/components/admin/AreaChart';
+import AnimatedNumber from '@/components/admin/AnimatedNumber';
+import { Skeleton, CardSkeleton, ChartSkeleton } from '@/components/admin/AdminSkeletons';
 
 interface StatsData {
   kpis: {
@@ -48,7 +52,6 @@ export default function AdminDashboardPage() {
 
   useEffect(() => {
     fetchStats();
-    // Auto-refresh every 60 seconds
     const interval = setInterval(fetchStats, 60000);
     return () => clearInterval(interval);
   }, []);
@@ -71,20 +74,11 @@ export default function AdminDashboardPage() {
     return tools.find(t => t.id === productId)?.title || productId;
   };
 
-  if (loading && !data) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <RefreshCw className="w-8 h-8 text-gold animate-spin" />
-      </div>
-    );
-  }
-
-  if (!data) return null;
-
-  const kpis = [
+  const kpiDefinitions = data ? [
     { 
       label: 'Chiffre d\'affaires', 
-      value: formatCFA(data.kpis.totalRevenue), 
+      value: data.kpis.totalRevenue, 
+      isCurrency: true,
       icon: DollarSign,
       color: 'text-emerald-400',
       bgColor: 'bg-emerald-400/10',
@@ -92,196 +86,246 @@ export default function AdminDashboardPage() {
     },
     { 
       label: 'Ventes confirmées', 
-      value: data.kpis.totalSales.toString(), 
+      value: data.kpis.totalSales, 
       icon: ShoppingBag,
       color: 'text-gold',
       bgColor: 'bg-gold/10',
     },
     { 
       label: 'Panier moyen', 
-      value: formatCFA(data.kpis.averageOrder), 
+      value: data.kpis.averageOrder, 
+      isCurrency: true,
       icon: TrendingUp,
       color: 'text-blue-400',
       bgColor: 'bg-blue-400/10',
     },
     { 
-      label: 'En attente', 
-      value: data.kpis.pendingOrders.toString(), 
+      label: 'Attente', 
+      value: data.kpis.pendingOrders, 
       icon: Clock,
       color: 'text-amber-400',
       bgColor: 'bg-amber-400/10',
     },
-  ];
-
-  const maxRevenue = Math.max(...data.revenueByDay.map(d => d.revenue), 1);
+  ] : [];
 
   return (
     <div className="flex flex-col gap-8">
       {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div>
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+        >
           <h1 className="font-display text-4xl md:text-5xl uppercase tracking-tighter">
             Tableau de Bord
           </h1>
-          <p className="text-white/40 text-xs mt-1">
+          <p className="text-white/40 text-[10px] font-bold uppercase tracking-[0.2em] mt-1">
             {lastRefresh 
               ? `Dernière mise à jour : ${lastRefresh.toLocaleTimeString('fr-FR')}`
               : 'Chargement...'
             }
           </p>
-        </div>
-        <button
+        </motion.div>
+        <motion.button
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
           onClick={fetchStats}
           disabled={loading}
-          className="flex items-center gap-2 px-4 py-2 border border-white/10 text-[10px] font-bold uppercase tracking-widest text-white/50 hover:text-gold hover:border-gold transition-all disabled:opacity-50"
+          className="flex items-center gap-2 px-4 py-2 border border-white/10 text-[10px] font-bold uppercase tracking-widest text-white/50 hover:text-gold hover:border-gold transition-all disabled:opacity-50 group"
         >
-          <RefreshCw className={`w-3 h-3 ${loading ? 'animate-spin' : ''}`} />
+          <RefreshCw className={`w-3 h-3 ${loading ? 'animate-spin text-gold' : 'group-hover:text-gold'}`} />
           Actualiser
-        </button>
+        </motion.button>
       </div>
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {kpis.map((kpi, idx) => (
-          <div
-            key={idx}
-            className="border border-white/10 bg-zinc-950 p-6 flex flex-col gap-4 hover:border-white/20 transition-colors"
-          >
-            <div className="flex justify-between items-center">
-              <span className="text-[10px] font-bold uppercase tracking-widest text-white/40">
-                {kpi.label}
-              </span>
-              <div className={`w-8 h-8 ${kpi.bgColor} flex items-center justify-center`}>
-                <kpi.icon className={`w-4 h-4 ${kpi.color}`} />
-              </div>
-            </div>
-            <div className="flex flex-col gap-1">
-              <div className="font-display text-2xl md:text-3xl tracking-tight">
-                {kpi.value}
-              </div>
-              {kpi.trend !== undefined && (
-                <div className={`text-[10px] font-bold uppercase tracking-widest flex items-center gap-1 ${kpi.trend > 0 ? 'text-emerald-400' : kpi.trend < 0 ? 'text-red-400' : 'text-white/40'}`}>
-                  {kpi.trend > 0 ? '↑' : kpi.trend < 0 ? '↓' : '—'} {Math.abs(kpi.trend)}% vs 7 derniers jours
+        {!data ? (
+          Array.from({ length: 4 }).map((_, i) => <CardSkeleton key={i} />)
+        ) : (
+          kpiDefinitions.map((kpi, idx) => (
+            <motion.div
+              key={idx}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: idx * 0.1 }}
+              className="border border-white/10 bg-zinc-950 p-6 flex flex-col gap-4 hover:border-white/20 transition-all group relative overflow-hidden"
+            >
+              <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="flex justify-between items-center">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-white/40">
+                  {kpi.label}
+                </span>
+                <div className={`w-10 h-10 ${kpi.bgColor} flex items-center justify-center rounded-sm transition-transform group-hover:scale-110`}>
+                  <kpi.icon className={`w-5 h-5 ${kpi.color}`} />
                 </div>
-              )}
-            </div>
-          </div>
-        ))}
+              </div>
+              <div className="flex flex-col gap-1">
+                <div className="font-display text-3xl md:text-4xl tracking-tight text-white group-hover:text-gold transition-colors">
+                  <AnimatedNumber value={kpi.value} suffix={kpi.isCurrency ? ' FCFA' : ''} />
+                </div>
+                {kpi.trend !== undefined && (
+                  <div className={`text-[10px] font-bold uppercase tracking-widest flex items-center gap-1 ${kpi.trend > 0 ? 'text-emerald-400' : kpi.trend < 0 ? 'text-red-400' : 'text-white/40'}`}>
+                    {kpi.trend > 0 ? '↑' : kpi.trend < 0 ? '↓' : '—'} {Math.abs(kpi.trend)}% vs 7j
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          ))
+        )}
       </div>
 
       {/* Charts Row */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        {/* Revenue Chart (7 days) */}
-        <div className="lg:col-span-2 border border-white/10 bg-zinc-950 p-6">
-          <h3 className="text-[10px] font-bold uppercase tracking-widest text-white/40 mb-6">
-            Revenus — 7 derniers jours
-          </h3>
-          <div className="flex items-end gap-2 h-48">
-            {data.revenueByDay.map((day, idx) => {
-              const height = maxRevenue > 0 ? (day.revenue / maxRevenue) * 100 : 0;
-              const dateLabel = new Date(day.date).toLocaleDateString('fr-FR', { weekday: 'short' });
-              return (
-                <div key={idx} className="flex-1 flex flex-col items-center gap-2 h-full">
-                  <span className="text-[9px] text-white/40 font-mono shrink-0">
-                    {day.revenue > 0 ? formatCFA(day.revenue).replace(' FCFA', '') : '—'}
-                  </span>
-                  <div className="w-full flex-1 flex justify-center items-end relative group">
-                    <div
-                      className="w-full max-w-16 bg-gradient-to-t from-gold/10 to-gold/40 hover:from-gold/20 hover:to-gold/60 border-t border-gold/50 transition-all duration-500"
-                      style={{ height: `${Math.max(height, 2)}%` }}
-                    />
-                    {day.count > 0 && (
-                      <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black border border-white/10 px-2 py-1 text-[9px] text-gold font-bold opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10 shadow-xl">
-                        {day.count} vente{day.count > 1 ? 's' : ''}
-                      </div>
-                    )}
-                  </div>
-                  <span className="text-[9px] text-white/30 uppercase font-bold">{dateLabel}</span>
-                </div>
-              );
-            })}
+        {/* Revenue Area Chart */}
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.98 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.4 }}
+          className="lg:col-span-2 border border-white/10 bg-zinc-950 p-6 flex flex-col gap-6"
+        >
+          <div className="flex justify-between items-center">
+            <h3 className="text-[10px] font-bold uppercase tracking-widest text-white/40 flex items-center gap-2">
+              <TrendingUp className="w-3 h-3" /> Revenus — 7 derniers jours
+            </h3>
+            {data && (
+              <span className="text-[10px] text-gold font-mono font-bold">
+                {formatCFA(data.revenueByDay.reduce((s, d) => s + d.revenue, 0))}
+              </span>
+            )}
           </div>
-        </div>
+          
+          <div className="h-52 w-full">
+            {!data ? (
+              <ChartSkeleton />
+            ) : (
+              <AreaChart 
+                data={data.revenueByDay.map(d => ({
+                  label: new Date(d.date).toLocaleDateString('fr-FR', { weekday: 'short' }),
+                  value: d.revenue
+                }))}
+                color="gold"
+                suffix=" FCFA"
+                height={200}
+              />
+            )}
+          </div>
+        </motion.div>
 
         {/* Product Breakdown */}
-        <div className="border border-white/10 bg-zinc-950 p-6">
-          <h3 className="text-[10px] font-bold uppercase tracking-widest text-white/40 mb-6">
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.98 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.5 }}
+          className="border border-white/10 bg-zinc-950 p-6 flex flex-col gap-6"
+        >
+          <h3 className="text-[10px] font-bold uppercase tracking-widest text-white/40">
             Ventes par Produit
           </h3>
-          <div className="flex flex-col gap-4">
-            {tools.map(tool => {
-              const stats = data.productStats[tool.id] || { count: 0, revenue: 0 };
-              const totalProductSales = Object.values(data.productStats).reduce((sum, s) => sum + s.count, 0) || 1;
-              const percentage = Math.round((stats.count / totalProductSales) * 100);
-              return (
-                <div key={tool.id} className="flex flex-col gap-2">
-                  <div className="flex justify-between items-center">
-                    <span className="text-xs font-bold text-white/70 truncate">{tool.title}</span>
-                    <span className="text-[10px] text-gold font-mono">{stats.count}</span>
-                  </div>
-                  <div className="w-full h-2 bg-white/5">
-                    <div 
-                      className="h-full bg-gold/60 transition-all duration-500"
-                      style={{ width: `${percentage}%` }}
-                    />
-                  </div>
-                  <span className="text-[9px] text-white/30">{formatCFA(stats.revenue)}</span>
-                </div>
-              );
-            })}
+          <div className="flex flex-col gap-5">
+            {!data ? (
+              Array.from({ length: 4 }).map((_, i) => <Skeleton key={i} className="h-12 w-full" />)
+            ) : (
+              tools.map((tool, idx) => {
+                const stats = data.productStats[tool.id] || { count: 0, revenue: 0 };
+                const totalProductSales = Object.values(data.productStats).reduce((sum, s) => sum + s.count, 0) || 1;
+                const percentage = Math.round((stats.count / totalProductSales) * 100);
+                return (
+                  <motion.div 
+                    key={tool.id} 
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.6 + idx * 0.1 }}
+                    className="flex flex-col gap-2 group"
+                  >
+                    <div className="flex justify-between items-center">
+                      <span className="text-xs font-bold text-white/70 group-hover:text-white transition-colors">{tool.title}</span>
+                      <span className="text-[10px] text-gold font-mono font-bold">{stats.count}</span>
+                    </div>
+                    <div className="w-full h-1.5 bg-white/5 overflow-hidden">
+                      <motion.div 
+                        initial={{ width: 0 }}
+                        animate={{ width: `${percentage}%` }}
+                        transition={{ duration: 1, ease: "easeOut" }}
+                        className="h-full bg-gold/60"
+                      />
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-[9px] text-white/30 uppercase font-bold tracking-wider">{formatCFA(stats.revenue)}</span>
+                      <span className="text-[9px] text-white/20 font-mono">{percentage}%</span>
+                    </div>
+                  </motion.div>
+                );
+              })
+            )}
           </div>
-        </div>
+        </motion.div>
       </div>
 
       {/* Recent Orders */}
-      <div className="border border-white/10 bg-zinc-950 p-6">
-        <div className="flex justify-between items-center mb-6">
-          <h3 className="text-[10px] font-bold uppercase tracking-widest text-white/40">
-            Dernières Ventes
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.7 }}
+        className="border border-white/10 bg-zinc-950 p-6"
+      >
+        <div className="flex justify-between items-center mb-8">
+          <h3 className="text-[10px] font-bold uppercase tracking-widest text-white/40 flex items-center gap-2">
+            <ShoppingBag className="w-3 h-3" /> Dernières Ventes
           </h3>
           <a 
             href="/chantier-ksm7/orders" 
-            className="text-[10px] text-gold uppercase tracking-widest hover:underline flex items-center gap-1"
+            className="text-[10px] text-gold uppercase tracking-[0.2em] font-black hover:text-white transition-colors flex items-center gap-2 group"
           >
-            Voir tout <ArrowUpRight className="w-3 h-3" />
+            Voir tout <ArrowUpRight className="w-3 h-3 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
           </a>
         </div>
 
-        {data.recentOrders.length === 0 ? (
-          <p className="text-white/30 text-sm text-center py-8">Aucune vente enregistrée pour le moment.</p>
+        {!data ? (
+          <Skeleton className="h-48 w-full" />
+        ) : data.recentOrders.length === 0 ? (
+          <p className="text-white/20 text-[11px] font-bold uppercase tracking-widest text-center py-12">Aucune vente enregistrée.</p>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left">
               <thead>
-                <tr className="border-b border-white/10">
-                  <th className="text-[9px] uppercase tracking-widest text-white/30 font-bold pb-3 pr-4">Date</th>
-                  <th className="text-[9px] uppercase tracking-widest text-white/30 font-bold pb-3 pr-4">Client</th>
-                  <th className="text-[9px] uppercase tracking-widest text-white/30 font-bold pb-3 pr-4">Produit</th>
-                  <th className="text-[9px] uppercase tracking-widest text-white/30 font-bold pb-3 text-right">Montant</th>
+                <tr className="border-b border-white/10 bg-white/[0.02]">
+                  <th className="text-[9px] uppercase tracking-widest text-white/30 font-black p-4">Date</th>
+                  <th className="text-[9px] uppercase tracking-widest text-white/30 font-black p-4">Client</th>
+                  <th className="text-[9px] uppercase tracking-widest text-white/30 font-black p-4">Produit</th>
+                  <th className="text-[9px] uppercase tracking-widest text-white/30 font-black p-4 text-right">Montant</th>
                 </tr>
               </thead>
               <tbody>
-                {data.recentOrders.map(order => (
-                  <tr key={order.id} className="border-b border-white/5 hover:bg-white/[0.02]">
-                    <td className="py-3 pr-4 text-xs text-white/60 font-mono whitespace-nowrap">
-                      {formatDate(order.date)}
-                    </td>
-                    <td className="py-3 pr-4 text-xs text-white/80">
-                      {order.email}
-                    </td>
-                    <td className="py-3 pr-4 text-xs text-gold font-bold truncate max-w-[200px]">
-                      {getProductName(order.productId)}
-                    </td>
-                    <td className="py-3 text-xs text-white font-bold text-right whitespace-nowrap">
-                      {formatCFA(order.amount)}
-                    </td>
-                  </tr>
-                ))}
+                <AnimatePresence>
+                  {data.recentOrders.map((order, idx) => (
+                    <motion.tr 
+                      key={order.id} 
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.8 + idx * 0.05 }}
+                      className="border-b border-white/5 hover:bg-white/[0.03] transition-colors group cursor-default"
+                    >
+                      <td className="p-4 text-[11px] text-white/50 font-mono whitespace-nowrap">
+                        {formatDate(order.date)}
+                      </td>
+                      <td className="p-4 text-[11px] text-white/80 font-bold">
+                        {order.email}
+                      </td>
+                      <td className="p-4 text-[11px] text-gold font-black uppercase tracking-wider truncate max-w-[200px]">
+                        {getProductName(order.productId)}
+                      </td>
+                      <td className="p-4 text-[11px] text-white font-mono font-bold text-right whitespace-nowrap group-hover:text-gold transition-colors">
+                        {formatCFA(order.amount)}
+                      </td>
+                    </motion.tr>
+                  ))}
+                </AnimatePresence>
               </tbody>
             </table>
           </div>
         )}
-      </div>
+      </motion.div>
     </div>
   );
 }

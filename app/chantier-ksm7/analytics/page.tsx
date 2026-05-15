@@ -1,10 +1,15 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import {
   RefreshCw, Eye, Users, TrendingUp, Globe,
-  ArrowUp, ArrowDown, Minus, AlertTriangle
+  ArrowUp, ArrowDown, Minus, AlertTriangle, Activity
 } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
+import DateRangePicker from '@/components/admin/DateRangePicker';
+import AreaChart from '@/components/admin/AreaChart';
+import AnimatedNumber from '@/components/admin/AnimatedNumber';
+import { Skeleton, CardSkeleton, ChartSkeleton } from '@/components/admin/AdminSkeletons';
 
 interface AnalyticsData {
   kpis: {
@@ -27,14 +32,6 @@ interface AnalyticsData {
   tableNotFound?: boolean;
 }
 
-const RANGES = [
-  { key: 'today', label: "Aujourd'hui" },
-  { key: '7d', label: '7 jours' },
-  { key: '30d', label: '30 jours' },
-  { key: '12m', label: '12 mois' },
-  { key: 'year', label: 'Année' },
-];
-
 const PAGE_LABELS: Record<string, string> = {
   '/': 'Accueil',
   '/arsenal': 'Arsenal (Catalogue)',
@@ -43,16 +40,32 @@ const PAGE_LABELS: Record<string, string> = {
   '/politique-de-confidentialite': 'Politique de Confidentialité',
 };
 
+
+
+// ── Main Component ────────────────────────────────────────────────────────────
 export default function AdminAnalyticsPage() {
   const [data, setData] = useState<AnalyticsData | null>(null);
   const [loading, setLoading] = useState(true);
-  const [range, setRange] = useState('7d');
+  const [customDates, setCustomDates] = useState<{ from: Date; to: Date } | null>(null);
+  const [rangeLabel, setRangeLabel] = useState('7 derniers jours');
   const [lastRefresh, setLastRefresh] = useState<Date | null>(null);
 
   const fetchAnalytics = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`/api/admin/analytics?range=${range}`);
+      const params = new URLSearchParams();
+      params.set('range', 'custom');
+      if (customDates) {
+        params.set('from', customDates.from.toISOString());
+        params.set('to', customDates.to.toISOString());
+      } else {
+        // Default 7 days
+        const now = new Date();
+        const from = new Date(now); from.setDate(from.getDate() - 7);
+        params.set('from', from.toISOString());
+        params.set('to', now.toISOString());
+      }
+      const res = await fetch(`/api/admin/analytics?${params}`);
       const json = await res.json();
       setData(json);
       setLastRefresh(new Date());
@@ -63,13 +76,13 @@ export default function AdminAnalyticsPage() {
     }
   };
 
-  useEffect(() => { fetchAnalytics(); }, [range]);
+  useEffect(() => { fetchAnalytics(); }, [customDates]);
 
   // Auto-refresh every 30 seconds
   useEffect(() => {
     const interval = setInterval(fetchAnalytics, 30000);
     return () => clearInterval(interval);
-  }, [range]);
+  }, [customDates]);
 
   const getPageLabel = (path: string) => {
     if (PAGE_LABELS[path]) return PAGE_LABELS[path];
@@ -88,7 +101,25 @@ export default function AdminAnalyticsPage() {
     return { icon: Minus, color: 'text-white/40', text: '0%' };
   };
 
-  // Table not found - show setup instructions
+  // Derived chart data
+  const chartInfo = useMemo(() => {
+    if (!data?.chartData?.length) return { max: 1, total: 0, maxLabels: 30 };
+    return {
+      max: Math.max(...data.chartData.map(d => d.views), 1),
+      total: data.chartData.reduce((s, d) => s + d.views, 0),
+      maxLabels: data.chartData.length > 45 ? Math.floor(data.chartData.length / 10) : data.chartData.length,
+    };
+  }, [data?.chartData]);
+
+  const revenueInfo = useMemo(() => {
+    if (!data?.revenueChartData?.length) return { max: 1, total: 0 };
+    return {
+      max: Math.max(...data.revenueChartData.map(d => d.revenue), 1),
+      total: data.revenueChartData.reduce((s, d) => s + d.revenue, 0),
+    };
+  }, [data?.revenueChartData]);
+
+  // Table not found
   if (data?.tableNotFound) {
     return (
       <div className="flex flex-col gap-6">
@@ -106,14 +137,12 @@ export default function AdminAnalyticsPage() {
   id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
   path text NOT NULL,
   referrer text,
-  event text, -- Nouveau: pour traquer les clics (ex: click_buy_button)
+  event text,
+  visitor_id text,
   created_at timestamptz DEFAULT now()
 );
 
--- Index pour les requêtes rapides par date
 CREATE INDEX idx_page_views_created_at ON page_views (created_at DESC);
-
--- Index pour les requêtes par chemin
 CREATE INDEX idx_page_views_path ON page_views (path);`}</pre>
               <p className="text-white/40 text-xs">
                 Une fois la table créée, rechargez cette page. Le tracking commencera automatiquement.
@@ -125,302 +154,313 @@ CREATE INDEX idx_page_views_path ON page_views (path);`}</pre>
     );
   }
 
-  if (loading && !data) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <RefreshCw className="w-8 h-8 text-gold animate-spin" />
-      </div>
-    );
-  }
-
-  if (!data) return null;
-
-  const maxViews = Math.max(...data.chartData.map(d => d.views), 1);
-  const totalChartViews = data.chartData.reduce((sum, d) => sum + d.views, 0);
-  const trend = getTrend();
+  const trend = data ? getTrend() : null;
 
   return (
     <div className="flex flex-col gap-6">
-      {/* Header */}
+      {/* ── Header ── */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h1 className="font-display text-4xl md:text-5xl uppercase tracking-tighter">
             Analytique
           </h1>
-          <p className="text-white/40 text-xs mt-1">
+          <p className="text-white/30 text-[10px] mt-1 font-mono">
             {lastRefresh
-              ? `Mis à jour : ${lastRefresh.toLocaleTimeString('fr-FR')} • Auto-refresh 30s`
+              ? `${lastRefresh.toLocaleTimeString('fr-FR')} · Auto-refresh 30s`
               : 'Chargement...'}
           </p>
         </div>
-        <div className="flex items-center gap-3">
-          {/* Range Selector */}
-          <div className="flex border border-white/10 overflow-hidden">
-            {RANGES.map(r => (
-              <button
-                key={r.key}
-                onClick={() => setRange(r.key)}
-                className={`px-3 py-2 text-[9px] font-bold uppercase tracking-widest transition-all
-                  ${range === r.key
-                    ? 'bg-gold text-black'
-                    : 'text-white/40 hover:text-white hover:bg-white/5'
-                  }`}
-              >
-                {r.label}
-              </button>
-            ))}
-          </div>
+        <div className="flex items-center gap-2">
+          <DateRangePicker 
+            onRangeChange={(newRange, label) => {
+              if (newRange) {
+                setCustomDates(newRange);
+                setRangeLabel(label);
+              }
+            }}
+          />
           <button
             onClick={fetchAnalytics}
             disabled={loading}
-            className="p-2 border border-white/10 text-white/50 hover:text-gold hover:border-gold transition-all disabled:opacity-50"
+            className="h-[38px] w-[38px] flex items-center justify-center border border-white/10 text-white/30 hover:text-gold hover:border-gold/40 transition-all disabled:opacity-40"
           >
-            <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
+            <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
           </button>
         </div>
       </div>
 
-      {/* KPI Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* Active Visitors */}
-        <div className="border border-white/10 bg-zinc-950 p-6 flex flex-col gap-3">
-          <div className="flex justify-between items-center">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-white/40">En ligne</span>
-            <div className="flex items-center gap-1.5">
-              <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
-              <span className="text-[9px] text-emerald-400 font-bold">LIVE</span>
-            </div>
-          </div>
-          <div className="flex items-baseline gap-3">
-            <div className="font-display text-4xl text-emerald-400">{data.kpis.activePeople}</div>
-            <span className="text-white/40 text-[10px] uppercase font-bold">Personnes</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-[9px] text-white/30">{data.kpis.activePageViews} pages vues</span>
-          </div>
-        </div>
+      {/* ── KPI Cards ── */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        {!data ? (
+          <>
+            <CardSkeleton /><CardSkeleton /><CardSkeleton /><CardSkeleton />
+          </>
+        ) : (
+          <>
+            {/* Active Visitors */}
+            <motion.div
+              initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0 }}
+              className="border border-white/10 bg-zinc-950 p-5 flex flex-col gap-2"
+            >
+              <div className="flex justify-between items-center">
+                <span className="text-[9px] font-black uppercase tracking-widest text-white/30">En ligne</span>
+                <div className="flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" />
+                  <span className="text-[8px] text-emerald-400 font-black tracking-widest">LIVE</span>
+                </div>
+              </div>
+              <div className="font-display text-3xl text-emerald-400"><AnimatedNumber value={data.kpis.activePeople} /></div>
+              <span className="text-[9px] text-white/20">{data.kpis.activePageViews} pages vues (5 min)</span>
+            </motion.div>
 
-        {/* Views Today */}
-        <div className="border border-white/10 bg-zinc-950 p-6 flex flex-col gap-3">
-          <div className="flex justify-between items-center">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-white/40">Aujourd'hui</span>
-            <Eye className="w-4 h-4 text-gold/40" />
-          </div>
-          <div className="font-display text-4xl">{data.kpis.viewsToday}</div>
-          {trend && (
-            <div className={`flex items-center gap-1 ${trend.color}`}>
-              <trend.icon className="w-3 h-3" />
-              <span className="text-[9px] font-bold">{trend.text} vs hier</span>
-            </div>
-          )}
-        </div>
+            {/* Views Today */}
+            <motion.div
+              initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }}
+              className="border border-white/10 bg-zinc-950 p-5 flex flex-col gap-2"
+            >
+              <div className="flex justify-between items-center">
+                <span className="text-[9px] font-black uppercase tracking-widest text-white/30">Aujourd'hui</span>
+                <Eye className="w-3.5 h-3.5 text-gold/30" />
+              </div>
+              <div className="font-display text-3xl"><AnimatedNumber value={data.kpis.viewsToday} /></div>
+              {trend && (
+                <div className={`flex items-center gap-1 ${trend.color}`}>
+                  <trend.icon className="w-3 h-3" />
+                  <span className="text-[9px] font-bold">{trend.text} vs hier</span>
+                </div>
+              )}
+            </motion.div>
 
-        {/* Yesterday */}
-        <div className="border border-white/10 bg-zinc-950 p-6 flex flex-col gap-3">
-          <div className="flex justify-between items-center">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-white/40">Hier</span>
-            <Users className="w-4 h-4 text-blue-400/40" />
-          </div>
-          <div className="font-display text-4xl text-white/60">{data.kpis.viewsYesterday}</div>
-          <span className="text-[9px] text-white/30">vues totales</span>
-        </div>
+            {/* Yesterday */}
+            <motion.div
+              initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
+              className="border border-white/10 bg-zinc-950 p-5 flex flex-col gap-2"
+            >
+              <div className="flex justify-between items-center">
+                <span className="text-[9px] font-black uppercase tracking-widest text-white/30">Hier</span>
+                <Users className="w-3.5 h-3.5 text-blue-400/30" />
+              </div>
+              <div className="font-display text-3xl text-white/50"><AnimatedNumber value={data.kpis.viewsYesterday} /></div>
+              <span className="text-[9px] text-white/20">vues totales</span>
+            </motion.div>
 
-        {/* Total All Time */}
-        <div className="border border-white/10 bg-zinc-950 p-6 flex flex-col gap-3">
-          <div className="flex justify-between items-center">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-white/40">Total</span>
-            <TrendingUp className="w-4 h-4 text-gold/40" />
-          </div>
-          <div className="font-display text-4xl text-gold">{data.kpis.totalViews.toLocaleString('fr-FR')}</div>
-          <span className="text-[9px] text-white/30">toutes périodes</span>
-        </div>
+            {/* Total */}
+            <motion.div
+              initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}
+              className="border border-white/10 bg-zinc-950 p-5 flex flex-col gap-2"
+            >
+              <div className="flex justify-between items-center">
+                <span className="text-[9px] font-black uppercase tracking-widest text-white/30">Total</span>
+                <TrendingUp className="w-3.5 h-3.5 text-gold/30" />
+              </div>
+              <div className="font-display text-3xl text-gold"><AnimatedNumber value={data.kpis.totalViews} /></div>
+              <span className="text-[9px] text-white/20">toutes périodes</span>
+            </motion.div>
+          </>
+        )}
       </div>
-      
-      {/* Conversion Funnel */}
-      <div className="border border-white/10 bg-zinc-950 p-6">
-        <h3 className="text-[10px] font-bold uppercase tracking-widest text-white/40 mb-8">
-          Entonnoir de Conversion — {RANGES.find(r => r.key === range)?.label}
+
+      {/* ── Conversion Funnel ── */}
+      <motion.div
+        key={`funnel-${rangeLabel}`}
+        initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}
+        className="border border-white/10 bg-zinc-950 p-6"
+      >
+        <h3 className="text-[9px] font-black uppercase tracking-[0.15em] text-white/25 mb-6 flex items-center gap-2">
+          <Activity className="w-3 h-3" /> Entonnoir de Conversion — <span className="text-gold/60">{rangeLabel}</span>
         </h3>
         
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 relative">
-          {[
-            { label: 'Visites', value: data.funnel.views, color: 'bg-white/10' },
-            { label: 'Clics Achat', value: data.funnel.clicks, color: 'bg-gold/20', parent: data.funnel.views },
-            { label: 'Checkouts', value: data.funnel.checkouts, color: 'bg-gold/40', parent: data.funnel.clicks },
-            { label: 'Ventes', value: data.funnel.sales, color: 'bg-emerald-500/40', parent: data.funnel.checkouts },
-          ].map((step, idx) => {
-            const ratio = step.parent && step.parent > 0 ? Math.round((step.value / step.parent) * 100) : 0;
-            const globalRatio = data.funnel.views > 0 ? ((step.value / data.funnel.views) * 100).toFixed(1) : 0;
-            
-            return (
-              <div key={idx} className="flex flex-col gap-3 relative">
-                <div className={`h-24 ${step.color} flex flex-col items-center justify-center border border-white/5 relative overflow-hidden`}>
-                  <div className="font-display text-3xl z-10">{step.value}</div>
-                  <div className="text-[9px] font-bold uppercase tracking-widest text-white/40 z-10">{step.label}</div>
-                  {idx > 0 && (
-                    <div className="absolute top-2 right-2 text-[10px] font-mono text-white/20">
-                      {globalRatio}%
+        {!data ? (
+          <div className="grid grid-cols-4 gap-3">
+            {[1,2,3,4].map(i => <Skeleton key={i} className="h-24" />)}
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            {[
+              { label: 'Visites', value: data.funnel.views, bg: 'bg-white/[0.03]', accent: 'text-white' },
+              { label: 'Clics Achat', value: data.funnel.clicks, bg: 'bg-gold/[0.04]', accent: 'text-gold', parent: data.funnel.views },
+              { label: 'Checkouts', value: data.funnel.checkouts, bg: 'bg-gold/[0.07]', accent: 'text-gold', parent: data.funnel.clicks },
+              { label: 'Ventes', value: data.funnel.sales, bg: 'bg-emerald-500/[0.08]', accent: 'text-emerald-400', parent: data.funnel.checkouts },
+            ].map((step, idx) => {
+              const ratio = step.parent && step.parent > 0 ? Math.round((step.value / step.parent) * 100) : null;
+              return (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: idx * 0.07 }}
+                  className={`${step.bg} border border-white/5 p-5 flex flex-col items-center justify-center gap-2 relative`}
+                >
+                  <div className={`font-display text-3xl ${step.accent}`}>
+                    <AnimatedNumber value={step.value} />
+                  </div>
+                  <div className="text-[8px] font-black uppercase tracking-[0.15em] text-white/30">{step.label}</div>
+                  {ratio !== null && (
+                    <div className="absolute top-2 right-2">
+                      <span className={`text-[9px] font-mono font-bold ${ratio > 10 ? 'text-emerald-400/60' : 'text-white/15'}`}>
+                        {ratio}%
+                      </span>
                     </div>
                   )}
-                </div>
-                {idx > 0 && (
-                  <div className="text-center">
-                    <span className={`text-[10px] font-bold uppercase tracking-widest ${ratio > 10 ? 'text-emerald-400' : 'text-white/30'}`}>
-                      {ratio}% de conversion
-                    </span>
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Chart */}
-      <div className="border border-white/10 bg-zinc-950 p-6 overflow-hidden">
-        <div className="flex justify-between items-center mb-6">
-          <h3 className="text-[10px] font-bold uppercase tracking-widest text-white/40">
-            Pages vues — {RANGES.find(r => r.key === range)?.label}
-          </h3>
-          <span className="text-[10px] text-gold font-mono">{totalChartViews.toLocaleString('fr-FR')} vues</span>
-        </div>
-        <div className="overflow-x-auto pb-4 scrollbar-hide">
-          <div className="flex items-end gap-1 h-52 min-w-[600px] md:min-w-0">
-            {data.chartData.map((point, idx) => {
-              const height = maxViews > 0 ? (point.views / maxViews) * 100 : 0;
-              // On mobile (range 30d), only show every 5th label to avoid clutter
-              const showLabel = range !== '30d' || idx % 5 === 0 || idx === data.chartData.length - 1;
-              
-              return (
-                <div key={idx} className="flex-1 flex flex-col items-center gap-1.5 h-full group">
-                  <span className="text-[8px] text-white/40 font-mono opacity-0 group-hover:opacity-100 transition-opacity">
-                    {point.views}
-                  </span>
-                  <div className="w-full flex-1 flex justify-center items-end relative">
-                    <div
-                      className="w-full max-w-8 bg-gold/20 hover:bg-gold/50 transition-all duration-200 rounded-t-sm"
-                      style={{ height: `${Math.max(height, 2)}%` }}
-                    />
-                  </div>
-                  <span className={`text-[7px] md:text-[8px] font-bold uppercase truncate max-w-full transition-colors ${showLabel ? 'text-white/25' : 'text-transparent'}`}>
-                    {point.label}
-                  </span>
-                </div>
+                </motion.div>
               );
             })}
           </div>
-        </div>
-      </div>
+        )}
+      </motion.div>
 
-      {/* Revenue Chart (12 Months) */}
-      <div className="border border-white/10 bg-zinc-950 p-6 overflow-hidden">
+      {/* ── Traffic Chart (fixed container) ── */}
+      <motion.div
+        key={`chart-${rangeLabel}`}
+        initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}
+        className="border border-white/10 bg-zinc-950 p-6"
+      >
         <div className="flex justify-between items-center mb-6">
-          <h3 className="text-[10px] font-bold uppercase tracking-widest text-emerald-400">
-            Analyse des Revenus — 12 derniers mois
+          <h3 className="text-[9px] font-black uppercase tracking-[0.15em] text-white/25 flex items-center gap-2">
+            <Eye className="w-3 h-3" /> Pages vues — <span className="text-gold/60">{rangeLabel}</span>
           </h3>
-          <span className="text-[10px] text-white/50 font-mono">Vue macroéconomique</span>
+          <span className="text-[10px] text-gold/60 font-mono font-bold">
+            {chartInfo.total.toLocaleString('fr-FR')} vues
+          </span>
         </div>
-        <div className="overflow-x-auto pb-4 scrollbar-hide">
-          <div className="flex items-end gap-1 h-64 min-w-[500px] md:min-w-0">
-            {data.revenueChartData && data.revenueChartData.length > 0 ? (
-              data.revenueChartData.map((point, idx) => {
-                const maxMonthlyRevenue = Math.max(...data.revenueChartData.map(d => d.revenue), 1);
-                const height = maxMonthlyRevenue > 0 ? (point.revenue / maxMonthlyRevenue) * 100 : 0;
-                const formattedRevenue = new Intl.NumberFormat('fr-FR').format(point.revenue);
-                
-                return (
-                  <div key={idx} className="flex-1 flex flex-col items-center gap-1.5 h-full group relative">
-                    <span className="text-[9px] text-white/60 font-mono opacity-0 group-hover:opacity-100 transition-opacity bg-black px-2 py-1 border border-white/10 absolute -top-10 z-10 whitespace-nowrap shadow-xl">
-                      {formattedRevenue} FCFA
-                    </span>
-                    <div className="w-full flex-1 flex justify-center items-end relative">
-                      <div
-                        className="w-full max-w-16 bg-gradient-to-t from-emerald-900/40 to-emerald-500/60 hover:from-emerald-800/60 hover:to-emerald-400/80 transition-all duration-300 rounded-t-sm border-t border-emerald-500/50"
-                        style={{ height: `${Math.max(height, 2)}%` }}
-                      />
-                    </div>
-                    <span className="text-[8px] md:text-[9px] text-white/40 font-bold uppercase mt-2">
-                      {point.label}
-                    </span>
-                  </div>
-                );
-              })
-            ) : (
-              <div className="w-full h-full flex items-center justify-center text-white/20 text-sm">
-                Données insuffisantes pour générer le graphique.
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
 
-      {/* Bottom Row */}
+        {!data ? (
+          <Skeleton className="h-52 w-full" />
+        ) : data.chartData.length === 0 ? (
+          <div className="h-52 flex items-center justify-center text-white/15 text-sm">Aucune donnée pour cette période</div>
+        ) : (
+          <AreaChart
+            data={data.chartData.map(d => ({ label: d.label, value: d.views }))}
+            color="gold"
+            height={220}
+          />
+        )}
+      </motion.div>
+
+      {/* ── Revenue Chart (fixed container) ── */}
+      <motion.div
+        key={`rev-${rangeLabel}`}
+        initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}
+        className="border border-white/10 bg-zinc-950 p-6"
+      >
+        <div className="flex justify-between items-center mb-6">
+          <h3 className="text-[9px] font-black uppercase tracking-[0.15em] text-emerald-400/60 flex items-center gap-2">
+            <TrendingUp className="w-3 h-3" /> Revenus — <span className="text-white/30">{rangeLabel}</span>
+          </h3>
+          <span className="text-[10px] text-emerald-400/60 font-mono font-bold">
+            {revenueInfo.total.toLocaleString('fr-FR')} FCFA
+          </span>
+        </div>
+
+        {!data?.revenueChartData?.length ? (
+          <div className="h-52 flex items-center justify-center text-white/15 text-sm">Données insuffisantes</div>
+        ) : (
+          <AreaChart
+            data={data.revenueChartData.map(d => ({ label: d.label, value: d.revenue }))}
+            color="emerald"
+            suffix=" FCFA"
+            height={220}
+          />
+        )}
+      </motion.div>
+
+      {/* ── Bottom: Top Pages & Referrers ── */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Top Pages */}
-        <div className="border border-white/10 bg-zinc-950 p-6">
-          <h3 className="text-[10px] font-bold uppercase tracking-widest text-white/40 mb-4">
-            Top Pages (30 jours)
+        <motion.div
+          key={`pages-${rangeLabel}`}
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}
+          className="border border-white/10 bg-zinc-950 p-6"
+        >
+          <h3 className="text-[9px] font-black uppercase tracking-[0.15em] text-white/25 mb-5">
+            Top Pages — <span className="text-gold/50">{rangeLabel}</span>
           </h3>
-          {data.topPages.length === 0 ? (
-            <p className="text-white/20 text-sm text-center py-6">Pas encore de données</p>
-          ) : (
+          {!data ? (
             <div className="flex flex-col gap-2">
+              {[1,2,3,4,5].map(i => <Skeleton key={i} className="h-8" />)}
+            </div>
+          ) : data.topPages.length === 0 ? (
+            <p className="text-white/15 text-sm text-center py-8">Pas encore de données</p>
+          ) : (
+            <div className="flex flex-col gap-1.5">
               {data.topPages.map((page, idx) => {
-                const maxPageViews = data.topPages[0]?.views || 1;
-                const width = (page.views / maxPageViews) * 100;
+                const maxP = data.topPages[0]?.views || 1;
+                const w = (page.views / maxP) * 100;
                 return (
-                  <div key={idx} className="flex items-center gap-3 group">
-                    <span className="text-[10px] text-white/20 font-mono w-5 text-right">{idx + 1}</span>
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: idx * 0.03 }}
+                    className="flex items-center gap-2.5 group"
+                  >
+                    <span className="text-[9px] text-white/15 font-mono w-4 text-right">{idx + 1}</span>
                     <div className="flex-1 relative">
                       <div
-                        className="absolute inset-y-0 left-0 bg-gold/5 group-hover:bg-gold/10 transition-colors"
-                        style={{ width: `${width}%` }}
+                        className="absolute inset-y-0 left-0 bg-gold/[0.04] group-hover:bg-gold/[0.08] transition-colors"
+                        style={{ width: `${w}%` }}
                       />
                       <div className="relative flex justify-between items-center py-2 px-3">
-                        <span className="text-xs text-white/70 truncate">{getPageLabel(page.path)}</span>
-                        <span className="text-[10px] text-gold font-mono font-bold ml-2">{page.views}</span>
+                        <span className="text-[11px] text-white/60 truncate">{getPageLabel(page.path)}</span>
+                        <span className="text-[10px] text-gold/70 font-mono font-bold ml-2 shrink-0">{page.views}</span>
                       </div>
                     </div>
-                  </div>
+                  </motion.div>
                 );
               })}
             </div>
           )}
-        </div>
+        </motion.div>
 
         {/* Top Referrers */}
-        <div className="border border-white/10 bg-zinc-950 p-6">
-          <h3 className="text-[10px] font-bold uppercase tracking-widest text-white/40 mb-4 flex items-center gap-2">
-            <Globe className="w-3 h-3" /> Sources de Trafic (30 jours)
+        <motion.div
+          key={`ref-${rangeLabel}`}
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}
+          className="border border-white/10 bg-zinc-950 p-6"
+        >
+          <h3 className="text-[9px] font-black uppercase tracking-[0.15em] text-white/25 mb-5 flex items-center gap-2">
+            <Globe className="w-3 h-3" /> Sources de Trafic — <span className="text-gold/50">{rangeLabel}</span>
           </h3>
-          {data.topReferrers.length === 0 ? (
-            <div className="text-center py-6">
-              <p className="text-white/20 text-sm">Pas encore de données</p>
-              <p className="text-white/10 text-[10px] mt-2">Les sources apparaîtront quand des visiteurs arriveront depuis des liens externes</p>
+          {!data ? (
+            <div className="flex flex-col gap-2">
+              {[1,2,3].map(i => <Skeleton key={i} className="h-10" />)}
+            </div>
+          ) : data.topReferrers.length === 0 ? (
+            <div className="text-center py-8">
+              <p className="text-white/15 text-sm">Pas encore de données</p>
+              <p className="text-white/8 text-[10px] mt-2">Les sources apparaîtront quand des visiteurs arriveront via des liens externes</p>
             </div>
           ) : (
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-2.5">
               {data.topReferrers.map((ref, idx) => {
-                const maxRefViews = data.topReferrers[0]?.views || 1;
-                const width = (ref.views / maxRefViews) * 100;
+                const maxR = data.topReferrers[0]?.views || 1;
+                const w = (ref.views / maxR) * 100;
                 return (
-                  <div key={idx} className="flex items-center gap-3">
-                    <span className="text-[10px] text-white/20 font-mono w-5 text-right">{idx + 1}</span>
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: idx * 0.03 }}
+                    className="flex items-center gap-2.5"
+                  >
+                    <span className="text-[9px] text-white/15 font-mono w-4 text-right">{idx + 1}</span>
                     <div className="flex-1">
                       <div className="flex justify-between items-center mb-1">
-                        <span className="text-xs text-white/70 truncate">{ref.source}</span>
-                        <span className="text-[10px] text-gold font-mono font-bold">{ref.views}</span>
+                        <span className="text-[11px] text-white/60 truncate">{ref.source}</span>
+                        <span className="text-[10px] text-gold/70 font-mono font-bold">{ref.views}</span>
                       </div>
-                      <div className="w-full h-1 bg-white/5">
-                        <div className="h-full bg-gold/40" style={{ width: `${width}%` }} />
+                      <div className="w-full h-0.5 bg-white/5 overflow-hidden">
+                        <motion.div
+                          initial={{ width: 0 }}
+                          animate={{ width: `${w}%` }}
+                          transition={{ duration: 0.6, delay: idx * 0.05 }}
+                          className="h-full bg-gold/30"
+                        />
                       </div>
                     </div>
-                  </div>
+                  </motion.div>
                 );
               })}
             </div>
           )}
-        </div>
+        </motion.div>
       </div>
     </div>
   );
