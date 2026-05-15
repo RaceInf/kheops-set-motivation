@@ -55,7 +55,7 @@ export default function SummaryCarousel({ items }: SummaryCarouselProps) {
       </div>
 
       {/* Content Area */}
-      <div className="relative min-h-[350px] border border-white/10 bg-white/5 p-1 overflow-hidden">
+      <div className="relative border border-white/10 bg-black p-1 overflow-hidden">
         <AnimatePresence mode="wait">
           <motion.div
             key={activeTab}
@@ -63,7 +63,7 @@ export default function SummaryCarousel({ items }: SummaryCarouselProps) {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
             transition={{ duration: 0.4, ease: "easeOut" }}
-            className="bg-black p-6 md:p-8 h-full"
+            className="bg-black p-6 md:p-8 min-h-[350px] flex flex-col"
           >
             {/* Main Part Title */}
             <div className="flex items-center gap-4 mb-8 text-gold border-b border-gold/20 pb-4">

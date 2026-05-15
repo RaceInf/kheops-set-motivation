@@ -179,15 +179,14 @@ export default async function ToolPage({ params }: PageProps) {
               {tool.id === 'le-capital-du-batisseur' ? (
                 <SummaryCarousel items={tool.summary} />
               ) : (
-                <div className="grid grid-cols-1 gap-1 border border-white/10 bg-white/5 p-1">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-white/10 border border-white/10">
                   {tool.summary.map((item, idx) => (
-                    <div key={idx} className="group flex items-center justify-between p-4 md:p-6 bg-black hover:bg-zinc-900 transition-colors border border-white/5">
-                      <div className="flex items-center gap-6">
-                        <span className="font-display text-2xl text-gold/30 group-hover:text-gold transition-colors">{(idx + 1).toString().padStart(2, '0')}</span>
-                        <span className="text-white/80 font-bold text-sm md:text-base uppercase tracking-wide">{item}</span>
+                    <div key={idx} className="group flex flex-col justify-center p-6 bg-black hover:bg-zinc-950 transition-colors relative overflow-hidden min-h-[100px]">
+                      <div className="absolute -right-4 -bottom-4 font-display text-[80px] text-white/[0.02] group-hover:text-gold/[0.05] transition-colors leading-none pointer-events-none">
+                        {(idx + 1).toString().padStart(2, '0')}
                       </div>
-                      <div className="hidden md:block h-[1px] flex-grow mx-8 bg-white/5" />
-                      <Shield className="w-4 h-4 text-white/20 group-hover:text-gold transition-colors hidden md:block" />
+                      <span className="font-display text-gold text-lg mb-2 relative z-10">{(idx + 1).toString().padStart(2, '0')}.</span>
+                      <span className="text-white/90 font-bold text-sm uppercase tracking-wide leading-relaxed relative z-10">{item}</span>
                     </div>
                   ))}
                 </div>
@@ -263,16 +262,19 @@ export default async function ToolPage({ params }: PageProps) {
 
           {/* S4: IL EST FAIT POUR VOUS SI... */}
           {tool.forYouIf && (
-            <section className="mb-16 border border-white/20 bg-white/5 p-8 md:p-12">
-              <div className="flex items-center gap-4 mb-8 border-b border-white/10 pb-6">
-                <Target className="w-8 h-8 text-gold" />
-                <h2 className="font-display text-3xl md:text-4xl uppercase tracking-tighter">Il est fait pour vous si...</h2>
+            <section className="mb-16">
+              <div className="flex items-center gap-4 mb-10">
+                <div className="w-2 h-12 bg-gold shrink-0"></div>
+                <h2 className="font-display text-4xl md:text-5xl uppercase tracking-tighter leading-none">Profil<br/><span className="text-white/50">Requis</span></h2>
               </div>
-              <div className="grid grid-cols-1 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {tool.forYouIf.map((item, idx) => (
-                  <div key={idx} className="flex gap-4 items-center bg-black/40 p-4 border border-white/5">
-                    <Zap className="w-5 h-5 text-gold shrink-0" />
-                    <span className="text-white/90 font-bold tracking-wide text-sm md:text-base uppercase">{item}</span>
+                  <div key={idx} className="group relative border border-white/10 p-6 md:p-8 hover:border-gold/50 transition-colors bg-gradient-to-br from-black to-zinc-900/50 overflow-hidden">
+                    <div className="absolute -top-4 -right-4 p-4 font-display text-[80px] text-white/[0.03] group-hover:text-gold/[0.05] transition-colors pointer-events-none leading-none">
+                      {(idx + 1).toString().padStart(2, '0')}
+                    </div>
+                    <Target className="w-6 h-6 text-gold mb-6 relative z-10" />
+                    <span className="text-white/80 font-bold tracking-wide text-sm md:text-base leading-relaxed relative z-10 block uppercase">{item}</span>
                   </div>
                 ))}
               </div>

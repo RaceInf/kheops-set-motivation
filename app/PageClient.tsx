@@ -415,10 +415,15 @@ function Boutique() {
             </div>
 
             <div className="relative z-10 flex flex-col h-full">
-              <div className="mb-12">
+              <div className="mb-12 flex justify-between items-start">
                 <span className="text-gold text-[10px] font-mono tracking-widest px-3 py-1 border border-gold/20 rounded-full uppercase">
                   {idx === 0 ? "CODE" : idx === 1 ? "PROTOCOLE" : "CAPITAL"}
                 </span>
+                {product.id === 'le-capital-du-batisseur' && (
+                  <div className="bg-gold text-black text-[9px] uppercase font-black tracking-widest px-2 py-1 shadow-[0_0_15px_rgba(238,177,73,0.3)]">
+                    Recommandé
+                  </div>
+                )}
               </div>
 
               <div className="flex-grow flex flex-col justify-center">

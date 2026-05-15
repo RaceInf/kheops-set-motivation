@@ -93,6 +93,11 @@ export default function ArsenalClient() {
                     priority={idx < 2}
                     className="object-cover object-center scale-100 group-hover:scale-105 transition-transform duration-700"
                   />
+                  {product.id === 'le-capital-du-batisseur' && (
+                    <div className="absolute top-4 left-4 z-20 bg-gold text-black text-[10px] uppercase font-black tracking-widest px-3 py-1 shadow-[0_0_15px_rgba(238,177,73,0.5)]">
+                      Recommandé
+                    </div>
+                  )}
                 </div>
               )}
 

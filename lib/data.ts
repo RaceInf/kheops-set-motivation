@@ -190,7 +190,8 @@ export const tools = [
     forYouIf: [
       "Vous êtes prêt à entendre la vérité, même si elle blesse votre ego.",
       "Vous voulez construire des fondations psychologiques indestructibles.",
-      "Vous avez décidé que vous n'alliez plus mendier votre vie."
+      "Vous avez décidé que vous n'alliez plus mendier votre vie.",
+      "Vous cherchez à remplacer vos fausses excuses par des actions brutales et mesurables."
     ],
     testimonials: [
       { name: "K. Touré", role: "Entrepreneur", text: "Ce guide est un électrochoc. J'ai arrêté de m'apitoyer sur mon sort dès la lecture du deuxième chapitre. Une claque salutaire." },
@@ -242,7 +243,8 @@ export const tools = [
     forYouIf: [
       "Vous voulez arrêter de porter le fardeau des choix des autres.",
       "Vous avez besoin d'un protocole exact pour reprendre le contrôle de votre espace.",
-      "Vous acceptez que grandir implique parfois de laisser des gens derrière."
+      "Vous acceptez que grandir implique parfois de laisser des gens derrière.",
+      "Vous êtes prêt à affronter la colère de ceux qui profitaient de votre gentillesse."
     ],
     testimonials: [
       { name: "Anonyme", role: "Manager", text: "Depuis que j'applique ce système, j'ai nettoyé mon environnement direct. Je ne perds plus de temps à justifier mon travail ou mes revenus." },
@@ -289,7 +291,8 @@ export const tools = [
     forYouIf: [
       "Vous voulez comprendre comment l'argent fonctionne vraiment, loin des mythes.",
       "Vous êtes prêt à sacrifier votre confort immédiat pour bâtir une solidité future.",
-      "Vous visez l'indépendance intégrale : mentale, sociale et économique."
+      "Vous visez l'indépendance intégrale : mentale, sociale et économique.",
+      "Vous cherchez à arrêter l'hémorragie financière pour transformer vos revenus en armure."
     ],
     testimonials: [
       { name: "M. Ndiaye", role: "Investisseur", text: "J'ai passé des années à acheter des passifs pour impressionner des inconnus. Ce livre m'a forcé à regarder mes finances en face et à commencer à bâtir un vrai capital." },
