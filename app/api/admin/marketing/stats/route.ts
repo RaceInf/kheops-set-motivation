@@ -4,13 +4,17 @@ import { supabase } from '@/lib/supabase';
 export async function GET() {
   try {
     // 1. Récupérer les événements email (nouvelle table dédiée)
-    const { data: emailEvents, error: emailError } = await supabase
-      .from('email_events')
-      .select('*')
-      .order('timestamp', { ascending: false })
-      .limit(100);
-
-    if (emailError) throw emailError;
+    let emailEvents: any[] = [];
+    try {
+      const { data, error: emailError } = await supabase
+        .from('email_events')
+        .select('*')
+        .order('timestamp', { ascending: false })
+        .limit(100);
+      if (!emailError) emailEvents = data || [];
+    } catch {
+      // Table may not exist yet — graceful fallback
+    }
 
     // 2. Récupérer les relances envoyées (webhook_events existante)
     const { data: reminderEvents, error: reminderError } = await supabase
