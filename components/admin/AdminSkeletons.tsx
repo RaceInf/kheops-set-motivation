@@ -1,7 +1,7 @@
 'use client';
 
-export function Skeleton({ className = '' }: { className?: string }) {
-  return <div className={`bg-white/[0.04] animate-pulse rounded-sm ${className}`} />;
+export function Skeleton({ className = '', style }: { className?: string, style?: React.CSSProperties }) {
+  return <div className={`bg-white/[0.04] animate-pulse rounded-sm ${className}`} style={style} />;
 }
 
 export function CardSkeleton() {
