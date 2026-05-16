@@ -76,6 +76,8 @@ export default function AdminOrdersPage() {
       const data = await res.json();
       if (res.ok) {
         setResendMessage({ id: orderId, msg: data.message, ok: true });
+        // Rafraîchit la liste pour mettre à jour la colonne Livraison
+        fetchOrders();
       } else {
         setResendMessage({ id: orderId, msg: data.error || 'Erreur', ok: false });
       }
@@ -306,7 +308,7 @@ export default function AdminOrdersPage() {
                                 )}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                onClick={async (e) => {
+                                onClick={async () => {
                                   // Log manual WhatsApp relance
                                   try {
                                     const res = await fetch('/api/admin/marketing/log', {

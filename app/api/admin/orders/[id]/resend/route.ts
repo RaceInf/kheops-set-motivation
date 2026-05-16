@@ -50,12 +50,24 @@ export async function POST(
     );
 
     if (!emailResult.success) {
+      // Mettre à jour delivery_status en FAILED pour que le tableau reflète l'échec
+      await supabase.from('orders').update({
+        delivery_status: 'FAILED',
+        delivery_error: 'Resend manual échoué (Brevo)',
+      }).eq('id', orderId);
       return NextResponse.json({ error: 'Failed to send email' }, { status: 500 });
     }
 
-    return NextResponse.json({ 
-      success: true, 
-      message: `Lien renvoyé à ${customerEmail}` 
+    // Mettre à jour delivery_status en SENT pour que le tableau se mette à jour
+    await supabase.from('orders').update({
+      delivery_status: 'SENT',
+      delivery_sent_at: new Date().toISOString(),
+      delivery_error: null,
+    }).eq('id', orderId);
+
+    return NextResponse.json({
+      success: true,
+      message: `Lien renvoyé à ${customerEmail}`
     });
 
   } catch (error) {
