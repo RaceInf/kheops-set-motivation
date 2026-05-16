@@ -57,58 +57,44 @@ export async function sendEmail({ to, subject, htmlContent, tags }: SendEmailPar
 export async function sendProductDeliveryEmail(customerEmail: string, productName: string, downloadUrl: string) {
   const htmlContent = `
     <!DOCTYPE html>
-    <html lang="fr">
+    <html>
     <head>
       <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <style>
-        @import url('https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@400;700&display=swap');
-        body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
-        table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
-        img { -ms-interpolation-mode: bicubic; }
-        body { margin: 0; padding: 0; background-color: #000000; color: #ffffff; font-family: 'Barlow Condensed', Arial, sans-serif; }
-        .wrapper { width: 100%; table-layout: fixed; background-color: #000000; padding: 40px 0; }
-        .main { max-width: 600px; margin: 0 auto; width: 100%; background-color: #0a0a0a; border: 1px solid #1a1a1a; }
-        .header { padding: 40px 40px 20px 40px; text-align: center; }
-        .logo { font-family: 'Anton', Impact, sans-serif; font-size: 28px; color: #eeb149; letter-spacing: 2px; text-transform: uppercase; margin: 0; }
-        .content { padding: 0 40px 40px 40px; }
-        h1 { font-family: 'Anton', Impact, sans-serif; font-size: 42px; line-height: 1.1; color: #ffffff; text-transform: uppercase; margin: 0 0 20px 0; font-weight: normal; }
-        p { font-size: 18px; line-height: 1.6; color: #d4d4d8; margin: 0 0 20px 0; }
-        .highlight { color: #eeb149; font-weight: 700; }
-        .button-container { text-align: left; margin: 40px 0; }
-        .button { background-color: #eeb149; color: #000000 !important; padding: 18px 36px; text-decoration: none; font-family: 'Anton', Impact, sans-serif; font-size: 18px; text-transform: uppercase; letter-spacing: 1px; display: inline-block; }
-        .footer { padding: 30px 40px; border-top: 1px solid #1a1a1a; text-align: center; background-color: #050505; }
-        .footer-text { font-size: 12px; color: #71717a; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; margin: 0; }
+        body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; line-height: 1.6; color: #ffffff; background-color: #000000; margin: 0; padding: 0; }
+        .container { max-width: 600px; margin: 0 auto; padding: 40px 20px; }
+        .header { text-align: center; margin-bottom: 40px; }
+        .logo { font-size: 24px; font-weight: 900; letter-spacing: 5px; color: #eeb149; text-transform: uppercase; margin-bottom: 10px; }
+        .card { background-color: #0a0a0a; border: 1px solid #1a1a1a; padding: 40px; border-radius: 4px; }
+        h1 { font-size: 28px; font-weight: 900; text-transform: uppercase; letter-spacing: -1px; margin-bottom: 24px; color: #ffffff; line-height: 1.1; }
+        p { font-size: 16px; color: #a1a1aa; margin-bottom: 24px; }
+        .highlight { color: #ffffff; font-weight: bold; }
+        .button-container { text-align: center; margin: 40px 0; }
+        .button { background-color: #eeb149; color: #000000 !important; padding: 18px 36px; text-decoration: none; font-weight: 900; font-size: 14px; text-transform: uppercase; letter-spacing: 2px; display: inline-block; border-radius: 2px; }
+        .footer { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #1a1a1a; }
+        .footer-text { font-size: 11px; color: #52525b; text-transform: uppercase; letter-spacing: 2px; }
       </style>
     </head>
     <body>
-      <div class="wrapper">
-        <table class="main" align="center" border="0" cellpadding="0" cellspacing="0">
-          <tr>
-            <td class="header">
-              <p class="logo">KHEOPS SET</p>
-            </td>
-          </tr>
-          <tr>
-            <td class="content">
-              <h1>ORDRE VALIDÉ.</h1>
-              <p>Bâtisseur,</p>
-              <p>Ton accès au protocole <span class="highlight">${productName}</span> a été déverrouillé avec succès.</p>
-              <p>L'infrastructure est en place. Tu peux maintenant télécharger ton matériel d'armement intellectuel.</p>
-              
-              <div class="button-container">
-                <a href="${downloadUrl}" class="button">TÉLÉCHARGER L'OUTIL</a>
-              </div>
-              
-              <p style="font-size: 14px; color: #71717a;">Ce lien est sécurisé et restera actif pendant <span style="color: #ffffff;">24 heures</span>.</p>
-            </td>
-          </tr>
-          <tr>
-            <td class="footer">
-              <p class="footer-text">BÂTIR SON EMPIRE. SANS CONCESSION.</p>
-            </td>
-          </tr>
-        </table>
+      <div class="container">
+        <div class="header">
+          <div class="logo">KHEOPS SET</div>
+        </div>
+        <div class="card">
+          <h1>ORDRE VALIDÉ.</h1>
+          <p>Bâtisseur,</p>
+          <p>Ton accès au protocole <span class="highlight">${productName}</span> a été déverrouillé avec succès.</p>
+          <p>Tu peux maintenant télécharger ton matériel en cliquant sur le bouton ci-dessous :</p>
+          
+          <div class="button-container">
+            <a href="${downloadUrl}" class="button">TÉLÉCHARGER L'OUTIL</a>
+          </div>
+          
+          <p style="font-size: 13px; text-align: center;">Ce lien est sécurisé et restera actif pendant <span class="highlight">24 heures</span>.</p>
+        </div>
+        <div class="footer">
+          <div class="footer-text">BÂTIR SON EMPIRE. SANS CONCESSION.</div>
+        </div>
       </div>
     </body>
     </html>
@@ -173,42 +159,36 @@ export async function sendAdminNotification(customerEmail: string, productName: 
 export async function sendMarketingReminderH1(customerEmail: string, productName: string, checkoutUrl: string, orderId?: string) {
   const htmlContent = `
     <!DOCTYPE html>
-    <html lang="fr">
+    <html>
     <head>
       <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <style>
-        @import url('https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@400;700&display=swap');
-        body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
-        table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
-        body { margin: 0; padding: 0; background-color: #000000; color: #ffffff; font-family: 'Barlow Condensed', Arial, sans-serif; }
-        .wrapper { width: 100%; background-color: #000000; padding: 40px 0; }
-        .main { max-width: 600px; margin: 0 auto; width: 100%; background-color: #000000; border: 4px solid #eeb149; }
-        .content { padding: 50px 40px; }
-        .surtitle { font-family: 'Anton', Impact, sans-serif; font-size: 16px; color: #eeb149; letter-spacing: 3px; text-transform: uppercase; margin: 0 0 30px 0; }
-        h1 { font-family: 'Anton', Impact, sans-serif; font-size: 52px; line-height: 1.05; color: #ffffff; text-transform: uppercase; margin: 0 0 30px 0; font-weight: normal; }
-        p { font-size: 19px; line-height: 1.5; color: #d4d4d8; margin: 0 0 20px 0; }
-        .highlight { color: #ffffff; font-weight: 700; background-color: rgba(238, 177, 73, 0.15); padding: 0 4px; }
-        .button-container { text-align: left; margin: 40px 0 0 0; }
-        .button { background-color: #eeb149; color: #000000 !important; padding: 20px 40px; text-decoration: none; font-family: 'Anton', Impact, sans-serif; font-size: 20px; text-transform: uppercase; letter-spacing: 1px; display: inline-block; }
+        @import url('https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;700;900&display=swap');
+        body { margin: 0; padding: 0; background-color: #000000; font-family: 'Inter', Arial, sans-serif; color: #e4e4e7; }
+        .wrapper { background-color: #000000; padding: 40px 20px; }
+        .main { max-width: 600px; margin: 0 auto; background-color: #0a0a0a; border-top: 4px solid #eeb149; padding: 50px 40px; border-radius: 4px; }
+        .header { font-size: 11px; font-weight: 900; letter-spacing: 6px; color: #eeb149; text-transform: uppercase; margin-bottom: 40px; text-align: center; }
+        h1 { font-family: 'Anton', Impact, sans-serif; font-size: 48px; line-height: 1.1; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 30px 0; font-weight: normal; }
+        p { font-size: 16px; line-height: 1.6; margin-bottom: 24px; color: #d4d4d8; }
+        .highlight { color: #ffffff; font-weight: 700; border-bottom: 1px solid #eeb149; }
+        .btn-box { margin-top: 40px; text-align: center; }
+        .button { background-color: #eeb149; color: #000000 !important; padding: 20px 40px; text-decoration: none; font-weight: 900; font-size: 15px; text-transform: uppercase; letter-spacing: 2px; display: inline-block; border-radius: 2px; }
+        .footer { margin-top: 50px; padding-top: 30px; border-top: 1px solid #1f1f22; text-align: center; font-size: 10px; color: #52525b; letter-spacing: 2px; text-transform: uppercase; font-weight: 700; }
       </style>
     </head>
     <body>
       <div class="wrapper">
-        <table class="main" align="center" border="0" cellpadding="0" cellspacing="0">
-          <tr>
-            <td class="content">
-              <p class="surtitle">KHEOPS SET MOTIVATION</p>
-              <h1>INTERRUPTION<br/><span style="color: #eeb149;">DÉTECTÉE.</span></h1>
-              <p>Bâtisseur,</p>
-              <p>Le destin n'attend pas les indécis. Ton accès au protocole <span class="highlight">${productName}</span> est resté sur le seuil de la Forge.</p>
-              <p>L'infrastructure est prête. Les outils sont affûtés. Il ne manque que ta validation pour lancer l'exécution.</p>
-              <div class="button-container">
-                <a href="${checkoutUrl}" class="button">REPRENDRE L'ACCÈS</a>
-              </div>
-            </td>
-          </tr>
-        </table>
+        <div class="main">
+          <div class="header">KHEOPS SET MOTIVATION</div>
+          <h1>INTERRUPTION <span style="color: #eeb149;">DÉTECTÉE.</span></h1>
+          <p>Bâtisseur,</p>
+          <p>Le destin n'attend pas les indécis. Ton accès au protocole <span class="highlight">${productName}</span> est resté sur le seuil de la Forge.</p>
+          <p>L'infrastructure est prête. Les outils sont affûtés. Il ne manque que ta validation pour lancer l'exécution.</p>
+          <div class="btn-box">
+            <a href="${checkoutUrl}" class="button">REPRENDRE L'ACCÈS</a>
+          </div>
+          <div class="footer">LE SUCCÈS EST UNE DISCIPLINE.</div>
+        </div>
       </div>
     </body>
     </html>
@@ -222,49 +202,37 @@ export async function sendMarketingReminderH1(customerEmail: string, productName
   });
 }
 
-/**
- * Email Marketing : Relance H+24 (La Preuve)
- */
 export async function sendMarketingReminderH24(customerEmail: string, productName: string, checkoutUrl: string, orderId?: string) {
   const htmlContent = `
     <!DOCTYPE html>
-    <html lang="fr">
+    <html>
     <head>
       <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <style>
-        @import url('https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@400;700&display=swap');
-        body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
-        table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
-        body { margin: 0; padding: 0; background-color: #050505; color: #ffffff; font-family: 'Barlow Condensed', Arial, sans-serif; }
-        .wrapper { width: 100%; background-color: #050505; padding: 40px 0; }
-        .main { max-width: 600px; margin: 0 auto; width: 100%; background-color: #0a0a0a; border-left: 8px solid #ffffff; }
-        .content { padding: 50px 40px; }
-        h1 { font-family: 'Anton', Impact, sans-serif; font-size: 48px; line-height: 1.05; color: #ffffff; text-transform: uppercase; margin: 0 0 30px 0; font-weight: normal; }
-        p { font-size: 19px; line-height: 1.6; color: #d4d4d8; margin: 0 0 20px 0; }
-        .quote { border-left: 3px solid #eeb149; padding-left: 20px; font-style: italic; color: #eeb149; font-size: 22px; margin: 35px 0; font-family: 'Georgia', serif; }
-        .button-container { text-align: left; margin: 40px 0 0 0; }
-        .button { background-color: #ffffff; color: #000000 !important; padding: 20px 40px; text-decoration: none; font-family: 'Anton', Impact, sans-serif; font-size: 18px; text-transform: uppercase; letter-spacing: 1px; display: inline-block; }
+        @import url('https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;700;900&display=swap');
+        body { margin: 0; padding: 0; background-color: #000000; font-family: 'Inter', Arial, sans-serif; color: #e4e4e7; }
+        .wrapper { padding: 40px 20px; }
+        .main { max-width: 600px; margin: 0 auto; background-color: #0a0a0a; border-left: 6px solid #eeb149; padding: 50px 40px; border-radius: 0 4px 4px 0; }
+        .header { font-size: 11px; font-weight: 900; letter-spacing: 6px; color: #71717a; text-transform: uppercase; margin-bottom: 30px; }
+        h1 { font-family: 'Anton', Impact, sans-serif; font-size: 42px; line-height: 1.1; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 30px 0; font-weight: normal; }
+        p { font-size: 16px; line-height: 1.6; margin-bottom: 24px; color: #d4d4d8; }
+        .quote { background-color: #18181b; border-left: 2px solid #eeb149; padding: 20px; font-style: italic; color: #a1a1aa; margin: 30px 0; font-size: 15px; }
+        .button { background-color: #ffffff; color: #000000 !important; padding: 20px 40px; text-decoration: none; font-weight: 900; font-size: 15px; text-transform: uppercase; letter-spacing: 2px; display: inline-block; margin-top: 20px; border-radius: 2px; }
       </style>
     </head>
     <body>
       <div class="wrapper">
-        <table class="main" align="center" border="0" cellpadding="0" cellspacing="0">
-          <tr>
-            <td class="content">
-              <h1>LE PRIX DE<br/>L'HÉSITATION.</h1>
-              <p>Pendant que tu doutes, d'autres bâtissent.</p>
-              <p>Le protocole <strong style="color: #ffffff;">${productName}</strong> n'est pas une option, c'est une nécessité pour ceux qui visent le sommet.</p>
-              <div class="quote">
-                "L'indécision est le voleur de l'opportunité."
-              </div>
-              <p>Hier, tu as failli franchir le pas. Qu'est-ce qui t'a arrêté ? Le doute ? La peur ? L'inaction est déjà une décision : celle de stagner.</p>
-              <div class="button-container">
-                <a href="${checkoutUrl}" class="button">ÉCRASER LE DOUTE</a>
-              </div>
-            </td>
-          </tr>
-        </table>
+        <div class="main">
+          <div class="header">RAPPEL H+24</div>
+          <h1>LE PRIX DE<br/><span style="color: #eeb149;">L'HÉSITATION.</span></h1>
+          <p>Pendant que tu doutes, d'autres bâtissent.</p>
+          <p>Le protocole <strong style="color: #ffffff;">${productName}</strong> n'est pas une option, c'est une nécessité pour ceux qui visent le sommet.</p>
+          <div class="quote">
+            "L'indécision est le voleur de l'opportunité. La stagnation est le salaire de la peur."
+          </div>
+          <p>Hier, tu as failli franchir le pas. Qu'est-ce qui t'a arrêté ? Le doute ? La complaisance ?</p>
+          <a href="${checkoutUrl}" class="button">ÉCRASER LE DOUTE</a>
+        </div>
       </div>
     </body>
     </html>
@@ -278,52 +246,36 @@ export async function sendMarketingReminderH24(customerEmail: string, productNam
   });
 }
 
-/**
- * Email Marketing : Relance H+72 (L'Urgence)
- */
 export async function sendMarketingReminderH72(customerEmail: string, productName: string, checkoutUrl: string, orderId?: string) {
   const htmlContent = `
     <!DOCTYPE html>
-    <html lang="fr">
+    <html>
     <head>
       <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <style>
-        @import url('https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@400;700&display=swap');
-        body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
-        table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
-        body { margin: 0; padding: 0; background-color: #000000; color: #ffffff; font-family: 'Barlow Condensed', Arial, sans-serif; }
-        .wrapper { width: 100%; background-color: #000000; padding: 40px 0; }
-        .main { max-width: 600px; margin: 0 auto; width: 100%; background-color: #eeb149; padding: 4px; }
-        .inner { background-color: #000000; padding: 60px 40px; text-align: center; width: 100%; }
-        h1 { font-family: 'Anton', Impact, sans-serif; font-size: 64px; line-height: 1; color: #eeb149; text-transform: uppercase; margin: 0 0 30px 0; font-weight: normal; }
-        p { font-size: 20px; line-height: 1.5; color: #ffffff; margin: 0 0 20px 0; }
-        .button-container { text-align: center; margin: 40px 0 0 0; }
-        .button { background-color: #eeb149; color: #000000 !important; padding: 22px 50px; text-decoration: none; font-family: 'Anton', Impact, sans-serif; font-size: 22px; text-transform: uppercase; letter-spacing: 2px; display: inline-block; }
-        .warning { color: #eeb149; font-size: 14px; margin-top: 30px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; font-family: 'Anton', Impact, sans-serif; }
+        @import url('https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;700;900&display=swap');
+        body { margin: 0; padding: 0; background-color: #000000; font-family: 'Inter', Arial, sans-serif; }
+        .wrapper { padding: 40px 20px; }
+        .outer { max-width: 600px; margin: 0 auto; background-color: #eeb149; padding: 4px; border-radius: 4px; }
+        .inner { background-color: #0a0a0a; padding: 60px 40px; text-align: center; border-radius: 2px; }
+        h1 { font-family: 'Anton', Impact, sans-serif; font-size: 60px; line-height: 1; color: #eeb149; text-transform: uppercase; margin: 0 0 30px 0; letter-spacing: 1px; font-weight: normal; }
+        p { font-size: 18px; color: #e4e4e7; line-height: 1.5; margin-bottom: 24px; font-weight: 600; text-transform: uppercase; }
+        .subtext { font-size: 15px; color: #a1a1aa; text-transform: none; font-weight: normal; margin-bottom: 40px; }
+        .button { background-color: #eeb149; color: #000000 !important; padding: 22px 50px; text-decoration: none; font-weight: 900; font-size: 16px; text-transform: uppercase; letter-spacing: 3px; display: inline-block; border-radius: 2px; }
+        .warning { color: #eeb149; font-size: 12px; margin-top: 40px; font-weight: 900; letter-spacing: 3px; text-transform: uppercase; }
       </style>
     </head>
     <body>
       <div class="wrapper">
-        <table class="main" align="center" border="0" cellpadding="0" cellspacing="0">
-          <tr>
-            <td>
-              <table class="inner" align="center" border="0" cellpadding="0" cellspacing="0">
-                <tr>
-                  <td>
-                    <h1>DERNIER<br/>APPEL.</h1>
-                    <p>Ton accès prioritaire au <strong>${productName}</strong> expire dans quelques heures.</p>
-                    <p style="color: #a1a1aa; font-size: 18px;">Demain, le système réinitialisera ton lien. Tu seras de retour à la case départ.</p>
-                    <div class="button-container">
-                      <a href="${checkoutUrl}" class="button">SÉCURISER L'ACCÈS</a>
-                    </div>
-                    <div class="warning">C'EST MAINTENANT OU JAMAIS.</div>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-        </table>
+        <div class="outer">
+          <div class="inner">
+            <h1>DERNIER<br/>APPEL.</h1>
+            <p>Ton accès prioritaire au ${productName} expire dans quelques heures.</p>
+            <div class="subtext">Demain, le système réinitialisera ton lien sécurisé. Tu seras de retour à la case départ, avec ceux qui observent au lieu d'agir.</div>
+            <a href="${checkoutUrl}" class="button">SÉCURISER L'ACCÈS</a>
+            <div class="warning">C'EST MAINTENANT OU JAMAIS.</div>
+          </div>
+        </div>
       </div>
     </body>
     </html>
@@ -337,9 +289,6 @@ export async function sendMarketingReminderH72(customerEmail: string, productNam
   });
 }
 
-/**
- * Notification Admin : Rapport de relance marketing
- */
 export async function sendMarketingAdminNotification(customerEmail: string, productName: string, reminderType: string) {
   const typeLabel = reminderType === 'h1' ? 'H+1 (Le Rappel)' : reminderType === 'h24' ? 'H+24 (La Preuve)' : 'H+72 (L\'Urgence)';
   
