@@ -265,7 +265,7 @@ export default function AdminMarketingPage() {
                             {event.payload.productName && <DetailItem icon={Package} label="Produit" value={event.payload.productName} />}
                             {event.payload.whatsappNumber && <DetailItem icon={MessageCircle} label="WhatsApp" value={event.payload.whatsappNumber} />}
                           </div>
-                          {(event.payload.reason || event.payload.error) && (
+                          {(event.payload.reason || event.payload.error) && ['hard_bounce', 'soft_bounce', 'blocked', 'spam', 'error', 'invalid', 'deferred'].includes(event.eventType) && (
                             <div className="p-4 bg-red-500/10 border border-red-500/20">
                               <p className="text-[9px] text-red-400 font-black uppercase tracking-widest mb-2 flex items-center gap-2">
                                 <AlertCircle className="w-3 h-3" /> Diagnostic

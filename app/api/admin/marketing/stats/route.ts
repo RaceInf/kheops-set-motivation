@@ -82,7 +82,7 @@ export async function GET() {
             email: e.email,
             orderId: e.order_id,
             campaignTag: e.campaign_tag,
-            reason: e.reason,
+            reason: ['hard_bounce', 'soft_bounce', 'error', 'blocked', 'spam', 'invalid', 'deferred'].includes(e.event_type) ? e.reason : null,
             linkUrl: e.link_url,
             subject: e.subject,
             messageId: e.message_id,
