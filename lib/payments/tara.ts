@@ -1,5 +1,23 @@
 import { OrderDetails, PaymentEvent, PaymentLinkResponse, PaymentProvider, WebhookValidationResult } from './provider';
 
+// Vérifie une signature HMAC-SHA256 via Web Crypto API (compatible Edge Runtime).
+// Tara envoie : HMAC-SHA256(rawBody, webhookSecret) en hex dans x-tara-signature.
+async function verifyHmacSignature(signature: string, rawBody: string, secret: string): Promise<boolean> {
+  const encoder = new TextEncoder();
+  const key = await crypto.subtle.importKey(
+    'raw',
+    encoder.encode(secret),
+    { name: 'HMAC', hash: 'SHA-256' },
+    false,
+    ['verify']
+  );
+  // Convertit la signature hex reçue en Uint8Array
+  const sigBytes = new Uint8Array(
+    signature.replace(/^sha256=/, '').match(/.{1,2}/g)!.map(b => parseInt(b, 16))
+  );
+  return crypto.subtle.verify('HMAC', key, sigBytes, encoder.encode(rawBody));
+}
+
 // Implémentation temporaire basée sur l'ancien endpoint DKLO.
 // Ce fichier sera le seul à modifier lors du passage à la nouvelle API Tara.
 
@@ -91,9 +109,11 @@ export class TaraProvider implements PaymentProvider {
   }
 
   async verifyWebhookSignature(req: Request): Promise<WebhookValidationResult> {
-    // Tara Money envoie le webhook secret brut dans le header x-tara-signature.
-    // Si TARA_WEBHOOK_SECRET est configuré, on le vérifie systématiquement (prod et dev).
-    // Cela protège contre les appels frauduleux qui créeraient de fausses commandes PAID.
+    // Deux modes selon TARA_SIGNATURE_MODE :
+    //   "hmac"   → Tara signe le body brut avec HMAC-SHA256 (standard industrie)
+    //   "direct" → Tara envoie le secret brut dans le header (mode actuel, défaut)
+    //
+    // Passer à "hmac" dès que Tara publie la doc officielle HMAC.
 
     try {
       const rawBody = await req.text();
@@ -106,9 +126,26 @@ export class TaraProvider implements PaymentProvider {
 
       if (this.webhookSecret) {
         const signature = req.headers.get('x-tara-signature');
-        if (!signature || signature !== this.webhookSecret) {
-          console.warn('[Webhook] Signature invalide ou absente:', { received: signature ? 'présente' : 'absente' });
-          return { isValid: false, payload: null, error: 'Invalid webhook signature' };
+        if (!signature) {
+          console.warn('[Webhook] Header x-tara-signature absent');
+          return { isValid: false, payload: null, error: 'Missing webhook signature header' };
+        }
+
+        const mode = process.env.TARA_SIGNATURE_MODE || 'direct';
+
+        if (mode === 'hmac') {
+          // HMAC-SHA256 via Web Crypto API (compatible Edge Runtime)
+          const isValid = await verifyHmacSignature(signature, rawBody, this.webhookSecret);
+          if (!isValid) {
+            console.warn('[Webhook] HMAC signature invalide');
+            return { isValid: false, payload: null, error: 'Invalid HMAC webhook signature' };
+          }
+        } else {
+          // Mode "direct" : Tara envoie le secret brut dans le header
+          if (signature !== this.webhookSecret) {
+            console.warn('[Webhook] Signature directe invalide');
+            return { isValid: false, payload: null, error: 'Invalid webhook signature' };
+          }
         }
       }
 
