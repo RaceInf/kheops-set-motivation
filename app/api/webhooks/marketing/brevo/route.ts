@@ -168,6 +168,9 @@ export async function POST(req: Request) {
             .limit(1);
 
           if (!existingOpen || existingOpen.length === 0) {
+            // On date l'ouverture ~8s AVANT le clic pour qu'elle
+            // apparaisse distinctement dans le journal chronologique.
+            const openedTimestamp = new Date(new Date(eventTimestamp).getTime() - 8000).toISOString();
             await supabase.from('email_events').insert([{
               email: email || 'unknown',
               event_type: 'opened',
@@ -175,7 +178,7 @@ export async function POST(req: Request) {
               order_id: orderId,
               campaign_tag: campaignTag,
               subject: subject || null,
-              timestamp: eventTimestamp,
+              timestamp: openedTimestamp,
               metadata: { ...brevoEvent, auto_inferred: true, source: 'inferred_from_click' },
             }]);
             results.push({ event: 'opened', email, status: 'auto_inferred_from_click' });
