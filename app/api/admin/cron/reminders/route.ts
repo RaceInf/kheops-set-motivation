@@ -14,11 +14,15 @@ import {
  * Fréquence conseillée : Toutes les heures
  */
 export async function GET(req: Request) {
-  // Optionnel : Vérifier une clé secrète pour éviter les appels non autorisés
+  // Vérification de sécurité : accepte soit le header Vercel Cron, soit le query param
   const { searchParams } = new URL(req.url);
-  const key = searchParams.get('key');
-  // Vérification systématique, peu importe l'environnement
-  if (!process.env.CRON_SECRET || key !== process.env.CRON_SECRET) {
+  const keyFromParam = searchParams.get('key');
+  const authHeader = req.headers.get('authorization');
+  const keyFromHeader = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : null;
+  
+  const providedKey = keyFromParam || keyFromHeader;
+  
+  if (!process.env.CRON_SECRET || providedKey !== process.env.CRON_SECRET) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
