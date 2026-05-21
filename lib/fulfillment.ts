@@ -14,7 +14,7 @@ export async function deliverProductByEmail(orderId: string): Promise<boolean> {
   try {
     const { data: fullOrder } = await supabase
       .from('orders')
-      .select('total_amount, users (email), order_items (product_id)')
+      .select('total_amount, customer_name, users (email), order_items (product_id)')
       .eq('id', orderId)
       .single();
 
@@ -26,6 +26,7 @@ export async function deliverProductByEmail(orderId: string): Promise<boolean> {
     }
 
     const customerEmail = (fullOrder.users as any)?.email;
+    const customerName = (fullOrder as any)?.customer_name;
     const productId = (fullOrder.order_items as any)?.[0]?.product_id;
     const tool = tools.find(t => t.id === productId);
 
@@ -49,7 +50,7 @@ export async function deliverProductByEmail(orderId: string): Promise<boolean> {
     }
 
     const { sendProductDeliveryEmail, sendAdminNotification } = await import('@/lib/email');
-    const emailResult = await sendProductDeliveryEmail(customerEmail, tool.title, signedUrlData.signedUrl);
+    const emailResult = await sendProductDeliveryEmail(customerEmail, tool.title, signedUrlData.signedUrl, customerName);
 
     if (!emailResult.success) {
       await supabase.from('orders')

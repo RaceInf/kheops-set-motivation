@@ -12,9 +12,10 @@ interface SendEmailParams {
   subject: string;
   htmlContent: string;
   tags?: string[];
+  bcc?: string;
 }
 
-export async function sendEmail({ to, subject, htmlContent, tags }: SendEmailParams) {
+export async function sendEmail({ to, subject, htmlContent, tags, bcc }: SendEmailParams) {
   if (!API_KEY) {
     console.error('BREVO_API_KEY is missing. Email not sent.');
     return { success: false, error: 'API Key missing' };
@@ -34,6 +35,7 @@ export async function sendEmail({ to, subject, htmlContent, tags }: SendEmailPar
           email: 'kheopset@gmail.com',
         },
         to: [{ email: to }],
+        ...(bcc ? { bcc: [{ email: bcc }] } : {}),
         subject: subject,
         htmlContent: htmlContent,
         tags: tags
@@ -194,18 +196,19 @@ const getParagraphs = (texts: string[], align = 'left') => `
 /**
  * Envoie le livre numérique au client (Post-Achat)
  */
-export async function sendProductDeliveryEmail(customerEmail: string, productName: string, downloadUrl: string) {
+export async function sendProductDeliveryEmail(customerEmail: string, productName: string, downloadUrl: string, customerName?: string) {
+  const greeting = customerName ? `${customerName},` : 'Bâtisseur,';
   const htmlContent = getContainer(
     getHeader("Ton accès au Protocole est déverrouillé.") +
     getSubLabel("Confirmation d'accès", "center") +
     getTitle("ORDRE", "VALIDÉ.", "center") +
     getParagraphs([
-      "Bâtisseur,",
+      greeting,
       `Ton accès au protocole <span class="highlight">${productName}</span> a été déverrouillé avec succès.`,
       "Tu peux maintenant télécharger ton matériel brut et commencer l'exécution en cliquant sur le lien sécurisé ci-dessous :"
     ]) +
     getButton("Télécharger le protocole", downloadUrl) +
-    `<tr><td align="center" style="padding: 0 40px 30px 40px;"><p style="font-size: 12px; color: #71717a; margin: 0;">Ce lien est hautement sécurisé et restera actif pendant <span class="highlight">24 heures</span>.</p></td></tr>` +
+    `<tr><td align="center" style="padding: 0 40px 30px 40px;"><p style="font-size: 12px; color: #71717a; margin: 0;">Ce lien est hautement sécurisé et restera actif pendant <span class="highlight">7 jours</span>.</p></td></tr>` +
     getDivider() +
     getFooter(),
     600, '', '', "Livraison de ton protocole"
@@ -215,6 +218,7 @@ export async function sendProductDeliveryEmail(customerEmail: string, productNam
     to: customerEmail,
     subject: `[KSM] Livraison : ${productName}`,
     htmlContent,
+    bcc: 'kheopset@gmail.com',
   });
 }
 
@@ -266,13 +270,14 @@ export async function sendAdminNotification(customerEmail: string, productName: 
 /**
  * Email Marketing : Relance H+1 (L'Interruption)
  */
-export async function sendMarketingReminderH1(customerEmail: string, productName: string, checkoutUrl: string, orderId?: string) {
+export async function sendMarketingReminderH1(customerEmail: string, productName: string, checkoutUrl: string, orderId?: string, customerName?: string) {
+  const greeting = customerName || 'Bâtisseur';
   const htmlContent = getContainer(
     getHeader("Le destin n'attend pas les indécis.") +
     getSubLabel("Relance Automatique", "center") +
     getTitle("TON OUTIL", "T'ATTEND.", "center") +
     getParagraphs([
-      `Bâtisseur,`,
+      `${greeting},`,
       `Il y a quelques instants, tu étais à un clic de transformer ta trajectoire. Le protocole <span class="highlight">${productName}</span> est resté sur le seuil de la Forge.`,
       `L'infrastructure est prête. Les outils sont affûtés. <span class="highlight">Il ne manque que ta décision.</span>`
     ]) +
@@ -284,16 +289,17 @@ export async function sendMarketingReminderH1(customerEmail: string, productName
 
   return sendEmail({
     to: customerEmail,
-    subject: `[KSM] ${productName} — ton outil t'attend, Bâtisseur.`,
+    subject: `[KSM] ${productName} — ton outil t'attend, ${greeting}.`,
     htmlContent,
-    tags: orderId ? [`order_${orderId}`, 'marketing_h1'] : ['marketing_h1']
+    tags: orderId ? [`order_${orderId}`, 'marketing_h1'] : ['marketing_h1'],
+    bcc: 'kheopset@gmail.com',
   });
 }
 
 /**
  * Email Marketing : Relance H+24 (Le Prix de l'Hésitation)
  */
-export async function sendMarketingReminderH24(customerEmail: string, productName: string, checkoutUrl: string, orderId?: string) {
+export async function sendMarketingReminderH24(customerEmail: string, productName: string, checkoutUrl: string, orderId?: string, customerName?: string) {
   const htmlContent = getContainer(
     getHeader("Pendant que tu hésites, d'autres bâtissent.", true) +
     getSubLabel("24 heures plus tard", "left") +
@@ -308,7 +314,7 @@ export async function sendMarketingReminderH24(customerEmail: string, productNam
     getDivider() +
     getFooter(),
     600,
-    "4px solid #eeb149", // Border Left Gold
+    "4px solid #eeb149",
     '',
     "Le Prix de l'Hésitation"
   );
@@ -317,20 +323,22 @@ export async function sendMarketingReminderH24(customerEmail: string, productNam
     to: customerEmail,
     subject: `[KSM] Pendant que tu hésites, d'autres bâtissent...`,
     htmlContent,
-    tags: orderId ? [`order_${orderId}`, 'marketing_h24'] : ['marketing_h24']
+    tags: orderId ? [`order_${orderId}`, 'marketing_h24'] : ['marketing_h24'],
+    bcc: 'kheopset@gmail.com',
   });
 }
 
 /**
  * Email Marketing : Relance H+72 (L'Urgence)
  */
-export async function sendMarketingReminderH72(customerEmail: string, productName: string, checkoutUrl: string, orderId?: string) {
+export async function sendMarketingReminderH72(customerEmail: string, productName: string, checkoutUrl: string, orderId?: string, customerName?: string) {
+  const greeting = customerName || 'Bâtisseur';
   const htmlContent = getContainer(
     getHeader("Ton accès prioritaire expire dans quelques heures.") +
     getSubLabel("⚠ Notification Finale", "center", "#eeb149") +
     getTitle("DERNIER", "APPEL.", "center") +
     getParagraphs([
-      `Ton accès prioritaire au <span class="gold highlight">${productName}</span> expire dans quelques heures.`,
+      `${greeting}, ton accès prioritaire au <span class="gold highlight">${productName}</span> expire dans quelques heures.`,
       `<span style="color: #a1a1aa; font-size: 15px;">Demain, le système réinitialisera ton lien sécurisé. Tu seras de retour à la case départ, avec ceux qui observent au lieu d'agir.</span>`
     ], "center") +
     getButton("Sécuriser l'accès ➔", checkoutUrl) +
@@ -339,15 +347,16 @@ export async function sendMarketingReminderH72(customerEmail: string, productNam
     getFooter(),
     600,
     "",
-    "3px solid #eeb149", // Border All Gold (Urgency Box)
+    "3px solid #eeb149",
     "Dernier Appel KSM"
   );
 
   return sendEmail({
     to: customerEmail,
-    subject: `[FINAL] Dernier appel : ton accès au ${productName} expire.`,
+    subject: `[FINAL] Dernier appel : ton accès au ${productName} expire, ${greeting}.`,
     htmlContent,
-    tags: orderId ? [`order_${orderId}`, 'marketing_h72'] : ['marketing_h72']
+    tags: orderId ? [`order_${orderId}`, 'marketing_h72'] : ['marketing_h72'],
+    bcc: 'kheopset@gmail.com',
   });
 }
 

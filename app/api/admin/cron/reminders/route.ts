@@ -84,17 +84,17 @@ export async function GET(req: Request) {
       try {
         if (hoursElapsed >= 1 && hoursElapsed < 24 && !sentTypes.includes('reminder_h1')) {
           const checkoutUrl = await getCheckoutUrl(order, tool);
-          await sendMarketingReminderH1(customerEmail, tool.title, checkoutUrl, order.id);
+          await sendMarketingReminderH1(customerEmail, tool.title, checkoutUrl, order.id, order.customer_name);
           reminderSent = 'marketing_reminder_h1';
         } 
         else if (hoursElapsed >= 24 && hoursElapsed < 72 && !sentTypes.includes('reminder_h24')) {
           const checkoutUrl = await getCheckoutUrl(order, tool);
-          await sendMarketingReminderH24(customerEmail, tool.title, checkoutUrl, order.id);
+          await sendMarketingReminderH24(customerEmail, tool.title, checkoutUrl, order.id, order.customer_name);
           reminderSent = 'marketing_reminder_h24';
         }
         else if (hoursElapsed >= 72 && !sentTypes.includes('reminder_h72')) {
           const checkoutUrl = await getCheckoutUrl(order, tool);
-          await sendMarketingReminderH72(customerEmail, tool.title, checkoutUrl, order.id);
+          await sendMarketingReminderH72(customerEmail, tool.title, checkoutUrl, order.id, order.customer_name);
           reminderSent = 'marketing_reminder_h72';
         }
       } catch (err: any) {
